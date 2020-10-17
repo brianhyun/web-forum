@@ -14,7 +14,7 @@ function loadEnv() {
 			}
 		}		
 	} catch (err) {
-		console.error('.env file error:', err.message);
+		console.error('error loading .env file:', err.message);
 	}
 }
 
