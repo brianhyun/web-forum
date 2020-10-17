@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const User = require(rootPath + '/models/User');
 const validateLoginInput = require(rootPath + '/utils/validation/login');
 const validateRegisterInput = require(rootPath + '/utils/validation/register'); 
-const emailOrUsernameExists = require(rootPath + '/utils/checkDb');
+const emailOrUsernameExists = require(rootPath + '/models/validation/checkDb');
 
 const router = express.Router(); 
 
