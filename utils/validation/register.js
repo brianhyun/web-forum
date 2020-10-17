@@ -50,20 +50,20 @@ function validateRegisterInput(input) {
     if (!schema.validate(input.password)) {
         const errorList = schema.validate(input.password, { list: true });
 
-        errorList.forEach((error) => {
-            if (error === 'min') {
+        errorList.forEach((errorType) => {
+            if (errorType === 'min') {
                 errors.password = 'Password must be at least 8 characters';
-            } else if (error === 'max') {
+            } else if (errorType === 'max') {
                 errors.password = 'Password cannot exceed 30 characters';
-            } else if (error === 'uppercase') {
+            } else if (errorType === 'uppercase') {
                 errors.password = 'Password must contain at least one uppercase letter';
-            } else if (error === 'lowercase') {
+            } else if (errorType === 'lowercase') {
                 errors.password = 'Password must contain at least one lowercase letter';
-            } else if (error === 'digits') {
+            } else if (errorType === 'digits') {
                 errors.password = 'Password must contain at least two digits';
-            } else if (error === 'spaces') {
+            } else if (errorType === 'spaces') {
                 errors.password = 'Password must not contain any spaces';
-            } else if (error === 'symbols') {
+            } else if (errorType === 'symbols') {
                 errors.password = 'Password must contain at least one symbol';
             }
         });

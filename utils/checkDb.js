@@ -21,11 +21,7 @@ async function emailOrUsernameExists(input) {
                 errors.username = 'That username is already taken.';
             }
         })
-        .catch((err) => {
-            if (err) {
-                console.error(err);
-            }
-        });
+        .catch((err) => console.error(err));
 
     return {
         errors,
