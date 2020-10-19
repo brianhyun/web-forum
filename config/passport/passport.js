@@ -5,8 +5,8 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const opts = {
-	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-	secretOrKey: process.env.JWT_PRIVATE_KEY
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_PRIVATE_KEY,
 };
 
 function passportConfig(passport) {
@@ -16,8 +16,8 @@ function passportConfig(passport) {
                 .then((user) => {
                     if (user) {
                         return done(null, user);
-					}
-					
+                    }
+
                     return done(null, false);
                 })
                 .catch((err) => done(err, false));

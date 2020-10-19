@@ -105,6 +105,12 @@ dist
 # TernJS port file
 .tern-port
 
+# VSCode project settings
+.vscode
+
+# Prettier project settings
+.prettierignore
+
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
