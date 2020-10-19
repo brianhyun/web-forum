@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// Styles
+// Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -36,12 +36,47 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// Custom React Styles
 const linkStyle = {
     textDecoration: 'none',
 };
 
 function Signup() {
+    // Use Material Styles
     const classes = useStyles();
+
+    const [user, setUser] = useState({
+        name: '',
+        username: '',
+        email: '',
+        password: '',
+        password2: '',
+        errors: {},
+    });
+
+    function handleChange(event) {
+        // Update User Object
+        setUser({
+            ...user,
+            [event.target.id]: event.target.value,
+        });
+    }
+
+    function handleSubmit(event) {
+        // Prevent Default Form Behavior
+        event.preventDefault();
+
+        // Create New User Object
+        const newUser = {
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            password2: user.password2,
+        };
+
+        console.log('registration form submitted successfully', newUser);
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -53,7 +88,11 @@ function Signup() {
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form
+                    className={classes.form}
+                    noValidate
+                    onSubmit={handleSubmit}
+                >
                     <TextField
                         variant="outlined"
                         name="name"
@@ -63,6 +102,8 @@ function Signup() {
                         id="name"
                         margin="normal"
                         autoFocus
+                        onChange={handleChange}
+                        value={user.name}
                     />
                     <TextField
                         variant="outlined"
@@ -72,6 +113,8 @@ function Signup() {
                         label="Username"
                         id="username"
                         margin="normal"
+                        onChange={handleChange}
+                        value={user.username}
                     />
                     <TextField
                         variant="outlined"
@@ -81,6 +124,8 @@ function Signup() {
                         label="Email Address"
                         id="email"
                         margin="normal"
+                        onChange={handleChange}
+                        value={user.email}
                     />
                     <TextField
                         variant="outlined"
@@ -91,6 +136,8 @@ function Signup() {
                         id="password"
                         type="password"
                         margin="normal"
+                        onChange={handleChange}
+                        value={user.password}
                     />
                     <TextField
                         variant="outlined"
@@ -98,9 +145,11 @@ function Signup() {
                         required
                         fullWidth
                         label="Verify Password"
-                        id="password"
+                        id="password2"
                         type="password"
                         margin="normal"
+                        onChange={handleChange}
+                        value={user.password2}
                     />
                     <Button
                         type="submit"

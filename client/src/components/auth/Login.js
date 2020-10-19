@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// Styles
+// Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -36,12 +36,40 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+// Custom React Styles
 const linkStyle = {
     textDecoration: 'none',
 };
 
 function Login() {
+    // Use Material Styles
     const classes = useStyles();
+
+    const [user, setUser] = useState({
+        username: '',
+        password: '',
+        errors: {},
+    });
+
+    function handleChange(event) {
+        setUser({
+            ...user,
+            [event.target.id]: event.target.value,
+        });
+    }
+
+    function handleSubmit(event) {
+        // Prevent Default Form Behavior
+        event.preventDefault();
+
+        // Create User Object
+        const userObj = {
+            username: user.username,
+            password: user.password,
+        };
+
+        console.log('login form submitted successfully', userObj);
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -53,7 +81,11 @@ function Login() {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <form className={classes.form} noValidate>
+                <form
+                    className={classes.form}
+                    noValidate
+                    onSubmit={handleSubmit}
+                >
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -63,6 +95,8 @@ function Login() {
                         label="Username"
                         id="username"
                         autoFocus
+                        onChange={handleChange}
+                        value={user.username}
                     />
                     <TextField
                         variant="outlined"
@@ -73,6 +107,8 @@ function Login() {
                         label="Password"
                         type="password"
                         id="password"
+                        onChange={handleChange}
+                        value={user.password}
                     />
                     <Button
                         variant="contained"
