@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 // Styles
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -10,6 +10,10 @@ import theme from '../ui/theme';
 import Landing from '../main/Landing';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
+import PageNotFound from '../main/PageNotFound';
+
+// Protected Components
+import PrivateRoute from '../private/PrivateRoute';
 import Dashboard from '../main/Dashboard';
 
 function App() {
@@ -18,10 +22,17 @@ function App() {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <div className="App">
-                    <Route exact path="/" component={Landing} />
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={Signup} />
-                    <Route exact path="/dashboard" component={Dashboard} />
+                    <Switch>
+                        <Route exact path="/" component={Landing} />
+                        <Route exact path="/login" component={Login} />
+                        <Route exact path="/signup" component={Signup} />
+                        <PrivateRoute
+                            exact
+                            path="/dashboard"
+                            component={Dashboard}
+                        />
+                        <Route path="*" component={PageNotFound} />
+                    </Switch>
                 </div>
             </ThemeProvider>
         </Router>

@@ -95,4 +95,9 @@ export function logoutUser(history) {
     };
 }
 
+// Selectors
+export function selectAuthStatus(state) {
+    return state.auth.isAuthenticated;
+}
+
 export default slice.reducer;

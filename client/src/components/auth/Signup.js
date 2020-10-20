@@ -46,7 +46,7 @@ const linkStyle = {
 };
 
 function Signup(props) {
-    // Use Material Styles
+    // Use Material UI Styles
     const classes = useStyles();
 
     // Redux Handles
