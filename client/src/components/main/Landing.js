@@ -70,7 +70,7 @@ function Landing() {
                         >
                             A structured approach to the chaotic group chat.
                         </Typography>
-                        <Grid container spacing={2}>
+                        <Grid container spacing={4}>
                             <Grid item xs={12} sm={6}>
                                 <Link to="/login" style={linkStyle}>
                                     <Button

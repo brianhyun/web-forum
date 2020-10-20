@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// Redux
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../../redux/slices/authSlice';
+
 // Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -41,10 +45,14 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-function Login() {
+function Login(props) {
     // Use Material Styles
     const classes = useStyles();
 
+    // Redux Handles
+    const dispatch = useDispatch();
+
+    // React Declaration
     const [user, setUser] = useState({
         username: '',
         password: '',
@@ -68,7 +76,7 @@ function Login() {
             password: user.password,
         };
 
-        console.log('login form submitted successfully', userObj);
+        dispatch(loginUser(userObj, props.history));
     }
 
     return (

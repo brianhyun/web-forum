@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+// Redux
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../../redux/slices/authSlice';
+
 // Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -41,10 +45,14 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-function Signup() {
+function Signup(props) {
     // Use Material Styles
     const classes = useStyles();
 
+    // Redux Handles
+    const dispatch = useDispatch();
+
+    // React State Declaration
     const [user, setUser] = useState({
         name: '',
         username: '',
@@ -75,7 +83,7 @@ function Signup() {
             password2: user.password2,
         };
 
-        console.log('registration form submitted successfully', newUser);
+        dispatch(registerUser(newUser, props.history));
     }
 
     return (
