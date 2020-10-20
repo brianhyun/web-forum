@@ -5,17 +5,17 @@ const jwt = require('jsonwebtoken');
 
 const User = require(rootPath + '/models/User');
 const validateLoginInput = require(rootPath + '/utils/validation/login');
-const validateRegisterInput = require(rootPath + '/utils/validation/register');
+const validateSignupInput = require(rootPath + '/utils/validation/signup');
 const emailOrUsernameExists = require(rootPath + '/models/validation/checkDb');
 
 const router = express.Router();
 
-router.post('/api/users/register', (req, res, next) => {
+router.post('/api/users/signup', (req, res, next) => {
     // Retrieve Input
     const input = req.body;
 
     // Validate Input
-    const { errors, isValid } = validateRegisterInput(input);
+    const { errors, isValid } = validateSignupInput(input);
 
     // Check Validation - Invalid Input
     if (!isValid) {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from '../../utils/setAuthToken';
 
-// Redux Tools
+// Redux
 import { createSlice } from '@reduxjs/toolkit';
 
 export const slice = createSlice({
@@ -60,10 +60,10 @@ export function loginUser(userData, history) {
 }
 
 // Register User
-export function registerUser(userData, history) {
+export function signupUser(userData, history) {
     return function thunk(dispatch, getState) {
         axios
-            .post('/api/users/register', userData)
+            .post('/api/users/signup', userData)
             .then(function (response) {
                 // Re-direct to Login Page on Successful Registration
                 history.push('/login');

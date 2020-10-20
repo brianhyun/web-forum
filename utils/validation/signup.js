@@ -2,18 +2,26 @@ const validator = require('validator');
 const passwordValidator = require('password-validator');
 const isEmpty = require('is-empty');
 
-const schema = new passwordValidator(); 
+const schema = new passwordValidator();
 
 schema
-    .is().min(8)
-    .is().max(30)
-    .has().uppercase()                              
-    .has().lowercase()                             
-    .has().digits(2)   
-    .has().not().spaces()
-    .has().symbols(1); 
+    .is()
+    .min(8)
+    .is()
+    .max(30)
+    .has()
+    .uppercase()
+    .has()
+    .lowercase()
+    .has()
+    .digits(2)
+    .has()
+    .not()
+    .spaces()
+    .has()
+    .symbols(1);
 
-function validateRegisterInput(input) {
+function validateSignupInput(input) {
     let errors = {};
 
     // Convert empty fields to an empty string so we can use validator functions
@@ -56,9 +64,11 @@ function validateRegisterInput(input) {
             } else if (errorType === 'max') {
                 errors.password = 'Password cannot exceed 30 characters';
             } else if (errorType === 'uppercase') {
-                errors.password = 'Password must contain at least one uppercase letter';
+                errors.password =
+                    'Password must contain at least one uppercase letter';
             } else if (errorType === 'lowercase') {
-                errors.password = 'Password must contain at least one lowercase letter';
+                errors.password =
+                    'Password must contain at least one lowercase letter';
             } else if (errorType === 'digits') {
                 errors.password = 'Password must contain at least two digits';
             } else if (errorType === 'spaces') {
@@ -74,8 +84,8 @@ function validateRegisterInput(input) {
 
     return {
         errors,
-    	isValid: isEmpty(errors),
+        isValid: isEmpty(errors),
     };
 }
 
-module.exports = validateRegisterInput;
+module.exports = validateSignupInput;

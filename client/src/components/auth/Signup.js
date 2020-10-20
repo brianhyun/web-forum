@@ -1,9 +1,10 @@
+// Dependencies
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../../redux/slices/authSlice';
+import { signupUser } from '../../redux/slices/authSlice';
 
 // Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
@@ -83,8 +84,10 @@ function Signup(props) {
             password2: user.password2,
         };
 
-        dispatch(registerUser(newUser, props.history));
+        dispatch(signupUser(newUser, props.history));
     }
+
+    const { errors } = user;
 
     return (
         <Container component="main" maxWidth="xs">

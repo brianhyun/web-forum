@@ -1,11 +1,15 @@
+// React
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+// Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
+// Styles
 import './index.css';
 
+// Components
 import App from './components/app/App';
 import * as serviceWorker from './serviceWorker';
 
