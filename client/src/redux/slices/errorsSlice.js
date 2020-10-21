@@ -10,11 +10,14 @@ export const slice = createSlice({
         setFormErrors: (state, action) => {
             state.formErrors = action.payload;
         },
+        resetFormErrors: (state) => {
+            state.formErrors = {};
+        },
     },
 });
 
 // Export Actions
-export const { setFormErrors } = slice.actions;
+export const { setFormErrors, resetFormErrors } = slice.actions;
 
 // Selectors
 export function selectFormErrors(state) {
