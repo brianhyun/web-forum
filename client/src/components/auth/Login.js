@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { loginUser } from '../../redux/slices/authSlice';
+import { selectFormErrors } from '../../redux/slices/errorsSlice';
 
 // Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
@@ -52,6 +54,7 @@ function Login(props) {
 
     // Redux Handles
     const dispatch = useDispatch();
+    const formErrors = useSelector(selectFormErrors);
 
     // React Declaration
     const [user, setUser] = useState({
@@ -106,6 +109,10 @@ function Login(props) {
                         autoFocus
                         onChange={handleChange}
                         value={user.username}
+                        error={formErrors.username ? true : false}
+                        helperText={
+                            formErrors.username ? formErrors.username : null
+                        }
                     />
                     <TextField
                         variant="outlined"
@@ -118,6 +125,10 @@ function Login(props) {
                         id="password"
                         onChange={handleChange}
                         value={user.password}
+                        error={formErrors.password ? true : false}
+                        helperText={
+                            formErrors.password ? formErrors.password : null
+                        }
                     />
                     <Button
                         variant="contained"
