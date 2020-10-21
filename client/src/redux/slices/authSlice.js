@@ -36,7 +36,7 @@ export function loginUser(userData, history) {
             .post('/api/users/login', userData) // Returns a JSON Object with JWT
             .then(function (response) {
                 // Reset Form Errors on Successful Login
-                dispatch(resetFormErrors);
+                dispatch(resetFormErrors());
 
                 // Save JWT to localStorage
                 const token = response.data;
@@ -67,7 +67,7 @@ export function signupUser(userData, history) {
             .post('/api/users/signup', userData)
             .then(function (response) {
                 // Reset Form Errors on Successful Registration
-                dispatch(resetFormErrors);
+                dispatch(resetFormErrors());
 
                 // Re-direct to Login Page on Successful Registration
                 history.push('/login');
