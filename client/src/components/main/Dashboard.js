@@ -8,12 +8,12 @@ import { logoutUser } from '../../redux/slices/authSlice';
 // Material UI Styles
 import Button from '@material-ui/core/Button';
 
-function Dashboard(props) {
+function Dashboard() {
     // Redux Handles
     const dispatch = useDispatch();
 
     function handleClick() {
-        dispatch(logoutUser(props.history));
+        dispatch(logoutUser());
     }
 
     return (

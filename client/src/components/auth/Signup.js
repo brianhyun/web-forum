@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { signupUser } from '../../redux/slices/authSlice';
+import { selectFormErrors } from '../../redux/slices/errorsSlice';
 
 // Material UI Styles
 import Avatar from '@material-ui/core/Avatar';
@@ -52,6 +54,7 @@ function Signup(props) {
 
     // Redux Handles
     const dispatch = useDispatch();
+    const formErrors = useSelector(selectFormErrors);
 
     // React State Declaration
     const [user, setUser] = useState({
@@ -60,7 +63,6 @@ function Signup(props) {
         email: '',
         password: '',
         password2: '',
-        errors: {},
     });
 
     function handleChange(event) {
@@ -86,8 +88,6 @@ function Signup(props) {
 
         dispatch(signupUser(newUser, props.history));
     }
-
-    const { errors } = user;
 
     return (
         <Container component="main" maxWidth="xs">
@@ -115,6 +115,8 @@ function Signup(props) {
                         autoFocus
                         onChange={handleChange}
                         value={user.name}
+                        error={formErrors.name ? true : false}
+                        helperText={formErrors.name ? formErrors.name : null}
                     />
                     <TextField
                         variant="outlined"
@@ -126,6 +128,10 @@ function Signup(props) {
                         margin="normal"
                         onChange={handleChange}
                         value={user.username}
+                        error={formErrors.username ? true : false}
+                        helperText={
+                            formErrors.username ? formErrors.username : null
+                        }
                     />
                     <TextField
                         variant="outlined"
@@ -137,6 +143,8 @@ function Signup(props) {
                         margin="normal"
                         onChange={handleChange}
                         value={user.email}
+                        error={formErrors.email ? true : false}
+                        helperText={formErrors.email ? formErrors.email : null}
                     />
                     <TextField
                         variant="outlined"
@@ -149,6 +157,10 @@ function Signup(props) {
                         margin="normal"
                         onChange={handleChange}
                         value={user.password}
+                        error={formErrors.password ? true : false}
+                        helperText={
+                            formErrors.password ? formErrors.password : null
+                        }
                     />
                     <TextField
                         variant="outlined"
@@ -161,6 +173,10 @@ function Signup(props) {
                         margin="normal"
                         onChange={handleChange}
                         value={user.password2}
+                        error={formErrors.password2 ? true : false}
+                        helperText={
+                            formErrors.password2 ? formErrors.password2 : null
+                        }
                     />
                     <Button
                         type="submit"

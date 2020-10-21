@@ -1,0 +1,24 @@
+// Redux
+import { createSlice } from '@reduxjs/toolkit';
+
+export const slice = createSlice({
+    name: 'error',
+    initialState: {
+        formErrors: {},
+    },
+    reducers: {
+        setFormErrors: (state, action) => {
+            state.formErrors = action.payload;
+        },
+    },
+});
+
+// Export Actions
+export const { setFormErrors } = slice.actions;
+
+// Selectors
+export function selectFormErrors(state) {
+    return state.error.formErrors;
+}
+
+export default slice.reducer;

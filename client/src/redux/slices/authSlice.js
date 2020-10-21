@@ -5,6 +5,7 @@ import setAuthToken from '../../utils/setAuthToken';
 
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
+import { setFormErrors } from './errorsSlice';
 
 export const slice = createSlice({
     name: 'auth',
@@ -50,11 +51,7 @@ export function loginUser(userData, history) {
                 history.push('/dashboard');
             })
             .catch(function (error) {
-                console.error(error);
-                // dispatch({
-                //     type: GET_ERRORS,
-                //     payload: error.response.data,
-                // });
+                dispatch(setFormErrors(error.response.data));
             });
     };
 }
@@ -69,17 +66,13 @@ export function signupUser(userData, history) {
                 history.push('/login');
             })
             .catch(function (error) {
-                console.error(error);
-                // dispatch({
-                //     type: GET_ERRORS,
-                //     payload: error.response.data,
-                // });
+                dispatch(setFormErrors(error.response.data));
             });
     };
 }
 
 // Log User Out
-export function logoutUser(history) {
+export function logoutUser() {
     return function thunk(dispatch, getState) {
         // Remove JWT Token from Local Storage
         localStorage.removeItem('jwtToken');
@@ -89,9 +82,6 @@ export function logoutUser(history) {
 
         // Set current user to empty object {} which will set isAuthenticated to false
         dispatch(resetCurrentUser());
-
-        // Redirect to Landing Page
-        history.push('/');
     };
 }
 
