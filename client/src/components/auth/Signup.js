@@ -16,16 +16,24 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
+    background: {
+        backgroundColor: '#1E3B70',
+    },
+    box: {
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'center',
+        height: '100vh',
+    },
     paper: {
         alignItems: 'center',
-        borderRadius: '10px',
-        boxShadow: '0 0 5px black',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        height: '80vh',
+        padding: theme.spacing(4, 3),
     },
     form: {
         width: '100%',
@@ -84,96 +92,111 @@ function Signup(props) {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    Sign up
-                </Typography>
-                <form
-                    className={classes.form}
-                    noValidate
-                    onSubmit={handleSubmit}
-                >
-                    <TextField
-                        variant="outlined"
-                        name="name"
-                        required
-                        fullWidth
-                        label="Name"
-                        id="name"
-                        margin="normal"
-                        autoFocus
-                        onChange={handleChange}
-                        value={user.name}
-                        error={formErrors.name ? true : false}
-                        helperText={formErrors.name ? formErrors.name : null}
-                    />
-                    <TextField
-                        variant="outlined"
-                        name="username"
-                        required
-                        fullWidth
-                        label="Username"
-                        id="username"
-                        margin="normal"
-                        onChange={handleChange}
-                        value={user.username}
-                        error={formErrors.username ? true : false}
-                        helperText={
-                            formErrors.username ? formErrors.username : null
-                        }
-                    />
-                    <TextField
-                        variant="outlined"
-                        name="email"
-                        required
-                        fullWidth
-                        label="Email Address"
-                        id="email"
-                        margin="normal"
-                        onChange={handleChange}
-                        value={user.email}
-                        error={formErrors.email ? true : false}
-                        helperText={formErrors.email ? formErrors.email : null}
-                    />
-                    <TextField
-                        variant="outlined"
-                        name="password"
-                        required
-                        fullWidth
-                        label="Password"
-                        id="password"
-                        type="password"
-                        margin="normal"
-                        onChange={handleChange}
-                        value={user.password}
-                        error={formErrors.password ? true : false}
-                        helperText={
-                            formErrors.password ? formErrors.password : null
-                        }
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up
-                    </Button>
-                    <Grid container justify="center">
-                        <Grid item>
-                            <Link to="/login" style={linkStyle}>
-                                <Typography variant="body2" color="primary">
-                                    Already have an account? Log in
-                                </Typography>
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-        </Container>
+        <Box component="main" className={classes.background}>
+            <Container maxWidth="xs">
+                <CssBaseline />
+                <Box className={classes.box}>
+                    <Paper elevation={3} className={classes.paper}>
+                        <Typography component="h1" variant="h5">
+                            Sign up
+                        </Typography>
+                        <form
+                            className={classes.form}
+                            noValidate
+                            onSubmit={handleSubmit}
+                        >
+                            <TextField
+                                variant="outlined"
+                                name="name"
+                                required
+                                fullWidth
+                                label="Name"
+                                id="name"
+                                margin="normal"
+                                autoFocus
+                                onChange={handleChange}
+                                value={user.name}
+                                error={formErrors.name ? true : false}
+                                helperText={
+                                    formErrors.name ? formErrors.name : null
+                                }
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="username"
+                                required
+                                fullWidth
+                                label="Username"
+                                id="username"
+                                margin="normal"
+                                onChange={handleChange}
+                                value={user.username}
+                                error={formErrors.username ? true : false}
+                                helperText={
+                                    formErrors.username
+                                        ? formErrors.username
+                                        : null
+                                }
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="email"
+                                required
+                                fullWidth
+                                label="Email Address"
+                                id="email"
+                                margin="normal"
+                                onChange={handleChange}
+                                value={user.email}
+                                error={formErrors.email ? true : false}
+                                helperText={
+                                    formErrors.email ? formErrors.email : null
+                                }
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="password"
+                                required
+                                fullWidth
+                                label="Password"
+                                id="password"
+                                type="password"
+                                margin="normal"
+                                onChange={handleChange}
+                                value={user.password}
+                                error={formErrors.password ? true : false}
+                                helperText={
+                                    formErrors.password
+                                        ? formErrors.password
+                                        : null
+                                }
+                            />
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign Up
+                            </Button>
+                            <Grid container justify="center">
+                                <Grid item>
+                                    <Link to="/login" style={linkStyle}>
+                                        <Typography
+                                            variant="body2"
+                                            color="primary"
+                                        >
+                                            Already have an account? Log in
+                                        </Typography>
+                                    </Link>
+                                </Grid>
+                            </Grid>
+                        </form>
+                    </Paper>
+                </Box>
+            </Container>
+        </Box>
     );
 }
 
