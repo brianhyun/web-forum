@@ -29,7 +29,6 @@ function validateSignupInput(input) {
     input.username = !isEmpty(input.username) ? input.username : '';
     input.email = !isEmpty(input.email) ? input.email : '';
     input.password = !isEmpty(input.password) ? input.password : '';
-    input.password2 = !isEmpty(input.password2) ? input.password2 : '';
 
     // Name Checks
     if (validator.isEmpty(input.name)) {
@@ -77,12 +76,6 @@ function validateSignupInput(input) {
                 }
             });
         }
-    }
-    if (validator.isEmpty(input.password2)) {
-        errors.password2 = 'Confirm password field is required';
-    }
-    if (!validator.equals(input.password, input.password2)) {
-        errors.password2 = 'Passwords must match';
     }
 
     return {

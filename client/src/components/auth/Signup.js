@@ -20,10 +20,12 @@ import Container from '@material-ui/core/Container';
 const useStyles = makeStyles((theme) => ({
     paper: {
         alignItems: 'center',
+        borderRadius: '10px',
+        boxShadow: '0 0 5px black',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        height: '100vh',
+        height: '80vh',
     },
     form: {
         width: '100%',
@@ -149,22 +151,6 @@ function Signup(props) {
                         error={formErrors.password ? true : false}
                         helperText={
                             formErrors.password ? formErrors.password : null
-                        }
-                    />
-                    <TextField
-                        variant="outlined"
-                        name="password2"
-                        required
-                        fullWidth
-                        label="Verify Password"
-                        id="password2"
-                        type="password"
-                        margin="normal"
-                        onChange={handleChange}
-                        value={user.password2}
-                        error={formErrors.password2 ? true : false}
-                        helperText={
-                            formErrors.password2 ? formErrors.password2 : null
                         }
                     />
                     <Button
