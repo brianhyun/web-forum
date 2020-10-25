@@ -6,7 +6,6 @@ import setAuthToken from '../../utils/setAuthToken';
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
 import { setFormErrors } from './errorsSlice';
-import { resetFormErrors } from './errorsSlice';
 
 export const slice = createSlice({
     name: 'auth',
@@ -35,9 +34,6 @@ export function loginUser(userData, history) {
         axios
             .post('/api/users/login', userData) // Returns a JSON Object with JWT
             .then(function (response) {
-                // Reset Form Errors on Successful Login
-                dispatch(resetFormErrors());
-
                 // Save JWT to localStorage
                 const token = response.data;
                 localStorage.setItem('jwtToken', token);
@@ -66,9 +62,6 @@ export function signupUser(userData, history) {
         axios
             .post('/api/users/signup', userData)
             .then(function (response) {
-                // Reset Form Errors on Successful Registration
-                dispatch(resetFormErrors());
-
                 // Re-direct to Login Page on Successful Registration
                 history.push('/login');
             })

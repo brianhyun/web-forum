@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { signupUser } from '../../redux/slices/authSlice';
 import { selectFormErrors } from '../../redux/slices/errorsSlice';
+import { resetFormErrors } from '../../redux/slices/errorsSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -89,6 +90,11 @@ function Signup(props) {
         };
 
         dispatch(signupUser(newUser, props.history));
+    }
+
+    function handleClick() {
+        // Reset Form Errors When User Visits Another Page
+        dispatch(resetFormErrors());
     }
 
     return (
@@ -186,6 +192,7 @@ function Signup(props) {
                                         <Typography
                                             variant="body2"
                                             color="primary"
+                                            onClick={handleClick}
                                         >
                                             Already have an account? Log in
                                         </Typography>

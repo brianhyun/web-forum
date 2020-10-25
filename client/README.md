@@ -1,6 +1,7 @@
 # Issues
 
--   [ ] Error Messages for Invalid Inputs
+-   [x] Error Messages for Invalid Inputs
+-   [x] Error Message from Forms Bleed Into One Another
 
 # Learned
 

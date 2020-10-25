@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { loginUser } from '../../redux/slices/authSlice';
 import { selectFormErrors } from '../../redux/slices/errorsSlice';
+import { resetFormErrors } from '../../redux/slices/errorsSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -86,6 +87,11 @@ function Login(props) {
         dispatch(loginUser(userObj, props.history));
     }
 
+    function handleClick() {
+        // Reset Form Errors When User Visits Another Page
+        dispatch(resetFormErrors());
+    }
+
     return (
         <Box component="main" className={classes.root}>
             <Container maxWidth="xs">
@@ -151,6 +157,7 @@ function Login(props) {
                                         <Typography
                                             variant="body2"
                                             color="primary"
+                                            onClick={handleClick}
                                         >
                                             Forgot password?
                                         </Typography>
@@ -161,6 +168,7 @@ function Login(props) {
                                         <Typography
                                             variant="body2"
                                             color="primary"
+                                            onClick={handleClick}
                                         >
                                             Don't have an account? Sign Up
                                         </Typography>
