@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { signupUser } from '../../redux/slices/authSlice';
-import { selectFormErrors } from '../../redux/slices/errorsSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -50,27 +47,23 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-function Signup(props) {
+function Join() {
     // Use Material UI Styles
     const classes = useStyles();
 
     // Redux Handles
     const dispatch = useDispatch();
-    const formErrors = useSelector(selectFormErrors);
 
     // React Handles
-    const [user, setUser] = useState({
+    const [forum, setForum] = useState({
         name: '',
-        username: '',
-        email: '',
         password: '',
-        password2: '',
+        errors: {},
     });
 
     function handleChange(event) {
-        // Update User Object
-        setUser({
-            ...user,
+        setForum({
+            ...forum,
             [event.target.id]: event.target.value,
         });
     }
@@ -79,16 +72,14 @@ function Signup(props) {
         // Prevent Default Form Behavior
         event.preventDefault();
 
-        // Create New User Object
-        const newUser = {
-            name: user.name,
-            username: user.username,
-            email: user.email,
-            password: user.password,
-            password2: user.password2,
+        // Create Forum Object
+        const forumObj = {
+            name: forum.name,
+            password: forum.password,
         };
 
-        dispatch(signupUser(newUser, props.history));
+        // Dispatch Login Forum Action
+        dispatch();
     }
 
     return (
@@ -98,7 +89,7 @@ function Signup(props) {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={classes.paper}>
                         <Typography component="h1" variant="h5">
-                            Sign up
+                            Join a Forum
                         </Typography>
                         <form
                             className={classes.form}
@@ -110,48 +101,12 @@ function Signup(props) {
                                 name="name"
                                 required
                                 fullWidth
-                                label="Name"
+                                label="Forum Name"
                                 id="name"
                                 margin="normal"
                                 autoFocus
                                 onChange={handleChange}
-                                value={user.name}
-                                error={formErrors.name ? true : false}
-                                helperText={
-                                    formErrors.name ? formErrors.name : null
-                                }
-                            />
-                            <TextField
-                                variant="outlined"
-                                name="username"
-                                required
-                                fullWidth
-                                label="Username"
-                                id="username"
-                                margin="normal"
-                                onChange={handleChange}
-                                value={user.username}
-                                error={formErrors.username ? true : false}
-                                helperText={
-                                    formErrors.username
-                                        ? formErrors.username
-                                        : null
-                                }
-                            />
-                            <TextField
-                                variant="outlined"
-                                name="email"
-                                required
-                                fullWidth
-                                label="Email Address"
-                                id="email"
-                                margin="normal"
-                                onChange={handleChange}
-                                value={user.email}
-                                error={formErrors.email ? true : false}
-                                helperText={
-                                    formErrors.email ? formErrors.email : null
-                                }
+                                value={forum.name}
                             />
                             <TextField
                                 variant="outlined"
@@ -163,13 +118,7 @@ function Signup(props) {
                                 type="password"
                                 margin="normal"
                                 onChange={handleChange}
-                                value={user.password}
-                                error={formErrors.password ? true : false}
-                                helperText={
-                                    formErrors.password
-                                        ? formErrors.password
-                                        : null
-                                }
+                                value={forum.password}
                             />
                             <Button
                                 type="submit"
@@ -182,12 +131,12 @@ function Signup(props) {
                             </Button>
                             <Grid container justify="center">
                                 <Grid item>
-                                    <Link to="/login" style={linkStyle}>
+                                    <Link to="/create" style={linkStyle}>
                                         <Typography
                                             variant="body2"
                                             color="primary"
                                         >
-                                            Already have an account? Log in
+                                            Create a Forum
                                         </Typography>
                                     </Link>
                                 </Grid>
@@ -200,4 +149,4 @@ function Signup(props) {
     );
 }
 
-export default Signup;
+export default Join;

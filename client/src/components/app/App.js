@@ -21,6 +21,8 @@ import PageNotFound from '../main/PageNotFound';
 // Protected Components
 import PrivateRoute from '../private/PrivateRoute';
 import Dashboard from '../main/Dashboard';
+import Join from '../forum-auth/Join';
+import Create from '../forum-auth/Create';
 
 // Utilities
 import setAuthToken from '../../utils/setAuthToken';
@@ -67,6 +69,8 @@ function App() {
                             path="/dashboard"
                             component={Dashboard}
                         />
+                        <PrivateRoute exact path="/join" component={Join} />
+                        <PrivateRoute exact path="/create" component={Create} />
                         <Route path="*" component={PageNotFound} />
                     </Switch>
                 </div>

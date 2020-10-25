@@ -20,7 +20,7 @@ import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
-    background: {
+    root: {
         backgroundColor: '#1E3B70',
     },
     box: {
@@ -58,7 +58,7 @@ function Login(props) {
     const dispatch = useDispatch();
     const formErrors = useSelector(selectFormErrors);
 
-    // React Declaration
+    // React Handles
     const [user, setUser] = useState({
         username: '',
         password: '',
@@ -82,11 +82,12 @@ function Login(props) {
             password: user.password,
         };
 
+        // Dispatch Login User Action
         dispatch(loginUser(userObj, props.history));
     }
 
     return (
-        <Box component="main" className={classes.background}>
+        <Box component="main" className={classes.root}>
             <Container maxWidth="xs">
                 <CssBaseline />
                 <Box className={classes.box}>
