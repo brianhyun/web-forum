@@ -3,7 +3,7 @@ const rootPath = require('app-root-path');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const User = require(rootPath + '/models/User');
+const { User } = require(rootPath + '/models/User');
 const validateLoginInput = require(rootPath + '/utils/validation/login');
 const validateSignupInput = require(rootPath + '/utils/validation/signup');
 const emailOrUsernameExists = require(rootPath + '/models/validation/checkDb');

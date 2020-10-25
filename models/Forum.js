@@ -1,5 +1,9 @@
+// Mongoose
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
+
+// Subdocuments
+const { userSchema } = require('./User');
 
 const forumSchema = new Schema({
     name: {
@@ -8,7 +12,13 @@ const forumSchema = new Schema({
     },
     password: {
         type: String,
+    },
+    public: {
+        type: Boolean,
         required: true,
+    },
+    members: {
+        type: [userSchema],
     },
     date: {
         type: Date,
