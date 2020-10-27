@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { createForum } from '../../redux/slices/forumAuthSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -59,7 +60,7 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-function Join() {
+function Join(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
@@ -87,25 +88,25 @@ function Join() {
         // Create Forum Object
         const forumObj = {
             name: forum.name,
-            password: forum.password,
+            public: isPublic,
         };
 
+        if (!isPublic) {
+            forumObj.password = forum.password;
+        }
+
         // Dispatch Login Forum Action
-        dispatch();
+        dispatch(createForum(forumObj, props.history));
     }
 
     const [isPublic, setIsPublic] = useState(true);
 
     function clickPublic() {
-        if (!isPublic) {
-            setIsPublic(true);
-        }
+        setIsPublic(true);
     }
 
     function clickPrivate() {
-        if (isPublic) {
-            setIsPublic(false);
-        }
+        setIsPublic(false);
     }
 
     return (
@@ -189,7 +190,7 @@ function Join() {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign Up
+                                Create
                             </Button>
                             <Grid container justify="center">
                                 <Grid item>
