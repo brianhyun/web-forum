@@ -104,20 +104,17 @@ function Join(props) {
         dispatch(createForum(forumData, props.history));
     }
 
-    function clickPublic() {
+    function changePrivacyStatus(event) {
+        let isPublic = null;
+        if (event.currentTarget.value === 'true') {
+            isPublic = true;
+        } else if (event.currentTarget.value === 'false') {
+            isPublic = false;
+        }
+
         setForum({
             ...forum,
-            isPublic: true,
-        });
-
-        // Reset Form Errors
-        dispatch(resetFormErrors());
-    }
-
-    function clickPrivate() {
-        setForum({
-            ...forum,
-            isPublic: false,
+            isPublic: isPublic,
         });
 
         // Reset Form Errors
@@ -182,7 +179,7 @@ function Join(props) {
                                 <Grid item xs={6}>
                                     <Button
                                         fullWidth
-                                        onClick={clickPublic}
+                                        onClick={changePrivacyStatus}
                                         variant={
                                             forum.isPublic
                                                 ? 'contained'
@@ -193,6 +190,7 @@ function Join(props) {
                                                 ? 'secondary'
                                                 : 'default'
                                         }
+                                        value="true"
                                     >
                                         Public
                                     </Button>
@@ -200,7 +198,7 @@ function Join(props) {
                                 <Grid item xs={6}>
                                     <Button
                                         fullWidth
-                                        onClick={clickPrivate}
+                                        onClick={changePrivacyStatus}
                                         variant={
                                             !forum.isPublic
                                                 ? 'contained'
@@ -211,6 +209,7 @@ function Join(props) {
                                                 ? 'secondary'
                                                 : 'default'
                                         }
+                                        value="false"
                                     >
                                         Private
                                     </Button>
