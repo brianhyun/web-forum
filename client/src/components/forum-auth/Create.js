@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectFormErrors } from '../../redux/slices/errorsSlice';
+import { resetFormErrors } from '../../redux/slices/errorsSlice';
 import { createForum } from '../../redux/slices/forumAuthSlice';
 
 // Material UI Styles
@@ -66,11 +69,13 @@ function Join(props) {
 
     // Redux Handles
     const dispatch = useDispatch();
+    const formErrors = useSelector(selectFormErrors);
 
     // React Handles
     const [forum, setForum] = useState({
         name: '',
         password: '',
+        isPublic: true,
         errors: {},
     });
 
@@ -86,27 +91,37 @@ function Join(props) {
         event.preventDefault();
 
         // Create Forum Object
-        const forumObj = {
+        const forumData = {
             name: forum.name,
-            public: isPublic,
+            isPublic: forum.isPublic,
         };
 
-        if (!isPublic) {
-            forumObj.password = forum.password;
+        if (!forum.isPublic) {
+            forumData.password = forum.password;
         }
 
         // Dispatch Login Forum Action
-        dispatch(createForum(forumObj, props.history));
+        dispatch(createForum(forumData, props.history));
     }
 
-    const [isPublic, setIsPublic] = useState(true);
-
     function clickPublic() {
-        setIsPublic(true);
+        setForum({
+            ...forum,
+            isPublic: true,
+        });
+
+        // Reset Form Errors
+        dispatch(resetFormErrors());
     }
 
     function clickPrivate() {
-        setIsPublic(false);
+        setForum({
+            ...forum,
+            isPublic: false,
+        });
+
+        // Reset Form Errors
+        dispatch(resetFormErrors());
     }
 
     return (
@@ -134,8 +149,12 @@ function Join(props) {
                                 autoFocus
                                 onChange={handleChange}
                                 value={forum.name}
+                                error={formErrors.name ? true : false}
+                                helperText={
+                                    formErrors.name ? formErrors.name : null
+                                }
                             />
-                            {!isPublic && (
+                            {!forum.isPublic && (
                                 <TextField
                                     className={classes.margin}
                                     variant="outlined"
@@ -147,6 +166,12 @@ function Join(props) {
                                     type="password"
                                     onChange={handleChange}
                                     value={forum.password}
+                                    error={formErrors.password ? true : false}
+                                    helperText={
+                                        formErrors.password
+                                            ? formErrors.password
+                                            : null
+                                    }
                                 />
                             )}
                             <Grid
@@ -159,10 +184,14 @@ function Join(props) {
                                         fullWidth
                                         onClick={clickPublic}
                                         variant={
-                                            isPublic ? 'contained' : 'outlined'
+                                            forum.isPublic
+                                                ? 'contained'
+                                                : 'outlined'
                                         }
                                         color={
-                                            isPublic ? 'secondary' : 'default'
+                                            forum.isPublic
+                                                ? 'secondary'
+                                                : 'default'
                                         }
                                     >
                                         Public
@@ -173,10 +202,14 @@ function Join(props) {
                                         fullWidth
                                         onClick={clickPrivate}
                                         variant={
-                                            !isPublic ? 'contained' : 'outlined'
+                                            !forum.isPublic
+                                                ? 'contained'
+                                                : 'outlined'
                                         }
                                         color={
-                                            !isPublic ? 'secondary' : 'default'
+                                            !forum.isPublic
+                                                ? 'secondary'
+                                                : 'default'
                                         }
                                     >
                                         Private

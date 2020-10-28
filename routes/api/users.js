@@ -4,17 +4,16 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const { User } = require(rootPath + '/models/User');
-const validateLoginInput = require(rootPath + '/utils/validation/login');
-const validateSignupInput = require(rootPath + '/utils/validation/signup');
-const emailOrUsernameExists = require(rootPath + '/models/validation/checkDb');
+const validateLoginInput = require(rootPath + '/utils/auth-validation/login');
+const validateSignupInput = require(rootPath + '/utils/auth-validation/signup');
+const emailOrUsernameExists = require(rootPath +
+    '/models/auth-validation/checkDb');
 
 const router = express.Router();
 
 router.post('/api/users/signup', (req, res, next) => {
-    // Retrieve Input
+    // Variablize and Validate Input
     const input = req.body;
-
-    // Validate Input
     const { errors, isValid } = validateSignupInput(input);
 
     // Check Validation - Invalid Input
@@ -58,18 +57,16 @@ router.post('/api/users/signup', (req, res, next) => {
 });
 
 router.post('/api/users/login', (req, res, next) => {
-    // Retrieve Input
+    // Variablize and Validate Input
     const input = req.body;
-
-    // Validate Input
     const { errors, isValid } = validateLoginInput(input);
 
-    // Check Validation Results
+    // Check Validation - Invalid Input
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
-    // Check If User Exists
+    // Valid Input - Check If User Exists
     const username = input.username;
     const password = input.password;
 

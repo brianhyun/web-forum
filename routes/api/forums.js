@@ -2,17 +2,25 @@ const express = require('express');
 const rootPath = require('app-root-path');
 
 const Forum = require(rootPath + '/models/Forum');
+const validateJoinInput = require(rootPath + '/utils/forum-validation/join');
+const validateCreateInput = require(rootPath +
+    '/utils/forum-validation/create');
 
 const router = express.Router();
 
 router.post('/api/forums/join', (req, res, next) => {
-    // Retrieve Input
+    // Variablize and Validate Input
     const input = req.body;
+    const { errors, isValid } = validateJoinInput(input);
 
-    // Expand Inputs
+    // Check Validation - Invalid Input
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    // Valid Input - Check Database for Forum
     const forumName = input.name;
 
-    // Check Database for Forum
     Forum.findOne({ name: forumName })
         .then((forum) => {
             if (forum) {
@@ -28,12 +36,19 @@ router.post('/api/forums/join', (req, res, next) => {
 });
 
 router.post('/api/forums/create', (req, res, next) => {
-    // Retrieve and Expand Inputs
+    // Variablize and Validate Input
     const input = req.body;
+    const { errors, isValid } = validateCreateInput(input);
+
+    // Check Validation - Invalid Input
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
+
+    // Valid Input - Check Database for Forum
     const forumName = input.name;
     const forumIsPublic = input.public;
 
-    // Check Database for Forum
     Forum.findOne({ name: forumName })
         .then((forum) => {
             if (forum) {

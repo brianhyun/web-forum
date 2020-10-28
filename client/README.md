@@ -1,7 +1,7 @@
 # Issues
 
 -   [x] Error Messages for Invalid Inputs
--   [x] Error Message from Forms Bleed Into One Another
+-   [ ] Reset Error Messages After Form Submit (Prevent Error Message Bleeding Between Forms)
 
 # Learned
 
