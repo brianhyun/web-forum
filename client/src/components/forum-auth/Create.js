@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -63,7 +63,7 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-function Join(props) {
+function Create(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
@@ -104,6 +104,7 @@ function Join(props) {
         dispatch(createForum(forumData, props.history));
     }
 
+    // Change Privacy Status Depending on Button Clicked
     function changePrivacyStatus(event) {
         let isPublic = null;
         if (event.currentTarget.value === 'true') {
@@ -116,10 +117,12 @@ function Join(props) {
             ...forum,
             isPublic: isPublic,
         });
-
-        // Reset Form Errors
-        dispatch(resetFormErrors());
     }
+
+    // Reset Form Errors on Component Mount
+    useEffect(() => {
+        dispatch(resetFormErrors());
+    }, []);
 
     return (
         <Box component="main" className={classes.root}>
@@ -244,4 +247,4 @@ function Join(props) {
     );
 }
 
-export default Join;
+export default Create;

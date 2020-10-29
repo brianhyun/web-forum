@@ -1,9 +1,15 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectFormErrors } from '../../redux/slices/errorsSlice';
+import { resetFormErrors } from '../../redux/slices/errorsSlice';
+import { joinForum } from '../../redux/slices/forumAuthSlice';
+import { resetPrivacyStatus } from '../../redux/slices/forumAuthSlice';
+import { selectPasswordExists } from '../../redux/slices/forumAuthSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -47,12 +53,14 @@ const linkStyle = {
     textDecoration: 'none',
 };
 
-function Join() {
+function Join(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
     // Redux Handles
     const dispatch = useDispatch();
+    const passwordExists = useSelector(selectPasswordExists);
+    const formErrors = useSelector(selectFormErrors);
 
     // React Handles
     const [forum, setForum] = useState({
@@ -73,14 +81,19 @@ function Join() {
         event.preventDefault();
 
         // Create Forum Object
-        const forumObj = {
+        const forumData = {
             name: forum.name,
-            password: forum.password,
         };
 
-        // Dispatch Login Forum Action
-        dispatch();
+        // Dispatch Join Forum Action
+        dispatch(joinForum(forumData, props.history));
     }
+
+    // Reset Form Errors and 'passwordExists' State on Component Mount
+    useEffect(() => {
+        dispatch(resetFormErrors());
+        dispatch(resetPrivacyStatus());
+    }, []);
 
     return (
         <Box component="main" className={classes.root}>
@@ -107,19 +120,31 @@ function Join() {
                                 autoFocus
                                 onChange={handleChange}
                                 value={forum.name}
+                                error={formErrors.name ? true : false}
+                                helperText={
+                                    formErrors.name ? formErrors.name : null
+                                }
                             />
-                            <TextField
-                                variant="outlined"
-                                name="password"
-                                required
-                                fullWidth
-                                label="Password"
-                                id="password"
-                                type="password"
-                                margin="normal"
-                                onChange={handleChange}
-                                value={forum.password}
-                            />
+                            {passwordExists && (
+                                <TextField
+                                    variant="outlined"
+                                    name="password"
+                                    required
+                                    fullWidth
+                                    label="Password"
+                                    id="password"
+                                    type="password"
+                                    margin="normal"
+                                    onChange={handleChange}
+                                    value={forum.password}
+                                    error={formErrors.password ? true : false}
+                                    helperText={
+                                        formErrors.password
+                                            ? formErrors.password
+                                            : null
+                                    }
+                                />
+                            )}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -127,7 +152,7 @@ function Join() {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign Up
+                                Join
                             </Button>
                             <Grid container justify="center">
                                 <Grid item>

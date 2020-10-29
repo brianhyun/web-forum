@@ -13,20 +13,21 @@ router.post('/api/forums/join', (req, res, next) => {
     const input = req.body;
     const { errors, isValid } = validateJoinInput(input);
 
-    // Check Validation - Invalid Input
     if (!isValid) {
         return res.status(400).json(errors);
     }
 
-    // Valid Input - Check Database for Forum
+    // Check DB for Forum Privacy Status
     const forumName = input.name;
 
     Forum.findOne({ name: forumName })
         .then((forum) => {
             if (forum) {
-                // Check User-Submitted Password to Stored Password
+                // Forum Found - Send Privacy Status Back to Forum Auth Slice
+                const isPublic = forum.public;
+                return res.send(isPublic);
             } else {
-                // Forum Doesn't Exist
+                // Forum Not Found
                 return res.status(400).json({
                     forum: 'A forum with this name cannot be found.',
                 });
@@ -47,7 +48,7 @@ router.post('/api/forums/create', (req, res, next) => {
 
     // Valid Input - Check Database for Forum
     const forumName = input.name;
-    const forumIsPublic = input.public;
+    const forumIsPublic = input.isPublic;
 
     Forum.findOne({ name: forumName })
         .then((forum) => {

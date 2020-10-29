@@ -5,17 +5,11 @@ function validateJoinInput(input) {
     let errors = {};
 
     // Convert empty fields to an empty string so we can use validator functions
-    input.username = !isEmpty(input.username) ? input.username : '';
-    input.password = !isEmpty(input.password) ? input.password : '';
+    input.name = !isEmpty(input.name) ? input.name : '';
 
-    // Username Checks
-    if (validator.isEmpty(input.username)) {
-        errors.username = 'Username field is required';
-    }
-
-    // Password Checks
-    if (validator.isEmpty(input.password)) {
-        errors.password = 'Password field is required';
+    // Name Checks
+    if (validator.isEmpty(input.name)) {
+        errors.name = 'Name field is required';
     }
 
     return {

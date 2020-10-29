@@ -2,6 +2,7 @@
 
 -   [x] Error Messages for Invalid Inputs
 -   [ ] Reset Error Messages After Form Submit (Prevent Error Message Bleeding Between Forms)
+-   [ ] Encrypt Private Password Before Saving to DB
 
 # Learned
 
