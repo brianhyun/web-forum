@@ -23,20 +23,35 @@ router.post('/api/forums/join', (req, res, next) => {
     Forum.findOne({ name: forumName })
         .then((forum) => {
             if (forum) {
+                // Forum Found
+
+                // Create Payload with Forum-Specific Information
                 const data = {
                     forumId: forum._id,
                 };
 
-                // Forum Found
                 if (input.password) {
-                    // If Password Field Exists: Check that Submitted Password Matches DB Password
+                    /* 
+						If Password Field Exists: Check that Submitted Password Matches DB Password
+
+						Create a new field in payload object specifying that user has been authenticated. 
+					*/
                     if (input.password === forum.password) {
                         data.userIsAuthenticated = true;
 
                         return res.send(data);
+                    } else {
+                        return res.status(400).json({
+                            password: 'Incorrect password',
+                        });
                     }
                 } else {
-                    // If Password Field Doesn't Exist: Send Privacy Status Back to Forum Auth Slice
+                    /*
+						If Password Field Doesn't Exist: Send Privacy Status Back to 'forumAuthSlice.js'
+
+						'forumAuthSlice.js' will determine whether to send the user to the forum home 
+						page (if public forum) or reveal the password field (if private forum). 
+					*/
                     data.isPublic = forum.public;
 
                     return res.send(data);
