@@ -85,6 +85,11 @@ function Join(props) {
             name: forum.name,
         };
 
+        // If Password Exists, Create Password Field
+        if (passwordExists) {
+            forumData.password = forum.password;
+        }
+
         // Dispatch Join Forum Action
         dispatch(joinForum(forumData, props.history));
     }

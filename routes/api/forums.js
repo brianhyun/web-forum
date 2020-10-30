@@ -23,9 +23,24 @@ router.post('/api/forums/join', (req, res, next) => {
     Forum.findOne({ name: forumName })
         .then((forum) => {
             if (forum) {
-                // Forum Found - Send Privacy Status Back to Forum Auth Slice
-                const isPublic = forum.public;
-                return res.send(isPublic);
+                const data = {
+                    forumId: forum._id,
+                };
+
+                // Forum Found
+                if (input.password) {
+                    // If Password Field Exists: Check that Submitted Password Matches DB Password
+                    if (input.password === forum.password) {
+                        data.userIsAuthenticated = true;
+
+                        return res.send(data);
+                    }
+                } else {
+                    // If Password Field Doesn't Exist: Send Privacy Status Back to Forum Auth Slice
+                    data.isPublic = forum.public;
+
+                    return res.send(data);
+                }
             } else {
                 // Forum Not Found
                 return res.status(400).json({

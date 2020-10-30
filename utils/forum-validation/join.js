@@ -12,6 +12,17 @@ function validateJoinInput(input) {
         errors.name = 'Name field is required';
     }
 
+    // If Password Field Exists
+    if (input.password) {
+        // Convert empty fields to an empty string so we can use validator functions
+        input.password = !isEmpty(input.password) ? input.password : '';
+
+        // Password Checks
+        if (validator.isEmpty(input.password)) {
+            errors.password = 'Password field is required';
+        }
+    }
+
     return {
         errors,
         isValid: isEmpty(errors),

@@ -46,7 +46,8 @@ export function joinForum(forumData, history) {
         axios
             .post('/api/forums/join', forumData)
             .then(function (response) {
-                const isPublic = response.data;
+                const isPublic = response.data.isPublic;
+                const userIsAuthenticated = response.data.userIsAuthenticated;
 
                 if (isPublic) {
                     // Public Forum - Set Password State to False
@@ -55,14 +56,20 @@ export function joinForum(forumData, history) {
                     // Redirect to Forum Home Page
                     history.push('/create');
                 } else {
-                    // Private Forum - Set Password State to True
-                    dispatch(setPrivate());
-
                     /*
+						Private Forum - Set Password State to True
+
 						There's no need to redirect to the form page.
 						As long as the store is updated, the useSelector method 
 						in the join page will immediately tell the UI to update appropriately. 
 					*/
+                    if (userIsAuthenticated) {
+                        // User Submitted Password for Private Forum
+                        history.push('/create');
+                    } else {
+                        // User Submitted Name for Private Forum
+                        dispatch(setPrivate());
+                    }
                 }
             })
             .catch(function (error) {
