@@ -30,8 +30,10 @@ router.post('/api/forums/join', (req, res, next) => {
 
                 if (input.password) {
                     /* 
-						The input has a password field indicating that the user has followed the check-privacy-status flow and
-						now needs to provide a password to enter the private forum. 
+						The input has a password field indicating that:
+							(1) the user has submitted a private forum name and 
+							(2) the UI has revealed the password field for submission into the private forum and 
+							(3) the user is now submitting a password to enter the private forum. 
 						
 						(1) Check that the submitted password matches the password stored in the database. 
 						(2) Create a new field in the payload object specifying that user has been authenticated. 
@@ -47,7 +49,7 @@ router.post('/api/forums/join', (req, res, next) => {
                     }
                 } else {
                     /*
-						The input doesn't have a password field indicating that we have to check the forum for its privacy status. 
+						The input doesn't have a password field indicating that the user has submitted a name for a forum they wish to enter. 
 						
 						We'll check for the forum's privacy status and send that information back to 
 						'forumAuthSlice.js', which will determine whether to send the user to the forum home 
