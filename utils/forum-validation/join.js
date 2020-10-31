@@ -4,7 +4,7 @@ const isEmpty = require('is-empty');
 function validateJoinInput(input) {
     let errors = {};
 
-    // Convert empty fields to an empty string so we can use validator functions
+    // Convert empty fields to an empty string so we can use validator functions.
     input.name = !isEmpty(input.name) ? input.name : '';
 
     // Name Checks
@@ -12,9 +12,9 @@ function validateJoinInput(input) {
         errors.name = 'Name field is required';
     }
 
-    // If Password Field Exists
-    if (input.password) {
-        // Convert empty fields to an empty string so we can use validator functions
+    // If a password field exists, then validate the password.
+    if (input.password !== undefined) {
+        // Convert empty fields to an empty string so we can use validator functions.
         input.password = !isEmpty(input.password) ? input.password : '';
 
         // Password Checks
