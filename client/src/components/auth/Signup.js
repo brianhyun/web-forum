@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -69,7 +69,6 @@ function Signup(props) {
     });
 
     function handleChange(event) {
-        // Update User Object
         setUser({
             ...user,
             [event.target.id]: event.target.value,
@@ -77,10 +76,8 @@ function Signup(props) {
     }
 
     function handleSubmit(event) {
-        // Prevent Default Form Behavior
         event.preventDefault();
 
-        // Create New User Object
         const newUser = {
             name: user.name,
             username: user.username,
@@ -92,10 +89,10 @@ function Signup(props) {
         dispatch(signupUser(newUser, props.history));
     }
 
-    function handleClick() {
-        // Reset Form Errors When User Visits Another Page
+    // Reset Form Errors on Component Mount to Prevent Error Message Bleeding
+    useEffect(() => {
         dispatch(resetFormErrors());
-    }
+    }, []);
 
     return (
         <Box component="main" className={classes.root}>
@@ -192,7 +189,6 @@ function Signup(props) {
                                         <Typography
                                             variant="body2"
                                             color="primary"
-                                            onClick={handleClick}
                                         >
                                             Already have an account? Log in
                                         </Typography>

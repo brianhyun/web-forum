@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -74,23 +74,20 @@ function Login(props) {
     }
 
     function handleSubmit(event) {
-        // Prevent Default Form Behavior
         event.preventDefault();
 
-        // Create User Object
         const userObj = {
             username: user.username,
             password: user.password,
         };
 
-        // Dispatch Login User Action
         dispatch(loginUser(userObj, props.history));
     }
 
-    function handleClick() {
-        // Reset Form Errors When User Visits Another Page
+    // Reset Form Errors on Component Mount to Prevent Error Message Bleeding
+    useEffect(() => {
         dispatch(resetFormErrors());
-    }
+    }, []);
 
     return (
         <Box component="main" className={classes.root}>
@@ -157,7 +154,6 @@ function Login(props) {
                                         <Typography
                                             variant="body2"
                                             color="primary"
-                                            onClick={handleClick}
                                         >
                                             Forgot password?
                                         </Typography>
@@ -168,7 +164,6 @@ function Login(props) {
                                         <Typography
                                             variant="body2"
                                             color="primary"
-                                            onClick={handleClick}
                                         >
                                             Don't have an account? Sign Up
                                         </Typography>

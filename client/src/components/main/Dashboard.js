@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Dashboard() {
-    // Material UI Styles
+    // Use Material UI Styles
     const classes = useStyles();
 
     // Redux Handles

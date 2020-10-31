@@ -87,20 +87,18 @@ function Create(props) {
     }
 
     function handleSubmit(event) {
-        // Prevent Default Form Behavior
         event.preventDefault();
 
-        // Create Forum Object
         const forumData = {
             name: forum.name,
             isPublic: forum.isPublic,
         };
 
+        // If Forum is Private, Pass Password into Payload
         if (!forum.isPublic) {
             forumData.password = forum.password;
         }
 
-        // Dispatch Login Forum Action
         dispatch(createForum(forumData, props.history));
     }
 
@@ -119,7 +117,7 @@ function Create(props) {
         });
     }
 
-    // Reset Form Errors on Component Mount
+    // Reset Form Errors on Component Mount to Prevent Error Message Bleeding
     useEffect(() => {
         dispatch(resetFormErrors());
     }, []);

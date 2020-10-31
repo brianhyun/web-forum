@@ -77,24 +77,21 @@ function Join(props) {
     }
 
     function handleSubmit(event) {
-        // Prevent Default Form Behavior
         event.preventDefault();
 
-        // Create Forum Object
         const forumData = {
             name: forum.name,
         };
 
-        // If Password Exists, Create Password Field
+        // Check Store for Forum's Privacy Status - If Private, Pass Password into Payload
         if (passwordExists) {
             forumData.password = forum.password;
         }
 
-        // Dispatch Join Forum Action
         dispatch(joinForum(forumData, props.history));
     }
 
-    // Reset Form Errors and 'passwordExists' State on Component Mount
+    // Reset Form Errors and 'passwordExists' State on Component Mount to Prevent Error Message Bleeding
     useEffect(() => {
         dispatch(resetFormErrors());
         dispatch(resetPrivacyStatus());
