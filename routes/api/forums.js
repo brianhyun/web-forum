@@ -1,5 +1,6 @@
 const express = require('express');
 const rootPath = require('app-root-path');
+const bcrypt = require('bcrypt');
 
 const Forum = require(rootPath + '/models/Forum');
 const validateJoinInput = require(rootPath + '/utils/forum-validation/join');
@@ -98,15 +99,37 @@ router.post('/api/forums/create', (req, res, next) => {
                 });
 
                 // Forum is Private
-                if (forumIsPublic === false) {
-                    newForum.password = input.password;
-                }
+                if (!forumIsPublic) {
+                    // Hash Password
+                    const saltRounds = 10;
 
-                // Save New Forum to Database
-                newForum
-                    .save()
-                    .then((forum) => res.json(forum))
-                    .catch((err) => console.error(err));
+                    // This is an asynchronous action.
+                    // Therefore, it will store this function in the event loop and move on to the next statement.
+                    // The password, therefore, is never saved into the database unless the newForum.save() method is called within the bcrypt method.
+                    bcrypt.hash(input.password, saltRounds, function (
+                        err,
+                        hash
+                    ) {
+                        if (err) {
+                            console.error(err);
+                        }
+
+                        // Add Password to Forum Document
+                        newForum.password = hash;
+
+                        // Save New Private Forum (WithPassword) into Database
+                        newForum
+                            .save()
+                            .then((forum) => res.json(forum))
+                            .catch((err) => console.error(err));
+                    });
+                } else {
+                    // Save New Public Forum (Without Password) into Database
+                    newForum
+                        .save()
+                        .then((forum) => res.json(forum))
+                        .catch((err) => console.error(err));
+                }
             }
         })
         .catch((err) => console.error(err));
