@@ -39,15 +39,21 @@ router.post('/api/forums/join', (req, res, next) => {
 						(1) Check that the submitted password matches the password stored in the database. 
 						(2) Create a new field in the payload object specifying that user has been authenticated. 
 					*/
-                    if (input.password === forum.password) {
-                        data.userIsAuthenticated = true;
+                    bcrypt
+                        .compare(input.password, forum.password)
+                        .then((isMatch) => {
+                            // Correct Password Submitted
+                            if (isMatch) {
+                                data.userIsAuthenticated = true;
 
-                        return res.send(data);
-                    } else {
-                        return res.status(400).json({
-                            password: 'Incorrect password',
+                                return res.send(data);
+                            } else {
+                                // Wrong Password Submitted
+                                return res.status(400).json({
+                                    password: 'Incorrect password',
+                                });
+                            }
                         });
-                    }
                 } else {
                     /*
 						The input doesn't have a password field indicating that the user has submitted a name for a forum they wish to enter. 
