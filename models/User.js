@@ -18,6 +18,7 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    forums: [{ type: Schema.Types.ObjectId, ref: 'Forum' }],
     date: {
         type: Date,
         default: Date.now,

@@ -90,4 +90,8 @@ export function selectAuthStatus(state) {
     return state.auth.isAuthenticated;
 }
 
+export function selectUserId(state) {
+    return state.auth.user.id;
+}
+
 export default slice.reducer;

@@ -2,6 +2,7 @@ const express = require('express');
 const rootPath = require('app-root-path');
 const bcrypt = require('bcrypt');
 
+const { User } = require(rootPath + '/models/User');
 const Forum = require(rootPath + '/models/Forum');
 const validateJoinInput = require(rootPath + '/utils/forum-validation/join');
 const validateCreateInput = require(rootPath +
@@ -89,56 +90,75 @@ router.post('/api/forums/create', (req, res, next) => {
     // Valid Input - Check Database for Forum
     const forumName = input.name;
     const forumIsPublic = input.isPublic;
+    const userId = input.userId;
 
     Forum.findOne({ name: forumName })
         .then((forum) => {
+            // Forum Already Exists
             if (forum) {
-                // Forum Already Exists
                 return res.status(400).json({
-                    forum: 'This name is already taken.',
+                    name: 'This name is already taken.',
                 });
-            } else {
-                // Forum Doesn't Exist: Create New Forum
-                const newForum = new Forum({
-                    name: forumName,
-                    public: forumIsPublic,
-                });
+            }
 
-                // Forum is Private
-                if (!forumIsPublic) {
-                    // Hash Password
-                    const saltRounds = 10;
+            // Forum Doesn't Exist: Create New Forum
+            const newForum = new Forum({
+                name: forumName,
+                public: forumIsPublic,
+            });
 
-                    // This is an asynchronous action.
-                    // Therefore, it will store this function in the event loop and move on to the next statement.
-                    // The password, therefore, is never saved into the database unless the newForum.save() method is called within the bcrypt method.
-                    bcrypt.hash(input.password, saltRounds, function (
-                        err,
-                        hash
-                    ) {
-                        if (err) {
-                            console.error(err);
-                        }
+            addForumIdToUserDocument(User, userId, newForum)
+                .then(() => {
+                    // Forum is Private
+                    if (!forumIsPublic) {
+                        // Hash Password
+                        const saltRounds = 10;
 
-                        // Add Password to Forum Document
-                        newForum.password = hash;
+                        // This is an asynchronous action.
+                        // Therefore, it will store this function in the event loop and move on to the next statement.
+                        // The password, therefore, is never saved into the database unless the newForum.save() method is called within the bcrypt method.
+                        bcrypt.hash(input.password, saltRounds, function (
+                            err,
+                            hash
+                        ) {
+                            if (err) {
+                                console.error(err);
+                            }
 
-                        // Save New Private Forum (WithPassword) into Database
+                            // Add Password to Forum Document
+                            newForum.password = hash;
+
+                            // Save New Private Forum (WithPassword) into Database
+                            newForum
+                                .save()
+                                .then((forum) => res.json(forum))
+                                .catch((err) => console.error(err));
+                        });
+                    } else {
+                        // Save New Public Forum (Without Password) into Database
                         newForum
                             .save()
                             .then((forum) => res.json(forum))
                             .catch((err) => console.error(err));
-                    });
-                } else {
-                    // Save New Public Forum (Without Password) into Database
-                    newForum
-                        .save()
-                        .then((forum) => res.json(forum))
-                        .catch((err) => console.error(err));
-                }
-            }
+                    }
+                })
+                .catch((err) => console.error(err));
         })
         .catch((err) => console.error(err));
 });
+
+async function addForumIdToUserDocument(User, userId, newForum) {
+    // Add New Forum's ID to the Forum ID Array in the User's Document
+    await User.findById(userId)
+        .then((user) => {
+            if (user) {
+                user.forums.push(newForum._id);
+
+                // Save Updated User Document
+                user.save().catch((err) => console.error(err));
+            }
+        })
+        .catch((err) => console.error(err));
+}
 
 module.exports = router;

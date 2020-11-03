@@ -71,6 +71,11 @@ function App() {
                         />
                         <PrivateRoute exact path="/join" component={Join} />
                         <PrivateRoute exact path="/create" component={Create} />
+                        <PrivateRoute
+                            exact
+                            path="/forum/:id"
+                            component={Create}
+                        />
                         <Route path="*" component={PageNotFound} />
                     </Switch>
                 </div>
