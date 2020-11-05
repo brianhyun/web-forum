@@ -25,7 +25,6 @@ router.post('/api/forums/join', (req, res, next) => {
 
     Forum.findOne({ name: forumName })
         .then((forum) => {
-            // Forum Found
             if (forum) {
                 // Create Payload with Forum-Specific Information
                 const data = {
@@ -40,12 +39,6 @@ router.post('/api/forums/join', (req, res, next) => {
                                 data.userIsAuthenticated = true;
                                 data.isPublic = forum.public;
 
-                                console.log('passwords match');
-                                console.log(
-                                    'forum privacy status:',
-                                    data.isPublic
-                                );
-
                                 return res.send(data);
                             } else {
                                 return res.status(400).json({
@@ -58,12 +51,11 @@ router.post('/api/forums/join', (req, res, next) => {
 
                     return res.send(data);
                 }
+            } else {
+                return res.status(400).json({
+                    forum: 'A forum with this name cannot be found.',
+                });
             }
-
-            // Forum Not Found
-            return res.status(400).json({
-                forum: 'A forum with this name cannot be found.',
-            });
         })
         .catch((err) => console.error(err));
 });
@@ -85,56 +77,54 @@ router.post('/api/forums/create', (req, res, next) => {
 
     Forum.findOne({ name: forumName })
         .then((forum) => {
-            // Forum Already Exists
             if (forum) {
                 return res.status(400).json({
                     name: 'This name is already taken.',
                 });
+            } else {
+                const newForum = new Forum({
+                    name: forumName,
+                    public: forumIsPublic,
+                });
+
+                User.findById(userId)
+                    .then((user) => {
+                        if (user) {
+                            // Add New Forum's ID to Forums Array in User's Document
+                            user.forums.push(newForum._id);
+
+                            user.save().catch((err) => console.error(err));
+                        }
+                    })
+                    .then(() => {
+                        if (!forumIsPublic) {
+                            const forumPassword = input.password;
+                            const saltRounds = 10;
+
+                            bcrypt.hash(forumPassword, saltRounds, function (
+                                err,
+                                hash
+                            ) {
+                                if (err) {
+                                    console.error(err);
+                                }
+
+                                newForum.password = hash;
+
+                                return newForum
+                                    .save()
+                                    .then((forum) => res.json(forum))
+                                    .catch((err) => console.error(err));
+                            });
+                        }
+
+                        return newForum
+                            .save()
+                            .then((forum) => res.json(forum))
+                            .catch((err) => console.error(err));
+                    })
+                    .catch((err) => console.error(err));
             }
-
-            // Forum Doesn't Exist: Create New Forum
-            const newForum = new Forum({
-                name: forumName,
-                public: forumIsPublic,
-            });
-
-            User.findById(userId)
-                .then((user) => {
-                    if (user) {
-                        // Add New Forum's ID to Forums Array in User's Document
-                        user.forums.push(newForum._id);
-
-                        user.save().catch((err) => console.error(err));
-                    }
-                })
-                .then(() => {
-                    if (!forumIsPublic) {
-                        const forumPassword = input.password;
-                        const saltRounds = 10;
-
-                        bcrypt.hash(forumPassword, saltRounds, function (
-                            err,
-                            hash
-                        ) {
-                            if (err) {
-                                console.error(err);
-                            }
-
-                            newForum.password = hash;
-
-                            return newForum
-                                .save()
-                                .then((forum) => res.json(forum))
-                                .catch((err) => console.error(err));
-                        });
-                    }
-
-                    return newForum
-                        .save()
-                        .then((forum) => res.json(forum))
-                        .catch((err) => console.error(err));
-                })
-                .catch((err) => console.error(err));
         })
         .catch((err) => console.error(err));
 });
