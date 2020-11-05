@@ -73,7 +73,6 @@ router.post('/api/forums/create', (req, res, next) => {
     // Valid Input - Check Database for Forum
     const forumName = input.name;
     const forumIsPublic = input.isPublic;
-    const userId = input.userId;
 
     Forum.findOne({ name: forumName })
         .then((forum) => {
@@ -86,6 +85,8 @@ router.post('/api/forums/create', (req, res, next) => {
                     name: forumName,
                     public: forumIsPublic,
                 });
+
+                const userId = input.userId;
 
                 User.findById(userId)
                     .then((user) => {
@@ -116,12 +117,12 @@ router.post('/api/forums/create', (req, res, next) => {
                                     .then((forum) => res.json(forum))
                                     .catch((err) => console.error(err));
                             });
+                        } else {
+                            return newForum
+                                .save()
+                                .then((forum) => res.json(forum))
+                                .catch((err) => console.error(err));
                         }
-
-                        return newForum
-                            .save()
-                            .then((forum) => res.json(forum))
-                            .catch((err) => console.error(err));
                     })
                     .catch((err) => console.error(err));
             }
