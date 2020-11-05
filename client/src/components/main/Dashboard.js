@@ -1,5 +1,6 @@
 // Dependencies
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -60,6 +61,9 @@ function Dashboard() {
     function handleClick() {
         dispatch(logoutUser());
     }
+
+    // Load Forum-Specific Information on Component Mount
+    useEffect(() => {}, []);
 
     return (
         <Box className={classes.root}>

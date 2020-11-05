@@ -74,7 +74,7 @@ function App() {
                         <PrivateRoute
                             exact
                             path="/forum/:id"
-                            component={Create}
+                            component={Dashboard}
                         />
                         <Route path="*" component={PageNotFound} />
                     </Switch>

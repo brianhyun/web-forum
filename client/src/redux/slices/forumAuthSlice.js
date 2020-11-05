@@ -47,6 +47,7 @@ export function joinForum(forumData, history) {
             .post('/api/forums/join', forumData)
             .then(function (response) {
                 const isPublic = response.data.isPublic;
+                const forumId = response.data.forumId;
 
                 // This value will only be true when the user has submitted a matching password to a private forum.
                 const userIsAuthenticated = response.data.userIsAuthenticated;
@@ -61,7 +62,7 @@ export function joinForum(forumData, history) {
                     dispatch(setPublic());
 
                     // Redirect to Forum Home Page
-                    history.push('/create');
+                    history.push(`/forum/${forumId}`);
                 } else {
                     /*
 						The forum with the provided name is a private forum. 
@@ -75,8 +76,8 @@ export function joinForum(forumData, history) {
 						immediately tells the UI to update according to changes to the store. 
 					*/
                     if (userIsAuthenticated) {
-                        // User Submitted Password for Private Forum
-                        history.push('/create');
+                        // User Submitted Correct Password for Private Forum - Redirect to Forum Home Page
+                        history.push(`/forum/${forumId}`);
                     } else {
                         // User Submitted Name for Private Forum
                         dispatch(setPrivate());
