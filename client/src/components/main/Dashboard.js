@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/slices/authSlice';
+import { selectUserId } from '../../redux/slices/authSlice';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,14 +58,26 @@ function Dashboard() {
 
     // Redux Handles
     const dispatch = useDispatch();
+    const userId = useSelector(selectUserId);
 
     // React Functions
     function handleClick() {
         dispatch(logoutUser());
     }
 
-    // Load Forum-Specific Information on Component Mount
-    useEffect(() => {}, []);
+    // Load All Forums for a Specific User
+    useEffect(() => {
+        const data = {
+            userId: userId,
+        };
+
+        axios
+            .post('/api/forums/getAllForums', data)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((err) => console.error(err));
+    }, []);
 
     return (
         <Box className={classes.root}>

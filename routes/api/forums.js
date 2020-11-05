@@ -10,6 +10,7 @@ const validateCreateInput = require(rootPath +
 
 const router = express.Router();
 
+// Join Forum
 router.post('/api/forums/join', (req, res, next) => {
     // Variablize and Validate Input
     const input = req.body;
@@ -60,6 +61,7 @@ router.post('/api/forums/join', (req, res, next) => {
         .catch((err) => console.error(err));
 });
 
+// Create Forum
 router.post('/api/forums/create', (req, res, next) => {
     // Variablize and Validate Input
     const input = req.body;
@@ -128,6 +130,49 @@ router.post('/api/forums/create', (req, res, next) => {
             }
         })
         .catch((err) => console.error(err));
+});
+
+// Get Forums of a Single User
+router.post('/api/forums/getAllForums', (req, res, next) => {
+    const userId = req.body.userId;
+
+    User.findById(userId)
+        .then((user) => {
+            if (user) {
+                const forums = user.forums;
+                const forumsInfo = [];
+
+                const promises = [];
+
+                for (let i = 0; i < forums.length; i++) {
+                    forumsInfo[i] = {
+                        id: forums[i].id,
+                    };
+
+                    promises.push(
+                        Forum.findById(forums[i])
+                            .then((forum) => {
+                                if (forum) {
+                                    forumsInfo[i].name = forum.name;
+                                }
+                            })
+                            .catch((err) => console.error(err))
+                    );
+                }
+
+                Promise.all(promises)
+                    .then(() => {
+                        res.send(forumsInfo);
+                    })
+                    .catch((err) => console.log(err));
+            }
+        })
+        .catch((err) => console.error(err));
+});
+
+// Get Info for Single Forum
+router.post('/api/forums/getForumInfo', (req, res, next) => {
+    const forumId = req.body.forumId;
 });
 
 module.exports = router;
