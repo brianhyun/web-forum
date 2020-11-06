@@ -133,27 +133,30 @@ router.post('/api/forums/create', (req, res, next) => {
 });
 
 // Get Forums of a Single User
-router.post('/api/forums/getAllForums', (req, res, next) => {
+router.post('/api/forums/getUsersForums', (req, res, next) => {
+    // Variablize Input
     const userId = req.body.userId;
 
     User.findById(userId)
         .then((user) => {
             if (user) {
-                const forums = user.forums;
+                // 'user.forums' is an array of forum ids.
+                const usersForums = user.forums;
                 const forumsInfo = [];
 
                 const promises = [];
 
-                for (let i = 0; i < forums.length; i++) {
-                    forumsInfo[i] = {
-                        id: forums[i].id,
-                    };
-
+                for (let i = 0; i < usersForums.length; i++) {
                     promises.push(
-                        Forum.findById(forums[i])
+                        Forum.findById(usersForums[i])
                             .then((forum) => {
                                 if (forum) {
-                                    forumsInfo[i].name = forum.name;
+                                    let forumInfo = {
+                                        id: forum._id,
+                                        name: forum.name,
+                                    };
+
+                                    forumsInfo.push(forumInfo);
                                 }
                             })
                             .catch((err) => console.error(err))

@@ -1,13 +1,16 @@
 // Dependencies
 import React, { useEffect } from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+
 import { logoutUser } from '../../redux/slices/authSlice';
 import { selectUserId } from '../../redux/slices/authSlice';
+
+import { getUsersForums } from '../../redux/slices/forumSlice';
+import { selectUsersForums } from '../../redux/slices/forumSlice';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -59,6 +62,7 @@ function Dashboard() {
     // Redux Handles
     const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
+    const usersForums = useSelector(selectUsersForums);
 
     // React Functions
     function handleClick() {
@@ -67,21 +71,18 @@ function Dashboard() {
 
     // Load All Forums for a Specific User
     useEffect(() => {
-        const data = {
+        const userData = {
             userId: userId,
         };
 
-        axios
-            .post('/api/forums/getAllForums', data)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((err) => console.error(err));
+        dispatch(getUsersForums(userData));
     }, []);
 
     return (
         <Box className={classes.root}>
             <CssBaseline />
+
+            {/* Navigation Menu */}
             <Drawer
                 className={classes.drawer}
                 variant="permanent"
@@ -91,15 +92,27 @@ function Dashboard() {
                 anchor="left"
             >
                 <List>
-                    <ListItem className={classes.listItem}>
-                        <IconButton
-                            disableRipple
-                            disableFocusRipple
-                            size="small"
-                        >
-                            <Avatar alt="forum profile picture" src="" />
-                        </IconButton>
-                    </ListItem>
+                    {/* All Forums */}
+                    {usersForums.map((forum) => {
+                        const forumLink = `/forum/${forum.id}`;
+                        const forumName = forum.name;
+
+                        return (
+                            <ListItem className={classes.listItem}>
+                                <IconButton
+                                    disableRipple
+                                    disableFocusRipple
+                                    size="small"
+                                >
+                                    <Link to={forumLink}>
+                                        <Avatar alt={forumName} src="" />
+                                    </Link>
+                                </IconButton>
+                            </ListItem>
+                        );
+                    })}
+
+                    {/* Join/Create List Item */}
                     <ListItem className={classes.listItem}>
                         <IconButton
                             disableRipple
@@ -116,6 +129,7 @@ function Dashboard() {
                 </List>
             </Drawer>
 
+            {/* Main Content Section */}
             <Box component="main" className={classes.content}>
                 <Paper className={classes.settingsPaper}>
                     <IconButton
