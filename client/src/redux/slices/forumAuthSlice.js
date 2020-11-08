@@ -6,8 +6,10 @@ import { useSelector } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { setFormErrors } from './errorsSlice';
-import { getUsersForums } from './forumSlice';
 import { selectUserId } from './authSlice';
+
+// Utilities
+import setUsersForumsInLocalStorage from '../../utils/setUsersForums';
 
 export const slice = createSlice({
     name: 'forumAuth',
@@ -35,18 +37,20 @@ export function createForum(forumData, history) {
     return function thunk(dispatch, getState) {
         axios
             .post('/api/forums/create', forumData)
-            .then(function (response) {
-                // Update User's Forums in Redux Store
-                const userId = useSelector(selectUserId);
+            .then(() => {
+                // Update User's Forums in Local Storage
+                const userData = {
+                    userId: useSelector(selectUserId),
+                };
 
-                dispatch(getUsersForums(userId));
-
-                // Redirect to Join Forum Page
-                history.push('/join');
+                setUsersForumsInLocalStorage(userData)
+                    .then(() => {
+                        // Redirect User to Forum Join Page
+                        history.push('/join');
+                    })
+                    .catch((err) => console.error(err));
             })
-            .catch(function (error) {
-                dispatch(setFormErrors(error.response.data));
-            });
+            .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
 }
 
@@ -55,7 +59,7 @@ export function joinForum(forumData, history) {
     return function thunk(dispatch, getState) {
         axios
             .post('/api/forums/join', forumData)
-            .then(function (response) {
+            .then((response) => {
                 const isPublic = response.data.isPublic;
                 const forumId = response.data.forumId;
                 const userIsAuthenticated = response.data.userIsAuthenticated;
@@ -72,9 +76,7 @@ export function joinForum(forumData, history) {
                     }
                 }
             })
-            .catch(function (error) {
-                dispatch(setFormErrors(error.response.data));
-            });
+            .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
 }
 

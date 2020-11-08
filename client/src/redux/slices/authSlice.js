@@ -6,7 +6,9 @@ import setAuthToken from '../../utils/setAuthToken';
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
 import { setFormErrors } from './errorsSlice';
-import { getUsersForums } from './forumSlice';
+
+// Utilities
+import setUsersForumsInLocalStorage from '../../utils/setUsersForums';
 
 export const slice = createSlice({
     name: 'auth',
@@ -51,19 +53,20 @@ export function loginUser(userData, history) {
                 return response;
             })
             .then((response) => {
-                // Dispatch Action to Get User's Forums and Set to Local Storage
-                const data = {
+                // Set Users Forums in Local Storage
+                const userData = {
                     userId: response.data.userId,
                 };
 
-                dispatch(getUsersForums(data));
-
-                // Push to Dashboard
-                return history.push('/dashboard');
+                // This asynchronous operation isn't returning anything or directing the user to any particular location.
+                setUsersForumsInLocalStorage(userData)
+                    .then(() => {
+                        // Redirect User to Dashboard
+                        history.push('/dashboard');
+                    })
+                    .catch((err) => console.error(err));
             })
-            .catch((error) => {
-                dispatch(setFormErrors(error.response.data));
-            });
+            .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
 }
 

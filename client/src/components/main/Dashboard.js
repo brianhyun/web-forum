@@ -79,7 +79,7 @@ function Dashboard(props) {
 
         if (currentPath === '/dashboard') {
             // If user is on the dashboard page, then display contents of first forum.
-            const firstForumId = usersForums[0];
+            const firstForumId = usersForums[0].id;
 
             data.forumId = firstForumId;
 

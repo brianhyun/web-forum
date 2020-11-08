@@ -1,8 +1,7 @@
-# Current Issue
+# Todo
 
-After every refresh, the Redux store is wiped of its data.
-
-I'll have to save the data (I wish to persist) to localStorage and retrieve it on every reload and redux store update. Or, I can use a third-party library; however, most of the available packages (e.g. redux-persist) are not frequently maintained.
+-   [ ] If a user joins a public forum, then I have to add that forum id to the user's forum array.
+-   [ ] Remove usersForum array in localStorage on logout.
 
 # Issues History
 
@@ -11,6 +10,8 @@ I'll have to save the data (I wish to persist) to localStorage and retrieve it o
 -   [x] Encrypt Private Password Before Saving to DB
 -   [x] The User model has to have an array that stores the ids of all the forums of which the user is a member.
 -   [x] Access the User's ID from User's document when creating a new forum. Add the forum id to the user via the user's id.
+-   [x] After every refresh, the Redux store is wiped of its data. I'll have to save the data (I wish to persist) to localStorage and retrieve it on every reload and redux store update. Or, I can use a third-party library; however, most of the available packages (e.g. redux-persist) are not frequently maintained.
+-   [x] 'forumAuthSlice.js' in createForum() function: dispatch is causing error. (Resolution: I was sending data to my backend in the wrong format.)
 
 # Stuff I Learned
 

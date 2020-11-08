@@ -17,24 +17,7 @@ export const slice = createSlice({
 });
 
 // Export Actions
-export const { setUsersForums, setCurrentForum } = slice.actions;
-
-// Get Users Forums
-export function getUsersForums(userData) {
-    return function thunk(dispatch, getState) {
-        axios
-            .post('/api/forums/getUsersForums', userData)
-            .then((response) => {
-                const usersForums = response.data;
-
-                localStorage.setItem(
-                    'usersForums',
-                    JSON.stringify(usersForums)
-                );
-            })
-            .catch((err) => console.error(err));
-    };
-}
+export const { setCurrentForum } = slice.actions;
 
 // Get Info on Specific Forum
 export function getForumInfo(forumId) {

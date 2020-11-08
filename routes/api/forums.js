@@ -12,7 +12,6 @@ const router = express.Router();
 
 // Join Forum
 router.post('/api/forums/join', (req, res, next) => {
-    // Variablize and Validate Input
     const input = req.body;
     const { errors, isValid } = validateJoinInput(input);
 
@@ -63,7 +62,6 @@ router.post('/api/forums/join', (req, res, next) => {
 
 // Create Forum
 router.post('/api/forums/create', (req, res, next) => {
-    // Variablize and Validate Input
     const input = req.body;
     const { errors, isValid } = validateCreateInput(input);
 
@@ -134,7 +132,6 @@ router.post('/api/forums/create', (req, res, next) => {
 
 // Get Forums of a Single User
 router.post('/api/forums/getUsersForums', (req, res, next) => {
-    // Variablize Input
     const userId = req.body.userId;
 
     User.findById(userId)
@@ -143,7 +140,6 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
                 // 'user.forums' is an array of forum ids.
                 const usersForums = user.forums;
                 const forumsInfo = [];
-
                 const promises = [];
 
                 for (let i = 0; i < usersForums.length; i++) {
@@ -167,7 +163,7 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
                     .then(() => {
                         res.send(forumsInfo);
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => console.error(err));
             }
         })
         .catch((err) => console.error(err));
