@@ -7,10 +7,10 @@ import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { logoutUser } from '../../redux/slices/authSlice';
-import { selectUserId } from '../../redux/slices/authSlice';
 
-import { getUsersForums } from '../../redux/slices/forumSlice';
+import { getForumInfo } from '../../redux/slices/forumSlice';
 import { selectUsersForums } from '../../redux/slices/forumSlice';
+import { selectCurrentForum } from '../../redux/slices/forumSlice';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -55,28 +55,46 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Dashboard() {
+function Dashboard(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
     // Redux Handles
     const dispatch = useDispatch();
-    const userId = useSelector(selectUserId);
     const usersForums = useSelector(selectUsersForums);
+    const currentForum = useSelector(selectCurrentForum);
 
     // React Functions
     function handleClick() {
         dispatch(logoutUser());
     }
 
-    // Load All Forums for a Specific User
+    // Load Forum-Specific Information on Component Mount
     useEffect(() => {
-        const userData = {
-            userId: userId,
-        };
+        // Grab Forum-Specific Information for Main Content Portion
+        const currentPath = props.location.pathname;
 
-        dispatch(getUsersForums(userData));
-    }, []);
+        // Payload
+        const data = {};
+
+        if (currentPath === '/dashboard') {
+            // If user is on the dashboard page, then display contents of first forum.
+            const firstForumId = usersForums[0];
+
+            data.forumId = firstForumId;
+            console.log(data);
+
+            dispatch(getForumInfo(data));
+        } else {
+            // If user is on a forum-specific page, then display contents of forum.
+            const specificForumId = currentPath.split('/')[2];
+
+            data.forumId = specificForumId;
+            console.log(data);
+
+            dispatch(getForumInfo(data));
+        }
+    }, [usersForums]);
 
     return (
         <Box className={classes.root}>
@@ -98,7 +116,10 @@ function Dashboard() {
                         const forumName = forum.name;
 
                         return (
-                            <ListItem className={classes.listItem}>
+                            <ListItem
+                                key={forum.id}
+                                className={classes.listItem}
+                            >
                                 <IconButton
                                     disableRipple
                                     disableFocusRipple

@@ -176,6 +176,14 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
 // Get Info for Single Forum
 router.post('/api/forums/getForumInfo', (req, res, next) => {
     const forumId = req.body.forumId;
+
+    Forum.findById(forumId)
+        .then((forum) => {
+            if (forum) {
+                res.send(forum);
+            }
+        })
+        .catch((err) => console.error(err));
 });
 
 module.exports = router;

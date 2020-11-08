@@ -43,10 +43,8 @@ router.post('/api/users/signup', (req, res, next) => {
                     console.error(err);
                 }
 
-                // Add Password to User Document
                 newUser.password = hash;
 
-                // Save User to Database
                 newUser
                     .save()
                     .then((user) => res.json(user))
@@ -94,7 +92,12 @@ router.post('/api/users/login', (req, res, next) => {
                                 }
 
                                 // Send JWT to Client
-                                res.send(token);
+                                const data = {
+                                    token: token,
+                                    userId: user.id,
+                                };
+
+                                res.send(data);
                             }
                         );
                     } else {

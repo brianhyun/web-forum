@@ -6,6 +6,7 @@ import setAuthToken from '../../utils/setAuthToken';
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
 import { setFormErrors } from './errorsSlice';
+import { getUsersForums } from './forumSlice';
 
 export const slice = createSlice({
     name: 'auth',
@@ -35,7 +36,7 @@ export function loginUser(userData, history) {
             .post('/api/users/login', userData) // Returns a JSON Object with JWT
             .then(function (response) {
                 // Save JWT to localStorage
-                const token = response.data;
+                const token = response.data.token;
                 localStorage.setItem('jwtToken', token);
 
                 // Set token to Auth Header
@@ -46,6 +47,13 @@ export function loginUser(userData, history) {
 
                 // Set Current User
                 dispatch(setCurrentUser(decoded));
+
+                // Get All of User's Forums and Store in Redux Store
+                const data = {
+                    userId: response.data.userId,
+                };
+
+                dispatch(getUsersForums(data));
 
                 // Push to Dashboard
                 history.push('/dashboard');

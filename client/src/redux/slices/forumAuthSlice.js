@@ -2,8 +2,12 @@
 import axios from 'axios';
 
 // Redux
+import { useSelector } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
+
 import { setFormErrors } from './errorsSlice';
+import { getUsersForums } from './forumSlice';
+import { selectUserId } from './authSlice';
 
 export const slice = createSlice({
     name: 'forumAuth',
@@ -32,6 +36,12 @@ export function createForum(forumData, history) {
         axios
             .post('/api/forums/create', forumData)
             .then(function (response) {
+                // Update User's Forums in Redux Store
+                const userId = useSelector(selectUserId);
+
+                dispatch(getUsersForums(userId));
+
+                // Redirect to Join Forum Page
                 history.push('/join');
             })
             .catch(function (error) {
