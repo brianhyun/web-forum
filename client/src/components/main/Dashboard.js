@@ -9,7 +9,6 @@ import { useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/slices/authSlice';
 
 import { getForumInfo } from '../../redux/slices/forumSlice';
-import { selectUsersForums } from '../../redux/slices/forumSlice';
 import { selectCurrentForum } from '../../redux/slices/forumSlice';
 
 // Material UI Styles
@@ -61,7 +60,6 @@ function Dashboard(props) {
 
     // Redux Handles
     const dispatch = useDispatch();
-    const usersForums = useSelector(selectUsersForums);
     const currentForum = useSelector(selectCurrentForum);
 
     // React Functions
@@ -70,6 +68,8 @@ function Dashboard(props) {
     }
 
     // Load Forum-Specific Information on Component Mount
+    const usersForums = JSON.parse(localStorage.getItem('usersForums'));
+
     useEffect(() => {
         // Grab Forum-Specific Information for Main Content Portion
         const currentPath = props.location.pathname;
@@ -82,7 +82,6 @@ function Dashboard(props) {
             const firstForumId = usersForums[0];
 
             data.forumId = firstForumId;
-            console.log(data);
 
             dispatch(getForumInfo(data));
         } else {
@@ -90,11 +89,10 @@ function Dashboard(props) {
             const specificForumId = currentPath.split('/')[2];
 
             data.forumId = specificForumId;
-            console.log(data);
 
             dispatch(getForumInfo(data));
         }
-    }, [usersForums]);
+    }, []);
 
     return (
         <Box className={classes.root}>

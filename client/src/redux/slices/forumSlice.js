@@ -51,10 +51,6 @@ export function getForumInfo(forumId) {
 }
 
 // Selectors
-export function selectUsersForums(state) {
-    return state.forum.usersForums;
-}
-
 export function selectCurrentForum(state) {
     return state.forum.currentForum;
 }
