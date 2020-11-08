@@ -34,7 +34,7 @@ export function loginUser(userData, history) {
     return function thunk(dispatch, getState) {
         axios
             .post('/api/users/login', userData) // Returns a JSON Object with JWT
-            .then(function (response) {
+            .then((response) => {
                 // Save JWT to localStorage
                 const token = response.data.token;
                 localStorage.setItem('jwtToken', token);
@@ -48,7 +48,10 @@ export function loginUser(userData, history) {
                 // Set Current User
                 dispatch(setCurrentUser(decoded));
 
-                // Get All of User's Forums and Store in Redux Store
+                return response;
+            })
+            .then((response) => {
+                // Dispatch Action to Get User's Forums and Set to Local Storage
                 const data = {
                     userId: response.data.userId,
                 };
@@ -56,9 +59,9 @@ export function loginUser(userData, history) {
                 dispatch(getUsersForums(data));
 
                 // Push to Dashboard
-                history.push('/dashboard');
+                return history.push('/dashboard');
             })
-            .catch(function (error) {
+            .catch((error) => {
                 dispatch(setFormErrors(error.response.data));
             });
     };
@@ -69,13 +72,11 @@ export function signupUser(userData, history) {
     return function thunk(dispatch, getState) {
         axios
             .post('/api/users/signup', userData)
-            .then(function (response) {
+            .then(() => {
                 // Re-direct to Login Page on Successful Registration
                 history.push('/login');
             })
-            .catch(function (error) {
-                dispatch(setFormErrors(error.response.data));
-            });
+            .catch((error) => dispatch(setFormErrors(error.response.data)));
     };
 }
 

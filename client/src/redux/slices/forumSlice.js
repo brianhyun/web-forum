@@ -7,13 +7,9 @@ import { createSlice } from '@reduxjs/toolkit';
 export const slice = createSlice({
     name: 'forum',
     initialState: {
-        usersForums: [],
         currentForum: {},
     },
     reducers: {
-        setUsersForums: (state, action) => {
-            state.usersForums = action.payload;
-        },
         setCurrentForum: (state, action) => {
             state.currentForum = action.payload;
         },
@@ -29,9 +25,12 @@ export function getUsersForums(userData) {
         axios
             .post('/api/forums/getUsersForums', userData)
             .then((response) => {
-                const forumsInfo = response.data;
+                const usersForums = response.data;
 
-                dispatch(setUsersForums(forumsInfo));
+                localStorage.setItem(
+                    'usersForums',
+                    JSON.stringify(usersForums)
+                );
             })
             .catch((err) => console.error(err));
     };
