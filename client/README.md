@@ -27,8 +27,16 @@ In regards to thunk functions in Redux: thunk functions allow us to invoke async
 
 ## Non-Technical
 
+### Tracking Progress
+
 It's a good idea to have some sort of progress-charting system in place for keeping track of what you've finished, what you're currently working on, and what you have left to do.
 
 Having such a system in place expedites the development process. You don't have to waste time trying to orient yourself on what to do whenever you start working. (This wasn't a necessity when I was working on smaller projects.)
 
 And, there are certain problems or features that aren't important at the moment, but may have to be dealt with at a later point in time. This system would keep a record of those accounts.
+
+### Work Habits
+
+If at all possible, try to end each session with a feature finished or a bug resolved.
+
+Recognize when you've been sitting on a bug for too long. If no progress towards a solution is being made, then consider taking a break.

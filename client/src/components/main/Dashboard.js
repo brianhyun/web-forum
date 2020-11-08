@@ -78,12 +78,14 @@ function Dashboard(props) {
         const data = {};
 
         if (currentPath === '/dashboard') {
-            // If user is on the dashboard page, then display contents of first forum.
-            const firstForumId = usersForums[0].id;
+            if (usersForums.length !== 0) {
+                // If user is on the dashboard page, then display contents of first forum.
+                const firstForumId = usersForums[0].id;
 
-            data.forumId = firstForumId;
+                data.forumId = firstForumId;
 
-            dispatch(getForumInfo(data));
+                dispatch(getForumInfo(data));
+            }
         } else {
             // If user is on a forum-specific page, then display contents of forum.
             const specificForumId = currentPath.split('/')[2];

@@ -37,10 +37,12 @@ export function createForum(forumData, history) {
     return function thunk(dispatch, getState) {
         axios
             .post('/api/forums/create', forumData)
-            .then(() => {
+            .then((forum) => {
                 // Update User's Forums in Local Storage
+                const userId = useSelector(selectUserId);
+
                 const userData = {
-                    userId: useSelector(selectUserId),
+                    userId: userId,
                 };
 
                 setUsersForumsInLocalStorage(userData)
@@ -50,7 +52,13 @@ export function createForum(forumData, history) {
                     })
                     .catch((err) => console.error(err));
             })
-            .catch((err) => dispatch(setFormErrors(err.response.data)));
+            .catch((err) => {
+                if (err.response) {
+                    dispatch(setFormErrors(err.response.data));
+                } else {
+                    console.error(err);
+                }
+            });
     };
 }
 

@@ -1,8 +1,9 @@
+// Dependencies
 import axios from 'axios';
 
 // Set Users Forums in Local Storage
 async function setUsersForumsInLocalStorage(userData) {
-    await axios
+    let resolved = await axios
         .post('/api/forums/getUsersForums', userData)
         .then((response) => {
             const usersForums = response.data;
@@ -11,7 +12,7 @@ async function setUsersForumsInLocalStorage(userData) {
         })
         .catch((err) => console.error(err));
 
-    return;
+    return resolved;
 }
 
 export default setUsersForumsInLocalStorage;
