@@ -26,7 +26,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+
+// Custom Styles
+import './Dashboard.css';
 
 const drawerWidth = 65;
 
@@ -55,9 +59,16 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'space-between',
+        marginBottom: theme.spacing(3),
     },
     paper: {
-        padding: theme.spacing(2),
+        padding: theme.spacing(3),
+    },
+    postButtonContainer: {
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        marginTop: theme.spacing(3),
     },
 }));
 
@@ -181,27 +192,32 @@ function Dashboard(props) {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={8}>
                         <Paper className={classes.paper}>
+                            <TextField
+                                id="outlined-basic"
+                                label="Title"
+                                variant="outlined"
+                                fullWidth
+                            />
                             <ReactQuill
                                 theme="snow"
                                 value={postContent}
                                 onChange={setPostContent}
+                                placeholder="Create a post..."
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleClick}
-                            >
-                                Post
-                            </Button>
+                            <Box className={classes.postButtonContainer}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleClick}
+                                >
+                                    Post
+                                </Button>
+                            </Box>
                         </Paper>
                     </Grid>
-                    <Grid container item xs={12} sm={4} spacing={2}>
-                        <Grid item xs={12}>
-                            <Paper className={classes.paper}>Misc1</Paper>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Paper className={classes.paper}>Misc2</Paper>
-                        </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <Paper className={classes.paper}>Misc1</Paper>
+                        <Paper className={classes.paper}>Misc2</Paper>
                     </Grid>
                 </Grid>
             </Box>
