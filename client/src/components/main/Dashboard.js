@@ -1,6 +1,8 @@
 // Dependencies
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 // Redux
 import { useDispatch } from 'react-redux';
@@ -52,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'space-between',
+    },
+    paper: {
+        padding: theme.spacing(2),
     },
 }));
 
@@ -165,7 +170,21 @@ function Dashboard(props) {
                     </IconButton>
                 </Box>
 
-                <Grid></Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={8}>
+                        <Paper className={classes.paper}>
+                            <ReactQuill theme="snow" />
+                        </Paper>
+                    </Grid>
+                    <Grid container item xs={12} sm={4} spacing={2}>
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper}>Misc1</Paper>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Paper className={classes.paper}>Misc2</Paper>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );
