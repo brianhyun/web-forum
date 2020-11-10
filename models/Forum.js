@@ -4,6 +4,7 @@ const { Schema, model } = mongoose;
 
 // Subdocuments
 const { userSchema } = require('./User');
+const { postSchema } = require('./Post');
 
 const forumSchema = new Schema({
     name: {
@@ -16,6 +17,9 @@ const forumSchema = new Schema({
     public: {
         type: Boolean,
         required: true,
+    },
+    posts: {
+        type: [postSchema],
     },
     members: {
         type: [userSchema],

@@ -22,6 +22,8 @@ import Avatar from '@material-ui/core/Avatar';
 import AddIcon from '@material-ui/icons/Add';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 const drawerWidth = 65;
 
@@ -46,11 +48,10 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.default,
         padding: theme.spacing(3),
     },
-    settingsPaper: {
-        padding: theme.spacing(1),
-        display: 'flex',
+    headingContainer: {
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        display: 'flex',
+        justifyContent: 'space-between',
     },
 }));
 
@@ -152,7 +153,8 @@ function Dashboard(props) {
 
             {/* Main Content Section */}
             <Box component="main" className={classes.content}>
-                <Paper className={classes.settingsPaper}>
+                <Box className={classes.headingContainer}>
+                    <Typography>{currentForum.name}</Typography>
                     <IconButton
                         disableRipple
                         disableFocusRipple
@@ -161,9 +163,9 @@ function Dashboard(props) {
                     >
                         <Avatar alt="forum profile picture" src="" />
                     </IconButton>
-                </Paper>
+                </Box>
 
-                <Box component="section" className={classes.forum}></Box>
+                <Grid></Grid>
             </Box>
         </Box>
     );
