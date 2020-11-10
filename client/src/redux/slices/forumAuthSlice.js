@@ -2,11 +2,9 @@
 import axios from 'axios';
 
 // Redux
-import { useSelector } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
 
 import { setFormErrors } from './errorsSlice';
-import { selectUserId } from './authSlice';
 
 // Utilities
 import setUsersForumsInLocalStorage from '../../utils/setUsersForums';
@@ -39,18 +37,15 @@ export function createForum(forumData, history) {
             .post('/api/forums/create', forumData)
             .then((response) => {
                 // The response data is an object with two fields: forum and userId.
-                const data = response.data;
+                const userData = response.data;
 
-                setUsersForumsInLocalStorage(data)
+                // After creating the forum, save user's new forums list to local storage.
+                setUsersForumsInLocalStorage(userData)
                     .then(() => history.push('/join'))
                     .catch((err) => console.error(err));
             })
             .catch((err) => {
-                if (err.response) {
-                    dispatch(setFormErrors(err.response.data));
-                } else {
-                    console.error(err);
-                }
+                dispatch(setFormErrors(err.response.data));
             });
     };
 }

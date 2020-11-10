@@ -58,12 +58,8 @@ export function loginUser(userData, history) {
                     userId: response.data.userId,
                 };
 
-                // This asynchronous operation isn't returning anything or directing the user to any particular location.
                 setUsersForumsInLocalStorage(userData)
-                    .then(() => {
-                        // Redirect User to Dashboard
-                        history.push('/dashboard');
-                    })
+                    .then(() => history.push('/dashboard'))
                     .catch((err) => console.error(err));
             })
             .catch((err) => dispatch(setFormErrors(err.response.data)));
