@@ -37,19 +37,12 @@ export function createForum(forumData, history) {
     return function thunk(dispatch, getState) {
         axios
             .post('/api/forums/create', forumData)
-            .then((forum) => {
-                // Update User's Forums in Local Storage
-                const userId = useSelector(selectUserId);
+            .then((response) => {
+                // The response data is an object with two fields: forum and userId.
+                const data = response.data;
 
-                const userData = {
-                    userId: userId,
-                };
-
-                setUsersForumsInLocalStorage(userData)
-                    .then(() => {
-                        // Redirect User to Forum Join Page
-                        history.push('/join');
-                    })
+                setUsersForumsInLocalStorage(data)
+                    .then(() => history.push('/join'))
                     .catch((err) => console.error(err));
             })
             .catch((err) => {

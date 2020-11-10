@@ -98,6 +98,11 @@ router.post('/api/forums/create', (req, res, next) => {
                         }
                     })
                     .then(() => {
+                        const payload = {
+                            forum: forum,
+                            userId: userId,
+                        };
+
                         if (!forumIsPublic) {
                             const forumPassword = input.password;
                             const saltRounds = 10;
@@ -114,13 +119,13 @@ router.post('/api/forums/create', (req, res, next) => {
 
                                 return newForum
                                     .save()
-                                    .then((forum) => res.json(forum))
+                                    .then((forum) => res.json(payload))
                                     .catch((err) => console.error(err));
                             });
                         } else {
                             return newForum
                                 .save()
-                                .then((forum) => res.json(forum))
+                                .then((forum) => res.json(payload))
                                 .catch((err) => console.error(err));
                         }
                     })
@@ -132,7 +137,11 @@ router.post('/api/forums/create', (req, res, next) => {
 
 // Get Forums of a Single User
 router.post('/api/forums/getUsersForums', (req, res, next) => {
+    console.log('inside getUsersForums api');
+
     const userId = req.body.userId;
+
+    console.log(userId);
 
     User.findById(userId)
         .then((user) => {

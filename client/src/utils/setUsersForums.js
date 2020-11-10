@@ -3,16 +3,19 @@ import axios from 'axios';
 
 // Set Users Forums in Local Storage
 async function setUsersForumsInLocalStorage(userData) {
-    let resolved = await axios
-        .post('/api/forums/getUsersForums', userData)
-        .then((response) => {
-            const usersForums = response.data;
+    try {
+        // Get Users Forums
+        const response = await axios.post(
+            '/api/forums/getUsersForums',
+            userData
+        );
 
-            localStorage.setItem('usersForums', JSON.stringify(usersForums));
-        })
-        .catch((err) => console.error(err));
-
-    return resolved;
+        // Stringify Data and Save to Local Storage
+        const usersForums = response.data;
+        localStorage.setItem('usersForums', JSON.stringify(usersForums));
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 export default setUsersForumsInLocalStorage;
