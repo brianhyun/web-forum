@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -26,6 +26,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 const drawerWidth = 65;
 
@@ -102,6 +103,13 @@ function Dashboard(props) {
         }
     }, []);
 
+    // New Post Handling
+    const [postContent, setPostContent] = useState('');
+
+    function handleClick() {
+        console.log(postContent);
+    }
+
     return (
         <Box className={classes.root}>
             <CssBaseline />
@@ -173,7 +181,18 @@ function Dashboard(props) {
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={8}>
                         <Paper className={classes.paper}>
-                            <ReactQuill theme="snow" />
+                            <ReactQuill
+                                theme="snow"
+                                value={postContent}
+                                onChange={setPostContent}
+                            />
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleClick}
+                            >
+                                Post
+                            </Button>
                         </Paper>
                     </Grid>
                     <Grid container item xs={12} sm={4} spacing={2}>
