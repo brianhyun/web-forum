@@ -18,4 +18,14 @@
     border-right-color: black;
 }
 
-/* The text field isn't an input but a div. So you can't apply the focus method to the container. */
+.ql-editor.ql-blank:focus > .ql-toolbar.ql-snow {
+    border-left-color: 2px solid #29539b;
+    border-top-color: 2px solid #29539b;
+    border-right-color: 2px solid #29539b;
+}
+
+.ql-editor.ql-blank:focus > .ql-container.ql-snow {
+    border-left-color: 2px solid #29539b;
+    border-bottom-color: 2px solid #29539b;
+    border-right-color: 2px solid #29539b;
+}

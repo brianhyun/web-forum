@@ -10,7 +10,7 @@ const postSchema = new Schema({
         type: String,
         required: true,
     },
-    body: {
+    content: {
         type: String,
         required: true,
     },
@@ -25,7 +25,4 @@ const postSchema = new Schema({
 
 const Post = model('Post', postSchema);
 
-module.exports = {
-    postSchema,
-    Post,
-};
+module.exports = Post;

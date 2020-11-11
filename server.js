@@ -10,6 +10,7 @@ const passport = require('passport');
 // Custom Modules
 const connectToMongoDb = require(rootPath + '/config/db/connectDb');
 const usersAPIRouter = require(rootPath + '/routes/api/users');
+const postsAPIRouter = require(rootPath + '/routes/api/posts');
 const forumsAPIRouter = require(rootPath + '/routes/api/forums');
 const passportConfig = require(rootPath + '/config/passport/passport');
 
@@ -30,6 +31,7 @@ passportConfig(passport);
 // API
 app.use(usersAPIRouter);
 app.use(forumsAPIRouter);
+app.use(postsAPIRouter);
 
 // Server Port Line
 app.listen(process.env.PORT, () =>

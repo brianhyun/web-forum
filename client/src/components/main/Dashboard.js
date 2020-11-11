@@ -13,6 +13,8 @@ import { logoutUser } from '../../redux/slices/authSlice';
 import { getForumInfo } from '../../redux/slices/forumSlice';
 import { selectCurrentForum } from '../../redux/slices/forumSlice';
 
+import { addNewPost } from '../../redux/slices/postSlice';
+
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -105,6 +107,9 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(3),
     },
+    marginBottom: {
+        marginBottom: theme.spacing(3),
+    },
 }));
 
 function Dashboard(props) {
@@ -117,11 +122,9 @@ function Dashboard(props) {
     const currentForum = useSelector(selectCurrentForum);
 
     // React Functions
-    function handleClick() {
-        dispatch(logoutUser());
-    }
-
     // Load Forum-Specific Information on Component Mount
+    const [currentForumId, setCurrentForumId] = useState('');
+
     const usersForums = JSON.parse(localStorage.getItem('usersForums'));
 
     useEffect(() => {
@@ -135,6 +138,7 @@ function Dashboard(props) {
             if (usersForums.length !== 0) {
                 // If user is on the dashboard page, then display contents of first forum.
                 const firstForumId = usersForums[0].id;
+                setCurrentForumId(firstForumId);
 
                 data.forumId = firstForumId;
 
@@ -143,6 +147,7 @@ function Dashboard(props) {
         } else {
             // If user is on a forum-specific page, then display contents of forum.
             const specificForumId = currentPath.split('/')[2];
+            setCurrentForumId(specificForumId);
 
             data.forumId = specificForumId;
 
@@ -150,11 +155,25 @@ function Dashboard(props) {
         }
     }, []);
 
-    // New Post Handling
+    // Handle New Post Input
     const [postContent, setPostContent] = useState('');
+    const [postTitle, setPostTitle] = useState('');
 
-    function handleClick() {
-        console.log(postContent);
+    function handleTitleChange(event) {
+        setPostTitle(event.target.value);
+    }
+
+    // Handle Form Submit
+    function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const newPost = {
+            title: postTitle,
+            content: postContent,
+            forumId: currentForumId,
+        };
+
+        dispatch(addNewPost(newPost));
     }
 
     // Open and Close Navigation Drawer
@@ -168,6 +187,10 @@ function Dashboard(props) {
         setOpen(false);
     };
 
+    function handleLogout() {
+        dispatch(logoutUser());
+    }
+
     return (
         <Box className={classes.root}>
             <CssBaseline />
@@ -179,6 +202,7 @@ function Dashboard(props) {
                 })}
             >
                 <Toolbar>
+                    {/* Drawer Icon */}
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -190,21 +214,24 @@ function Dashboard(props) {
                     >
                         <MenuIcon />
                     </IconButton>
+
+                    {/* Forum Name */}
                     <Typography variant="h6" noWrap>
                         {currentForum.name}
                     </Typography>
-                    <Box>
-                        <IconButton
-                            disableRipple
-                            disableFocusRipple
-                            size="small"
-                            onClick={handleClick}
-                        >
-                            <Avatar alt="forum profile picture" src="" />
-                        </IconButton>
-                    </Box>
+
+                    {/* Profile Icon */}
+                    <IconButton
+                        disableRipple
+                        disableFocusRipple
+                        size="small"
+                        onClick={handleLogout}
+                    >
+                        <Avatar alt="forum profile picture" src="" />
+                    </IconButton>
                 </Toolbar>
             </AppBar>
+
             <Drawer
                 variant="permanent"
                 className={clsx(classes.drawer, {
@@ -218,6 +245,7 @@ function Dashboard(props) {
                     }),
                 }}
             >
+                {/* Toolbar Close Button */}
                 <div className={classes.toolbar}>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? (
@@ -227,7 +255,9 @@ function Dashboard(props) {
                         )}
                     </IconButton>
                 </div>
+
                 <Divider />
+
                 <List>
                     {/* All Forums */}
                     {usersForums.map((forum) => {
@@ -235,8 +265,8 @@ function Dashboard(props) {
                         const forumName = forum.name;
 
                         return (
-                            <Link to={forumLink}>
-                                <ListItem button key={forum.id}>
+                            <Link to={forumLink} key={forum.id}>
+                                <ListItem button>
                                     <ListItemAvatar>
                                         <Avatar alt={forumName} src="" />
                                     </ListItemAvatar>
@@ -266,35 +296,50 @@ function Dashboard(props) {
             <Box component="main" className={classes.content}>
                 <div className={classes.toolbar} />
 
-                <Grid container spacing={2}>
+                <Grid container spacing={3}>
+                    {/* Create New Post */}
                     <Grid item xs={12} sm={8}>
                         <Paper className={classes.paper}>
-                            <TextField
-                                id="outlined-basic"
-                                label="Title"
-                                variant="outlined"
-                                fullWidth
-                            />
-                            <ReactQuill
-                                theme="snow"
-                                value={postContent}
-                                onChange={setPostContent}
-                                placeholder="Create a post..."
-                            />
-                            <Box className={classes.postButtonContainer}>
+                            <Typography
+                                variant="h6"
+                                className={classes.marginBottom}
+                            >
+                                Create New Post
+                            </Typography>
+                            <form noValidate onSubmit={handleFormSubmit}>
+                                <TextField
+                                    className={classes.marginBottom}
+                                    id="outlined-basic"
+                                    label="Title"
+                                    variant="outlined"
+                                    fullWidth
+                                    value={postTitle}
+                                    onChange={handleTitleChange}
+                                    required
+                                />
+                                <ReactQuill
+                                    className={classes.marginBottom}
+                                    theme="snow"
+                                    value={postContent}
+                                    onChange={setPostContent}
+                                    placeholder="Create a post..."
+                                />
                                 <Button
+                                    type="submit"
                                     variant="contained"
                                     color="primary"
-                                    onClick={handleClick}
                                 >
                                     Post
                                 </Button>
-                            </Box>
+                            </form>
                         </Paper>
                     </Grid>
+
+                    {/* Sidebar - Miscellaneous Information */}
                     <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>Misc1</Paper>
-                        <Paper className={classes.paper}>Misc2</Paper>
+                        <Paper className={classes.paper}>
+                            <Typography variant="h6">Members</Typography>
+                        </Paper>
                     </Grid>
                 </Grid>
             </Box>
