@@ -229,29 +229,36 @@ function Dashboard(props) {
                 </div>
                 <Divider />
                 <List>
+                    {/* All Forums */}
                     {usersForums.map((forum) => {
                         const forumLink = `/forum/${forum.id}`;
                         const forumName = forum.name;
 
                         return (
-                            <ListItem button key={forum.id}>
-                                <ListItemAvatar>
-                                    <Link to={forumLink}>
+                            <Link to={forumLink}>
+                                <ListItem button key={forum.id}>
+                                    <ListItemAvatar>
                                         <Avatar alt={forumName} src="" />
-                                    </Link>
-                                </ListItemAvatar>
-                                <ListItemText primary={forumName} />
-                            </ListItem>
+                                    </ListItemAvatar>
+                                    <ListItemText primary={forumName} />
+                                </ListItem>
+                            </Link>
                         );
                     })}
+
                     <Divider />
-                    <ListItem button className={classes.listItem}>
-                        <Link to="/join">
-                            <Avatar>
-                                <AddIcon />
-                            </Avatar>
-                        </Link>
-                    </ListItem>
+
+                    {/* Add Forum */}
+                    <Link to="/join">
+                        <ListItem button className={classes.listItem}>
+                            <ListItemAvatar>
+                                <Avatar>
+                                    <AddIcon />
+                                </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText primary="Add Forum" />
+                        </ListItem>
+                    </Link>
                 </List>
             </Drawer>
 
