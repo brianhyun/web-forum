@@ -1,6 +1,6 @@
 const isEmpty = require('is-empty');
 
-const { User } = require('../User');
+const User = require('../User');
 
 async function emailOrUsernameExists(input) {
     const email = input.email;

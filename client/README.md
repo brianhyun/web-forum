@@ -2,6 +2,9 @@
 
 -   [ ] If a user joins a public forum, then I have to add that forum id to the user's forum array.
 -   [ ] Remove usersForum array in localStorage on logout.
+-   [ ] If the user is on the dashboard page but they aren't any forums, then use React state to hide the create post and sidebar informational panel and show "add new post" jumbotron.
+-   [ ] If the user is new, then redirect them to a welcoming page.
+-       [ ] On forum page load, grab all the posts for the forum and save them to redux store, select it from store and use it in the forum page. Change file names appropriately.
 
 # Issues History
 
@@ -40,3 +43,5 @@ And, there are certain problems or features that aren't important at the moment,
 If at all possible, try to end each session with a feature finished or a bug resolved.
 
 Recognize when you've been sitting on a bug for too long. If no progress towards a solution is being made, then consider taking a break.
+
+Don't sacrifice quality for speed. Write code you can be proud of.

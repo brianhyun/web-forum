@@ -2,9 +2,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-// Subdocuments
-const { commentSchema } = require('./Comment');
-
 const postSchema = new Schema({
     title: {
         type: String,
@@ -15,7 +12,7 @@ const postSchema = new Schema({
         required: true,
     },
     comments: {
-        type: [commentSchema],
+        type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     },
     date: {
         type: Date,

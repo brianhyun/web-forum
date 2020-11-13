@@ -2,9 +2,6 @@
 const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
-// Subdocuments
-const { userSchema } = require('./User');
-
 const forumSchema = new Schema({
     name: {
         type: String,
@@ -21,7 +18,7 @@ const forumSchema = new Schema({
         type: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
     },
     members: {
-        type: [userSchema],
+        type: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     },
     date: {
         type: Date,

@@ -2,7 +2,7 @@ const express = require('express');
 const rootPath = require('app-root-path');
 const bcrypt = require('bcrypt');
 
-const { User } = require(rootPath + '/models/User');
+const User = require(rootPath + '/models/User');
 const Forum = require(rootPath + '/models/Forum');
 const validateJoinInput = require(rootPath + '/utils/forum-validation/join');
 const validateCreateInput = require(rootPath +
@@ -137,11 +137,7 @@ router.post('/api/forums/create', (req, res, next) => {
 
 // Get Forums of a Single User
 router.post('/api/forums/getUsersForums', (req, res, next) => {
-    console.log('inside getUsersForums api');
-
     const userId = req.body.userId;
-
-    console.log(userId);
 
     User.findById(userId)
         .then((user) => {

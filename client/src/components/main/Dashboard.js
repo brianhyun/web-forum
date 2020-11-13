@@ -14,6 +14,7 @@ import { getForumInfo } from '../../redux/slices/forumSlice';
 import { selectCurrentForum } from '../../redux/slices/forumSlice';
 
 import { addNewPost } from '../../redux/slices/postSlice';
+import { getForumPosts } from '../../redux/slices/postSlice';
 
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -136,13 +137,17 @@ function Dashboard(props) {
 
         if (currentPath === '/dashboard') {
             if (usersForums.length !== 0) {
-                // If user is on the dashboard page, then display contents of first forum.
+                // If user is on the dashboard page and they are a part of one or more forums, then display contents of first forum.
                 const firstForumId = usersForums[0].id;
                 setCurrentForumId(firstForumId);
 
                 data.forumId = firstForumId;
 
                 dispatch(getForumInfo(data));
+            } else {
+                /*
+					If user is on the dashboard page and they aren't a part of any forums, then display the join forums jumbotron.
+				*/
             }
         } else {
             // If user is on a forum-specific page, then display contents of forum.
@@ -154,6 +159,10 @@ function Dashboard(props) {
             dispatch(getForumInfo(data));
         }
     }, []);
+
+    // useEffect(() => {
+    // 	dispatch(getForumPosts(forumId));
+    // }, []);
 
     // Handle New Post Input
     const [postContent, setPostContent] = useState('');

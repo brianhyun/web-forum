@@ -25,6 +25,17 @@ export function addNewPost(postData) {
     };
 }
 
+export function getForumPosts(forumId) {
+    return function thunk(dispatch, getState) {
+        axios
+            .post('/api/posts/getForumPosts', forumId)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((err) => console.error(err));
+    };
+}
+
 // Selectors
 // export function select(state) {
 //     return state.post.posts;

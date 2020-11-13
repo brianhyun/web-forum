@@ -47,6 +47,17 @@ router.post('/api/posts/create', (req, res, next) => {
 });
 
 // Get Posts for a Specific Forum
-router.post('/api/forums/getPosts', (req, res, next) => {});
+router.post('/api/forums/getForumPosts', (req, res, next) => {
+    const input = req.body;
+
+    Forum.findById(forumId)
+        .populate('posts')
+        .then((forum) => {
+            if (forum) {
+                console.log(forum.posts);
+            }
+        })
+        .catch((err) => console.error(err));
+});
 
 module.exports = router;

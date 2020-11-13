@@ -53,13 +53,18 @@ export function loginUser(userData, history) {
                 return response;
             })
             .then((response) => {
-                // Set Users Forums in Local Storage
+                // Grab and Set Users Forums in Local Storage
                 const userData = {
                     userId: response.data.userId,
                 };
 
                 setUsersForumsInLocalStorage(userData)
-                    .then(() => history.push('/dashboard'))
+                    .then(() => {
+                        // If user is new to website, then direct them to a page them welcomes then and prompts them to join or create a forum.
+
+                        // If the user isn't new to the site (meaning that he is already joined to some forums), then direct him to the first forum in the list.
+                        history.push('/dashboard');
+                    })
                     .catch((err) => console.error(err));
             })
             .catch((err) => dispatch(setFormErrors(err.response.data)));
