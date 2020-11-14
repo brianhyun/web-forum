@@ -42,7 +42,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 // Custom Styles
-import './Dashboard.css';
+import './Forum.css';
 
 const drawerWidth = 240;
 
@@ -113,7 +113,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Dashboard(props) {
+function Forum(props) {
     // Use Material UI Styles
     const classes = useStyles();
     const theme = useTheme();
@@ -356,4 +356,4 @@ function Dashboard(props) {
     );
 }
 
-export default Dashboard;
+export default Forum;

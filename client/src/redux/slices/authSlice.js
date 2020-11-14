@@ -2,13 +2,14 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from '../../utils/setAuthToken';
+import { Link } from 'react-router-dom';
 
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
 import { setFormErrors } from './errorsSlice';
 
 // Utilities
-import setUsersForumsInLocalStorage from '../../utils/setUsersForums';
+import storeUsersForumsInLocalStorage from '../../utils/storeUsersForumsInLocalStorage';
 
 export const slice = createSlice({
     name: 'auth',
@@ -34,41 +35,67 @@ export const { setCurrentUser, resetCurrentUser } = slice.actions;
 // Login User
 export function loginUser(userData, history) {
     return function thunk(dispatch, getState) {
-        axios
-            .post('/api/users/login', userData) // Returns a JSON Object with JWT
-            .then((response) => {
-                // Save JWT to localStorage
-                const token = response.data.token;
-                localStorage.setItem('jwtToken', token);
-
-                // Set token to Auth Header
-                setAuthToken(token);
-
-                // Decode Token to Get User Data
-                const decoded = jwt_decode(token);
-
-                // Set Current User
-                dispatch(setCurrentUser(decoded));
-
-                return response;
+        signInUser(userData, dispatch)
+            .then((decodedToken) => {
+                return grabAndSetUsersForumsInLocalStorage(decodedToken);
             })
-            .then((response) => {
-                // Grab and Set Users Forums in Local Storage
-                const userData = {
-                    userId: response.data.userId,
-                };
-
-                setUsersForumsInLocalStorage(userData)
-                    .then(() => {
-                        // If user is new to website, then direct them to a page them welcomes then and prompts them to join or create a forum.
-
-                        // If the user isn't new to the site (meaning that he is already joined to some forums), then direct him to the first forum in the list.
-                        history.push('/dashboard');
-                    })
-                    .catch((err) => console.error(err));
+            .then((usersForums) => {
+                return redirectUserBasedOnForumCount(usersForums, history);
             })
             .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
+}
+
+async function signInUser(userData, dispatch) {
+    try {
+        // 'response' is a JSON Object with JWT Token and User ID.
+        const response = await axios.post('/api/users/login', userData);
+
+        // Save JWT to localStorage
+        const token = response.data.token;
+        localStorage.setItem('jwtToken', token);
+
+        // Set token to Auth Header
+        setAuthToken(token);
+
+        // Decode Token to Get User Data
+        const decodedToken = jwt_decode(token);
+
+        // Set Current User
+        dispatch(setCurrentUser(decodedToken));
+
+        return decodedToken;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function grabAndSetUsersForumsInLocalStorage(decodedToken) {
+    // The decoded token contains the userId, which is needed to query the user's document (in database), which contains the user's forums.
+    try {
+        const userData = {
+            userId: decodedToken.userId,
+        };
+
+        const usersForums = await storeUsersForumsInLocalStorage(userData);
+
+        return usersForums;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+function redirectUserBasedOnForumCount(usersForums, history) {
+    const numberOfForums = usersForums.length;
+
+    if (numberOfForums) {
+        // Grab the first forum in the list and redirect to that page.
+        const firstForumId = usersForums[0].forumId;
+
+        history.push(`/forum/${firstForumId}`);
+    } else {
+        history.push('/getStarted');
+    }
 }
 
 // Register User
@@ -87,8 +114,8 @@ export function signupUser(userData, history) {
 // Log User Out
 export function logoutUser() {
     return function thunk(dispatch, getState) {
-        // Remove JWT Token from Local Storage
-        localStorage.removeItem('jwtToken');
+        // Remove all items (i.e. jwtToken and usersForums) from Local Storage
+        localStorage.clear();
 
         // Remove Auth Header for Future Requests
         setAuthToken(false);

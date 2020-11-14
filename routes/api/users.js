@@ -77,7 +77,7 @@ router.post('/api/users/login', (req, res, next) => {
                     if (isMatch) {
                         // Create Payload
                         const payload = {
-                            id: user.id,
+                            userId: user.id,
                             username: username,
                         };
 
@@ -94,7 +94,6 @@ router.post('/api/users/login', (req, res, next) => {
                                 // Send JWT to Client
                                 const data = {
                                     token: token,
-                                    userId: user.id,
                                 };
 
                                 res.send(data);

@@ -143,6 +143,7 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
         .then((user) => {
             if (user) {
                 // 'user.forums' is an array of forum ids.
+                // We should be able to use the populate method to populate (in other words, replace) the array of ids with an array of forums.
                 const usersForums = user.forums;
                 const forumsInfo = [];
                 const promises = [];
@@ -153,7 +154,7 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
                             .then((forum) => {
                                 if (forum) {
                                     let forumInfo = {
-                                        id: forum._id,
+                                        forumId: forum._id,
                                         name: forum.name,
                                     };
 

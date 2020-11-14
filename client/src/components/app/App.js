@@ -20,9 +20,10 @@ import PageNotFound from '../main/PageNotFound';
 
 // Protected Components
 import PrivateRoute from '../private/PrivateRoute';
-import Dashboard from '../main/Dashboard';
+import Forum from '../main/Forum';
 import Join from '../forum-auth/Join';
 import Create from '../forum-auth/Create';
+import GetStarted from '../main/GetStarted';
 
 // Utilities
 import setAuthToken from '../../utils/setAuthToken';
@@ -66,15 +67,15 @@ function App() {
                         <Route exact path="/signup" component={Signup} />
                         <PrivateRoute
                             exact
-                            path="/dashboard"
-                            component={Dashboard}
+                            path="/getStarted"
+                            component={GetStarted}
                         />
                         <PrivateRoute exact path="/join" component={Join} />
                         <PrivateRoute exact path="/create" component={Create} />
                         <PrivateRoute
                             exact
                             path="/forum/:id"
-                            component={Dashboard}
+                            component={Forum}
                         />
                         <Route path="*" component={PageNotFound} />
                     </Switch>

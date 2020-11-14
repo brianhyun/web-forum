@@ -7,7 +7,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { setFormErrors } from './errorsSlice';
 
 // Utilities
-import setUsersForumsInLocalStorage from '../../utils/setUsersForums';
+import storeUsersForumsInLocalStorage from '../../utils/storeUsersForumsInLocalStorage';
 
 export const slice = createSlice({
     name: 'forumAuth',
@@ -40,7 +40,7 @@ export function createForum(forumData, history) {
                 const userData = response.data;
 
                 // After creating the forum, save user's new forums list to local storage.
-                setUsersForumsInLocalStorage(userData)
+                storeUsersForumsInLocalStorage(userData)
                     .then(() => history.push('/join'))
                     .catch((err) => console.error(err));
             })
