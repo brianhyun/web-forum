@@ -50,6 +50,8 @@ export function createForum(forumData, history) {
     };
 }
 
+// Create Forum function not working!
+
 // Join Forum
 export function joinForum(forumData, history) {
     return function thunk(dispatch, getState) {

@@ -45,6 +45,8 @@ And, there are certain problems or features that aren't important at the moment,
 
 If at all possible, try to end each session with a feature finished or a bug resolved.
 
-Recognize when you've been sitting on a bug for too long. If no progress towards a solution is being made, then consider taking a break.
+Recognize when you've been sitting on a bug for too long. If no progress towards a solution is being made, then consider taking a break. Often times, I'll sit on a bug thinking that I'm only minutes away from finding a good solution. This extends the amount of time I sit on the problem, further extending and fomenting my frustrations. The time you spend working on a problem cannot be considered a sunk cost. Remember this!
 
 Don't sacrifice quality for speed. Write code you can be proud of.
+
+Learn to pace yourself. Slow things down. Speed is definitely important, but if it's at the cost of code quality and personal interest in the project, then I'd recommend to slow things down. Longevity and sustainability is key.

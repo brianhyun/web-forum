@@ -119,13 +119,13 @@ router.post('/api/forums/create', (req, res, next) => {
 
                                 return newForum
                                     .save()
-                                    .then((forum) => res.json(payload))
+                                    .then(() => res.json(payload))
                                     .catch((err) => console.error(err));
                             });
                         } else {
                             return newForum
                                 .save()
-                                .then((forum) => res.json(payload))
+                                .then(() => res.json(payload))
                                 .catch((err) => console.error(err));
                         }
                     })
