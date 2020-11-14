@@ -51,17 +51,11 @@ async function signInUser(userData, dispatch) {
         // 'response' is a JSON Object with JWT Token and User ID.
         const response = await axios.post('/api/users/login', userData);
 
-        // Save JWT to localStorage
         const token = response.data.token;
         localStorage.setItem('jwtToken', token);
-
-        // Set token to Auth Header
         setAuthToken(token);
 
-        // Decode Token to Get User Data
         const decodedToken = jwt_decode(token);
-
-        // Set Current User
         dispatch(setCurrentUser(decodedToken));
 
         return decodedToken;
