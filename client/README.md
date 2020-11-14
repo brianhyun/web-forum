@@ -6,6 +6,7 @@
 -   [ ] On forum page load, grab all the posts for the forum and save them to redux store, select it from store and use it in the forum page. Change file names appropriately.
 -   [ ] In 'utils/storeUsersForumsInLocalStorage' file, have 'setUsersForumsInLocalStorage' function be responsible for only one action.
 -   [ ] In 'slices/authSlice' file, the 'loginUser' function has a catch statement with an error method that only needs to be dispatched when there are errors in the form.
+-   [ ] Recheck 'Get Started' page functionality.
 
 # Issues History
 

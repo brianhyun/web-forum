@@ -140,36 +140,22 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
     const userId = req.body.userId;
 
     User.findById(userId)
+        .populate('forums')
         .then((user) => {
             if (user) {
-                // 'user.forums' is an array of forum ids.
-                // We should be able to use the populate method to populate (in other words, replace) the array of ids with an array of forums.
                 const usersForums = user.forums;
                 const forumsInfo = [];
-                const promises = [];
 
                 for (let i = 0; i < usersForums.length; i++) {
-                    promises.push(
-                        Forum.findById(usersForums[i])
-                            .then((forum) => {
-                                if (forum) {
-                                    let forumInfo = {
-                                        forumId: forum._id,
-                                        name: forum.name,
-                                    };
+                    const forum = {
+                        forumId: usersForums[i]._id,
+                        name: usersForums[i].name,
+                    };
 
-                                    forumsInfo.push(forumInfo);
-                                }
-                            })
-                            .catch((err) => console.error(err))
-                    );
+                    forumsInfo.push(forum);
                 }
 
-                Promise.all(promises)
-                    .then(() => {
-                        res.send(forumsInfo);
-                    })
-                    .catch((err) => console.error(err));
+                res.send(forumsInfo);
             }
         })
         .catch((err) => console.error(err));

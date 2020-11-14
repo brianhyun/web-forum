@@ -98,7 +98,6 @@ export function signupUser(userData, history) {
         axios
             .post('/api/users/signup', userData)
             .then(() => {
-                // Re-direct to Login Page on Successful Registration
                 history.push('/login');
             })
             .catch((error) => dispatch(setFormErrors(error.response.data)));
