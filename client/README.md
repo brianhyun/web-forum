@@ -31,6 +31,8 @@ In regards to selector functions in Redux: selectors are functions that return a
 
 In regards to thunk functions in Redux: thunk functions allow us to invoke asynchronous operations.
 
+In regards to syntax: you can shorten object definitions if the key and value are the same name (e.g. { userId } has userId as a key and the value inserted into userId will be the value stored in the variable userId).
+
 ## Non-Technical
 
 ### Tracking Progress

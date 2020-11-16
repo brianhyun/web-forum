@@ -103,21 +103,17 @@ async function createNewForum(input, res) {
             public: input.isPublic,
         });
 
-        const response = await saveNewForumIdInUserDocument(
+        const userId = await saveNewForumIdInUserDocument(
             input.userId,
             newForum._id
         );
-
-        const userData = {
-            userId: response,
-        };
 
         if (!input.isPublic) {
             await hashAndSavePassword(input, newForum);
         }
 
         await newForum.save();
-        res.json(userData);
+        res.json({ userId });
     } catch (err) {
         console.error(err);
     }
@@ -144,6 +140,8 @@ async function hashAndSavePassword(input, newForum) {
         const hashedPassword = await bcrypt.hash(input.password, 10);
 
         newForum.password = hashedPassword;
+
+        return;
     } catch (err) {
         console.error(err);
     }
