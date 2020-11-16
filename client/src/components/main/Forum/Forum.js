@@ -15,9 +15,6 @@ import { logoutUser } from '../../../redux/slices/authSlice';
 import { getForumInfo } from '../../../redux/slices/forumSlice';
 import { selectCurrentForum } from '../../../redux/slices/forumSlice';
 
-import { addNewPost } from '../../../redux/slices/postSlice';
-import { getForumPosts } from '../../../redux/slices/postSlice';
-
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -40,9 +37,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import MenuIcon from '@material-ui/icons/Menu';
-
-// Custom Styles
-import './Forum.css';
 
 const drawerWidth = 240;
 
@@ -123,15 +117,11 @@ function Forum(props) {
     const currentForum = useSelector(selectCurrentForum);
 
     // React Functions
-    // Load Forum-Specific Information on Component Mount
-    const [currentForumId, setCurrentForumId] = useState('');
-
     const usersForums = JSON.parse(localStorage.getItem('usersForums'));
 
     useEffect(() => {
         const currentPath = props.location.pathname;
         const forumId = currentPath.split('/')[2];
-        setCurrentForumId(forumId);
 
         const data = {
             forumId: forumId,
@@ -151,6 +141,7 @@ function Forum(props) {
         setOpen(false);
     };
 
+    // Handle User Logout
     function handleLogout() {
         dispatch(logoutUser());
     }
