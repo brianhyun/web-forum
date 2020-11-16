@@ -36,9 +36,7 @@ export function createForum(forumData, history) {
         axios
             .post('/api/forums/create', forumData)
             .then((response) => {
-                console.log('createForum api response:', response.data);
-
-                // The response data is an object with two fields: forum and userId.
+                // The response data is an object with a userId field.
                 const userData = response.data;
 
                 // After creating the forum, save user's new forums list to local storage.
