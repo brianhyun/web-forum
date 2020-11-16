@@ -20,7 +20,7 @@ import PageNotFound from '../main/PageNotFound';
 
 // Protected Components
 import PrivateRoute from '../private/PrivateRoute';
-import Forum from '../main/Forum';
+import Forum from '../main/Forum/Forum';
 import Join from '../forum-auth/Join';
 import Create from '../forum-auth/Create';
 import GetStarted from '../main/GetStarted';

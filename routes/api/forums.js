@@ -178,6 +178,7 @@ router.post('/api/forums/getForumInfo', (req, res, next) => {
     const forumId = req.body.forumId;
 
     Forum.findById(forumId)
+        .populate('posts')
         .then((forum) => {
             if (forum) {
                 res.send(forum);

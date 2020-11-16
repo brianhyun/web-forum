@@ -4,17 +4,19 @@ import { Link } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+import CreateNewPost from './CreateNewPost';
+
 // Redux
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { logoutUser } from '../../redux/slices/authSlice';
+import { logoutUser } from '../../../redux/slices/authSlice';
 
-import { getForumInfo } from '../../redux/slices/forumSlice';
-import { selectCurrentForum } from '../../redux/slices/forumSlice';
+import { getForumInfo } from '../../../redux/slices/forumSlice';
+import { selectCurrentForum } from '../../../redux/slices/forumSlice';
 
-import { addNewPost } from '../../redux/slices/postSlice';
-import { getForumPosts } from '../../redux/slices/postSlice';
+import { addNewPost } from '../../../redux/slices/postSlice';
+import { getForumPosts } from '../../../redux/slices/postSlice';
 
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -38,8 +40,6 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import MenuIcon from '@material-ui/icons/Menu';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 
 // Custom Styles
 import './Forum.css';
@@ -129,61 +129,16 @@ function Forum(props) {
     const usersForums = JSON.parse(localStorage.getItem('usersForums'));
 
     useEffect(() => {
-        // Grab Forum-Specific Information for Main Content Portion
         const currentPath = props.location.pathname;
+        const forumId = currentPath.split('/')[2];
+        setCurrentForumId(forumId);
 
-        // Payload
-        const data = {};
-
-        if (currentPath === '/dashboard') {
-            if (usersForums.length !== 0) {
-                // If user is on the dashboard page and they are a part of one or more forums, then display contents of first forum.
-                const firstForumId = usersForums[0].id;
-                setCurrentForumId(firstForumId);
-
-                data.forumId = firstForumId;
-
-                dispatch(getForumInfo(data));
-            } else {
-                /*
-					If user is on the dashboard page and they aren't a part of any forums, then display the join forums jumbotron.
-				*/
-            }
-        } else {
-            // If user is on a forum-specific page, then display contents of forum.
-            const specificForumId = currentPath.split('/')[2];
-            setCurrentForumId(specificForumId);
-
-            data.forumId = specificForumId;
-
-            dispatch(getForumInfo(data));
-        }
-    }, []);
-
-    // useEffect(() => {
-    // 	dispatch(getForumPosts(forumId));
-    // }, []);
-
-    // Handle New Post Input
-    const [postContent, setPostContent] = useState('');
-    const [postTitle, setPostTitle] = useState('');
-
-    function handleTitleChange(event) {
-        setPostTitle(event.target.value);
-    }
-
-    // Handle Form Submit
-    function handleFormSubmit(event) {
-        event.preventDefault();
-
-        const newPost = {
-            title: postTitle,
-            content: postContent,
-            forumId: currentForumId,
+        const data = {
+            forumId: forumId,
         };
 
-        dispatch(addNewPost(newPost));
-    }
+        dispatch(getForumInfo(data));
+    }, []);
 
     // Open and Close Navigation Drawer
     const [open, setOpen] = useState(false);
@@ -307,42 +262,7 @@ function Forum(props) {
 
                 <Grid container spacing={3}>
                     {/* Create New Post */}
-                    <Grid item xs={12} sm={8}>
-                        <Paper className={classes.paper}>
-                            <Typography
-                                variant="h6"
-                                className={classes.marginBottom}
-                            >
-                                Create New Post
-                            </Typography>
-                            <form noValidate onSubmit={handleFormSubmit}>
-                                <TextField
-                                    className={classes.marginBottom}
-                                    id="outlined-basic"
-                                    label="Title"
-                                    variant="outlined"
-                                    fullWidth
-                                    value={postTitle}
-                                    onChange={handleTitleChange}
-                                    required
-                                />
-                                <ReactQuill
-                                    className={classes.marginBottom}
-                                    theme="snow"
-                                    value={postContent}
-                                    onChange={setPostContent}
-                                    placeholder="Create a post..."
-                                />
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Post
-                                </Button>
-                            </form>
-                        </Paper>
-                    </Grid>
+                    <CreateNewPost reactRouterProps={props} />
 
                     {/* Sidebar - Miscellaneous Information */}
                     <Grid item xs={12} sm={4}>
