@@ -98,8 +98,7 @@ router.post('/api/forums/create', (req, res, next) => {
                         }
                     })
                     .then(() => {
-                        const payload = {
-                            forum: forum,
+                        const userData = {
                             userId: userId,
                         };
 
@@ -107,6 +106,7 @@ router.post('/api/forums/create', (req, res, next) => {
                             const forumPassword = input.password;
                             const saltRounds = 10;
 
+                            // use async IIFE functions to encapsulate logic
                             bcrypt.hash(forumPassword, saltRounds, function (
                                 err,
                                 hash
@@ -117,15 +117,15 @@ router.post('/api/forums/create', (req, res, next) => {
 
                                 newForum.password = hash;
 
-                                return newForum
+                                newForum
                                     .save()
-                                    .then(() => res.json(payload))
+                                    .then(() => res.json(userData))
                                     .catch((err) => console.error(err));
                             });
                         } else {
-                            return newForum
+                            newForum
                                 .save()
-                                .then(() => res.json(payload))
+                                .then(() => res.json(userData))
                                 .catch((err) => console.error(err));
                         }
                     })

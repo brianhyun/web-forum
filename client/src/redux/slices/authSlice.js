@@ -2,7 +2,6 @@
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from '../../utils/setAuthToken';
-import { Link } from 'react-router-dom';
 
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
@@ -124,7 +123,7 @@ export function selectAuthStatus(state) {
 }
 
 export function selectUserId(state) {
-    return state.auth.user.id;
+    return state.auth.user.userId;
 }
 
 export default slice.reducer;

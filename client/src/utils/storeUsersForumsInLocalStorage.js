@@ -25,7 +25,7 @@ async function getUsersForums(userData) {
     }
 }
 
-// Consolidate Both Actions into One Function
+// Consolidate Both Actions (i.e. Get and Set) into One Function
 async function storeUsersForumsInLocalStorage(userData) {
     try {
         const usersForums = await getUsersForums(userData);

@@ -36,6 +36,8 @@ export function createForum(forumData, history) {
         axios
             .post('/api/forums/create', forumData)
             .then((response) => {
+                console.log('createForum api response:', response.data);
+
                 // The response data is an object with two fields: forum and userId.
                 const userData = response.data;
 
@@ -49,8 +51,6 @@ export function createForum(forumData, history) {
             });
     };
 }
-
-// Create Forum function not working!
 
 // Join Forum
 export function joinForum(forumData, history) {
