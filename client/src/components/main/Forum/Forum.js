@@ -1,8 +1,10 @@
 // Dependencies
 import React, { useEffect } from 'react';
 
+// Components
 import CreateNewPost from './CreateNewPost';
 import AppBarAndDrawer from './AppBarAndDrawer';
+import PostsList from './PostsList';
 
 // Redux
 import { useDispatch } from 'react-redux';
@@ -19,11 +21,13 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-const drawerWidth = 240;
-
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
+    },
+    toolbar: {
+        // Required to have main content below toolbar.
+        ...theme.mixins.toolbar,
     },
     content: {
         flexGrow: 1,
@@ -40,31 +44,29 @@ function Forum(props) {
 
     // Redux Handles
     const dispatch = useDispatch();
-    const currentForum = useSelector(selectCurrentForum);
 
     // React Handles
     useEffect(() => {
         const currentPath = props.location.pathname;
         const forumId = currentPath.split('/')[2];
 
-        const data = {
-            forumId: forumId,
-        };
-
-        dispatch(getForumInfo(data));
-    }, [currentForum]);
+        dispatch(getForumInfo({ forumId }));
+    }, [props.location.pathname]);
 
     return (
         <Box className={classes.root}>
             <CssBaseline />
-
             <AppBarAndDrawer />
 
             <Box component="main" className={classes.content}>
                 <div className={classes.toolbar} />
 
                 <Grid container spacing={3}>
-                    <CreateNewPost reactRouterProps={props} />
+                    <Grid item container xs={12} sm={8}>
+                        <CreateNewPost reactRouterProps={props} />
+
+                        <PostsList />
+                    </Grid>
 
                     <Grid item xs={12} sm={4}>
                         <Paper className={classes.paper}>

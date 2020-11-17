@@ -42,7 +42,7 @@ function CreateNewPost(props) {
         const currentPath = props.reactRouterProps.location.pathname;
         const forumId = currentPath.split('/')[2];
         setCurrentForumId(forumId);
-    }, []);
+    }, [props.reactRouterProps.location.pathname]);
 
     // Handle New Post Input
     const [postContent, setPostContent] = useState('');
@@ -70,7 +70,7 @@ function CreateNewPost(props) {
     }
 
     return (
-        <Grid item xs={12} sm={8}>
+        <Grid item xs={12}>
             <Paper className={classes.paper}>
                 <Typography variant="h6" className={classes.marginBottom}>
                     Create New Post
