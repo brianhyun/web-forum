@@ -1,19 +1,17 @@
 // Dependencies
 import React, { useEffect } from 'react';
 
-// Components
+// Custom React Components
 import CreateNewPost from './CreateNewPost';
 import AppBarAndDrawer from './AppBarAndDrawer';
 import PostsList from './PostsList';
 
 // Redux
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 
 import { getForumInfo } from '../../../redux/slices/forumSlice';
-import { selectCurrentForum } from '../../../redux/slices/forumSlice';
 
-// Material UI Styles
+// Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -62,7 +60,7 @@ function Forum(props) {
                 <div className={classes.toolbar} />
 
                 <Grid container spacing={3}>
-                    <Grid item container xs={12} sm={8}>
+                    <Grid item container xs={12} sm={8} spacing={3}>
                         <CreateNewPost reactRouterProps={props} />
 
                         <PostsList />

@@ -1,17 +1,15 @@
 // Dependencies
 import React from 'react';
 
-// Material UI Styles
+// Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
+    post: {
         padding: theme.spacing(3),
+        marginBottom: theme.spacing(3),
     },
 }));
 
@@ -20,11 +18,10 @@ function Post(props) {
     const classes = useStyles();
 
     return (
-        <Box>
-            <CssBaseline />
-
-            <Paper className={classes.paper}></Paper>
-        </Box>
+        <Paper className={classes.post}>
+            <Typography variant="h5">{props.title}</Typography>
+            <Typography variant="body1">{props.content}</Typography>
+        </Paper>
     );
 }
 
