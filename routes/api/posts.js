@@ -20,21 +20,22 @@ router.post('/api/posts/create', (req, res, next) => {
         return res.status(400).json(errors);
     }
 
-    // Valid Input - Save Post ID to Forum Document and Save New Post into Database
+    // Valid Input
     const newPost = new Post({
         title: input.title,
         content: input.content,
+        author: input.author,
     });
 
     const forumId = input.forumId;
 
     Forum.findById(forumId)
         .then((forum) => {
+            // Save Post ID to Forum Document
             if (forum) {
                 forum.posts.push(newPost._id);
 
-                // Save Document to Finalize Changes
-                forum.save().catch((err) => console.error(err));
+                forum.save();
             }
         })
         .then(() => {

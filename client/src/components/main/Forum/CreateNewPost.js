@@ -5,6 +5,9 @@ import 'react-quill/dist/quill.snow.css';
 
 // Redux
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+
+import { selectUserId } from '../../../redux/slices/authSlice';
 
 import { addNewPost } from '../../../redux/slices/postSlice';
 
@@ -34,6 +37,7 @@ function CreateNewPost(props) {
 
     // Redux Handles
     const dispatch = useDispatch();
+    const userId = useSelector(selectUserId);
 
     // React Functions
     const [currentForumId, setCurrentForumId] = useState('');
@@ -59,6 +63,7 @@ function CreateNewPost(props) {
         const newPost = {
             title: postTitle,
             content: postContent,
+            author: userId,
             forumId: currentForumId,
         };
 

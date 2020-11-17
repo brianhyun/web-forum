@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
         marginBottom: theme.spacing(3),
     },
+    title: {
+        marginBottom: theme.spacing(1),
+    },
+    content: {},
 }));
 
 function Post(props) {
@@ -19,8 +23,12 @@ function Post(props) {
 
     return (
         <Paper className={classes.post}>
-            <Typography variant="h5">{props.title}</Typography>
-            <Typography variant="body1">{props.content}</Typography>
+            <Typography variant="h5" className={classes.title}>
+                {props.title}
+            </Typography>
+            <Typography variant="body1" className={classes.content}>
+                {props.content}
+            </Typography>
         </Paper>
     );
 }
