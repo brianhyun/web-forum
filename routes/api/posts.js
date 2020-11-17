@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const rootPath = require('app-root-path');
 
@@ -20,11 +21,13 @@ router.post('/api/posts/create', (req, res, next) => {
         return res.status(400).json(errors);
     }
 
+    const authorObjectId = mongoose.Types.ObjectId(input.authorId);
+
     // Valid Input
     const newPost = new Post({
         title: input.title,
         content: input.content,
-        author: input.author,
+        author: authorObjectId,
     });
 
     const forumId = input.forumId;

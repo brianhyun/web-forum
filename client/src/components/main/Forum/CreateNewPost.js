@@ -63,7 +63,7 @@ function CreateNewPost(props) {
         const newPost = {
             title: postTitle,
             content: postContent,
-            author: userId,
+            authorId: userId,
             forumId: currentForumId,
         };
 
