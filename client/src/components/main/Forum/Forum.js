@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import CreateNewPost from './CreateNewPost';
 import AppBarAndDrawer from './AppBarAndDrawer';
 import PostsList from './PostsList';
+import MembersPanel from './Sidebar/MembersPanel';
 
 // Redux
 import { useDispatch } from 'react-redux';
@@ -67,9 +68,7 @@ function Forum(props) {
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <Typography variant="h6">Members</Typography>
-                        </Paper>
+                        <MembersPanel />
                     </Grid>
                 </Grid>
             </Box>

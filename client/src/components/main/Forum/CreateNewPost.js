@@ -2,14 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import axios from 'axios';
 
 // Redux
-import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { selectUserId } from '../../../redux/slices/authSlice';
-
-import { addNewPost } from '../../../redux/slices/postSlice';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -36,7 +34,6 @@ function CreateNewPost(props) {
     const classes = useStyles();
 
     // Redux Handles
-    const dispatch = useDispatch();
     const userId = useSelector(selectUserId);
 
     // React Functions
@@ -67,7 +64,9 @@ function CreateNewPost(props) {
             forumId: currentForumId,
         };
 
-        dispatch(addNewPost(newPost));
+        axios
+            .post('/api/posts/create', newPost)
+            .catch((err) => console.error(err));
 
         // Reset Form Fields
         setPostContent('');
