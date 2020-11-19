@@ -60,7 +60,7 @@ function Forum(props) {
                 <div className={classes.toolbar} />
 
                 <Grid container spacing={3}>
-                    <Grid item container xs={12} sm={8} spacing={3}>
+                    <Grid item container xs={12} sm={8}>
                         <CreateNewPost reactRouterProps={props} />
 
                         <PostsList />

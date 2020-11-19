@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
     post: {
         padding: theme.spacing(3),
-        marginBottom: theme.spacing(3),
+        marginTop: theme.spacing(3),
     },
     title: {
         marginBottom: theme.spacing(1),
