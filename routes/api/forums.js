@@ -23,42 +23,44 @@ router.post('/api/forums/join', (req, res, next) => {
     // Valid Input - Check DB for Forum Privacy Status
     const forumName = input.name;
 
-    Forum.findOne({ name: forumName })
-        .then((forum) => {
-            if (forum) {
-                // Create Payload with Forum-Specific Information
-                const data = {
-                    forumId: forum._id,
-                };
-
-                if (input.password) {
-                    bcrypt
-                        .compare(input.password, forum.password)
-                        .then((isMatch) => {
-                            if (isMatch) {
-                                data.userIsAuthenticated = true;
-                                data.isPublic = forum.public;
-
-                                return res.send(data);
-                            } else {
-                                return res.status(400).json({
-                                    password: 'Incorrect password',
-                                });
-                            }
-                        });
-                } else {
-                    data.isPublic = forum.public;
-
-                    return res.send(data);
-                }
-            } else {
+    forumExists(forumName)
+        .then((forumExists) => {
+            if (!forumExists) {
                 return res.status(400).json({
                     forum: 'A forum with this name cannot be found.',
                 });
+            } else {
+                // forumExists is actually just the forum object, which is returned by the .findById mongoose method in the forumExists() function.
+                joinForum(forumExists, input, res);
             }
         })
         .catch((err) => console.error(err));
 });
+
+async function joinForum(forum, input, res) {
+    const data = {
+        forumId: forum._id,
+    };
+
+    if (input.password) {
+        const isMatch = await bcrypt.compare(input.password, forum.password);
+
+        if (isMatch) {
+            data.userIsAuthenticated = true;
+            data.isPublic = forum.public;
+
+            return res.send(data);
+        } else {
+            return res.status(400).json({
+                password: 'Incorrect password',
+            });
+        }
+    } else {
+        data.isPublic = forum.public;
+
+        return res.send(data);
+    }
+}
 
 // Create Forum
 router.post('/api/forums/create', (req, res, next) => {
@@ -102,6 +104,8 @@ async function createNewForum(input, res) {
             name: input.name,
             public: input.isPublic,
         });
+
+        newForum.members.push(input.userId);
 
         const userId = await saveNewForumIdInUserDocument(
             input.userId,
