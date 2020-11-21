@@ -195,7 +195,10 @@ router.post('/api/forums/getForumMembers', (req, res, next) => {
     const forumId = req.body.forumId;
 
     Forum.findById(forumId)
-        .populate('members')
+        .populate({
+            path: 'members',
+            select: '_id name',
+        })
         .then((forum) => {
             if (forum) {
                 res.send(forum.members);
@@ -209,7 +212,13 @@ router.post('/api/forums/getForumPosts', (req, res, next) => {
     const forumId = req.body.forumId;
 
     Forum.findById(forumId)
-        .populate('posts')
+        .populate({
+            path: 'posts',
+            populate: {
+                path: 'author',
+                select: '_id name',
+            },
+        })
         .then((forum) => {
             if (forum) {
                 res.send(forum.posts);

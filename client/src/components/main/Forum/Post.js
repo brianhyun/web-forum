@@ -29,6 +29,9 @@ function Post(props) {
             <Typography variant="body1" className={classes.content}>
                 {props.content}
             </Typography>
+            <Typography variant="body1" className={classes.content}>
+                Written by {props.author}, {props.authorId}
+            </Typography>
         </Paper>
     );
 }

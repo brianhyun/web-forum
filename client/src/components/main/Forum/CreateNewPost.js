@@ -48,15 +48,13 @@ function CreateNewPost(props) {
     function handleFormSubmit(event) {
         event.preventDefault();
 
-        const newPost = {
-            title: postTitle,
-            content: postContent,
-            authorId: userId,
-            forumId: props.forumId,
-        };
-
         axios
-            .post('/api/posts/create', newPost)
+            .post('/api/posts/create', {
+                title: postTitle,
+                content: postContent,
+                authorId: userId,
+                forumId: props.forumId,
+            })
             .catch((err) => console.error(err));
 
         // Reset Form Fields

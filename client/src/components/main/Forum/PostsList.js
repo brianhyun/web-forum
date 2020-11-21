@@ -33,6 +33,8 @@ function PostsList(props) {
                         <Post
                             title={post.title}
                             content={post.content}
+                            author={post.author.name}
+                            authorId={post.author._id}
                             key={post._id}
                         />
                     );
