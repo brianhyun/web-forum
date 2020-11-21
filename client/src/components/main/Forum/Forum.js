@@ -5,7 +5,7 @@ import React from 'react';
 import CreateNewPost from './CreateNewPost';
 import AppBarAndDrawer from './AppBarAndDrawer';
 import PostsList from './PostsList';
-import MembersPanel from './Sidebar/MembersPanel';
+import MembersPanel from './sidebar/MembersPanel';
 
 import { useForumId } from '../../../utils/customHooks';
 
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
     },
     toolbar: {
-        // Required to have main content below toolbar.
+        // required to have main content below toolbar
         ...theme.mixins.toolbar,
     },
     content: {
