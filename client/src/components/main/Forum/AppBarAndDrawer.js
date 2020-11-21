@@ -27,6 +27,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
+import GroupIcon from '@material-ui/icons/Group';
 
 const drawerWidth = 240;
 
@@ -210,7 +211,9 @@ function AppBarAndDrawer(props) {
                             <Link to={forumLink} key={forum._id}>
                                 <ListItem button>
                                     <ListItemAvatar>
-                                        <Avatar alt={forumName} src="" />
+                                        <Avatar alt={forumName} src="">
+                                            <GroupIcon />
+                                        </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText primary={forumName} />
                                 </ListItem>
