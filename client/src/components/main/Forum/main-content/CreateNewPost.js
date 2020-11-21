@@ -7,7 +7,7 @@ import axios from 'axios';
 // Redux
 import { useSelector } from 'react-redux';
 
-import { selectUserId } from '../../../redux/slices/authSlice';
+import { selectUserId } from '../../../../redux/slices/authSlice';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';

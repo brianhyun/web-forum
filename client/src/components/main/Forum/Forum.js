@@ -2,9 +2,9 @@
 import React from 'react';
 
 // Custom React Components
-import CreateNewPost from './CreateNewPost';
+import CreateNewPost from './main-content/CreateNewPost';
 import AppBarAndDrawer from './AppBarAndDrawer';
-import PostsList from './PostsList';
+import PostsList from './main-content/PostsList';
 import MembersPanel from './sidebar/MembersPanel';
 
 import { useForumId } from '../../../utils/customHooks';

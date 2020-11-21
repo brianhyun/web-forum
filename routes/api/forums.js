@@ -156,22 +156,13 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
     const userId = req.body.userId;
 
     User.findById(userId)
-        .populate('forums')
+        .populate({
+            path: 'forums',
+            select: '_id name',
+        })
         .then((user) => {
             if (user) {
-                const usersForums = user.forums;
-                const forumsInfo = [];
-
-                for (let i = 0; i < usersForums.length; i++) {
-                    const forum = {
-                        forumId: usersForums[i]._id,
-                        name: usersForums[i].name,
-                    };
-
-                    forumsInfo.push(forum);
-                }
-
-                res.send(forumsInfo);
+                res.send(user.forums);
             }
         })
         .catch((err) => console.error(err));

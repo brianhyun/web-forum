@@ -195,11 +195,11 @@ function AppBarAndDrawer(props) {
                 <List>
                     {/* All Forums */}
                     {usersForums.map((forum) => {
-                        const forumLink = `/forum/${forum.forumId}`;
+                        const forumLink = `/forum/${forum._id}`;
                         const forumName = forum.name;
 
                         return (
-                            <Link to={forumLink} key={forum.forumId}>
+                            <Link to={forumLink} key={forum._id}>
                                 <ListItem button>
                                     <ListItemAvatar>
                                         <Avatar alt={forumName} src="" />

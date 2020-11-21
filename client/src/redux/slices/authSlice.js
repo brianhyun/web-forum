@@ -83,7 +83,7 @@ function redirectUserBasedOnForumCount(usersForums, history) {
 
     if (numberOfForums) {
         // Grab the first forum in the list and redirect to that page.
-        const firstForumId = usersForums[0].forumId;
+        const firstForumId = usersForums[0]._id;
 
         history.push(`/forum/${firstForumId}`);
     } else {
