@@ -4,9 +4,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 
-// Custom React Hook
-import { useForumId } from '../../../utils/customHooks';
-
 // Redux
 import { useSelector } from 'react-redux';
 
@@ -48,8 +45,6 @@ function CreateNewPost(props) {
     }
 
     // Handle Form Submit
-    const forumId = useForumId();
-
     function handleFormSubmit(event) {
         event.preventDefault();
 
