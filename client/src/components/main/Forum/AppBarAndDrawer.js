@@ -1,14 +1,12 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 // Redux
 import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 
 import { logoutUser } from '../../../redux/slices/authSlice';
-
-import { selectCurrentForum } from '../../../redux/slices/forumSlice';
 
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -88,16 +86,13 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function AppBarAndDrawer() {
+function AppBarAndDrawer(props) {
     // Use Material UI Styles
     const classes = useStyles();
     const theme = useTheme();
 
     // Redux Handles
     const dispatch = useDispatch();
-    const currentForum = useSelector(selectCurrentForum);
-
-    const usersForums = JSON.parse(localStorage.getItem('usersForums'));
 
     // React Handles
     const [open, setOpen] = useState(false);
@@ -110,10 +105,27 @@ function AppBarAndDrawer() {
         setOpen(false);
     };
 
-    // Handle User Logout
     function handleLogout() {
         dispatch(logoutUser());
     }
+
+    const [forumName, setForumName] = useState('');
+
+    // Backend Call for Current Forum Name
+    useEffect(() => {
+        const forumId = props.forumId;
+
+        axios
+            .post('/api/forums/getForumName', { forumId })
+            .then((response) => {
+                const forumName = response.data;
+                setForumName(forumName);
+            })
+            .catch((err) => console.error(err));
+    }, [props.forumId]);
+
+    // Grab User's Forums from Local Storage
+    const usersForums = JSON.parse(localStorage.getItem('usersForums'));
 
     return (
         <Box>
@@ -139,7 +151,7 @@ function AppBarAndDrawer() {
 
                     {/* Forum Name */}
                     <Typography variant="h6" noWrap>
-                        {currentForum.name}
+                        {forumName && forumName}
                     </Typography>
 
                     {/* Profile Icon */}

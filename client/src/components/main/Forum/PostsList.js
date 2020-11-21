@@ -1,26 +1,34 @@
 // Dependencies
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // Components
 import Post from './Post';
 
-// Redux
-import { useSelector } from 'react-redux';
-
-import { selectCurrentForum } from '../../../redux/slices/forumSlice';
-
 // Material UI Styles
 import Grid from '@material-ui/core/Grid';
 
-function PostsList() {
-    // Redux Handles
-    const currentForum = useSelector(selectCurrentForum);
-    const posts = currentForum.posts;
+function PostsList(props) {
+    // React Handles
+    const [forumPosts, setForumPosts] = useState([]);
+
+    useEffect(() => {
+        const forumId = props.forumId;
+
+        axios
+            .post('/api/forums/getForumPosts', { forumId })
+            .then((response) => {
+                const forumPosts = response.data;
+
+                setForumPosts(forumPosts);
+            })
+            .catch((err) => console.error(err));
+    }, [props.forumId]);
 
     return (
         <Grid item xs={12}>
-            {posts &&
-                posts.map((post) => {
+            {forumPosts &&
+                forumPosts.map((post) => {
                     return (
                         <Post
                             title={post.title}

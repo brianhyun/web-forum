@@ -1,8 +1,11 @@
 // Dependencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
+
+// Custom React Hook
+import { useForumId } from '../../../utils/customHooks';
 
 // Redux
 import { useSelector } from 'react-redux';
@@ -36,15 +39,6 @@ function CreateNewPost(props) {
     // Redux Handles
     const userId = useSelector(selectUserId);
 
-    // React Functions
-    const [currentForumId, setCurrentForumId] = useState('');
-
-    useEffect(() => {
-        const currentPath = props.reactRouterProps.location.pathname;
-        const forumId = currentPath.split('/')[2];
-        setCurrentForumId(forumId);
-    }, [props.reactRouterProps.location.pathname]);
-
     // Handle New Post Input
     const [postContent, setPostContent] = useState('');
     const [postTitle, setPostTitle] = useState('');
@@ -54,6 +48,8 @@ function CreateNewPost(props) {
     }
 
     // Handle Form Submit
+    const forumId = useForumId();
+
     function handleFormSubmit(event) {
         event.preventDefault();
 
@@ -61,7 +57,7 @@ function CreateNewPost(props) {
             title: postTitle,
             content: postContent,
             authorId: userId,
-            forumId: currentForumId,
+            forumId: props.forumId,
         };
 
         axios

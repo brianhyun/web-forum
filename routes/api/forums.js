@@ -177,15 +177,42 @@ router.post('/api/forums/getUsersForums', (req, res, next) => {
         .catch((err) => console.error(err));
 });
 
-// Get Info for Single Forum
-router.post('/api/forums/getForumInfo', (req, res, next) => {
+// Get Forum's Name
+router.post('/api/forums/getForumName', (req, res, next) => {
+    const forumId = req.body.forumId;
+
+    Forum.findById(forumId)
+        .then((forum) => {
+            if (forum) {
+                res.send(forum.name);
+            }
+        })
+        .catch((err) => console.error(err));
+});
+
+// Get Forum's Member
+router.post('/api/forums/getForumMembers', (req, res, next) => {
+    const forumId = req.body.forumId;
+
+    Forum.findById(forumId)
+        .populate('members')
+        .then((forum) => {
+            if (forum) {
+                res.send(forum.members);
+            }
+        })
+        .catch((err) => console.error(err));
+});
+
+// Get Forum's Member
+router.post('/api/forums/getForumPosts', (req, res, next) => {
     const forumId = req.body.forumId;
 
     Forum.findById(forumId)
         .populate('posts')
         .then((forum) => {
             if (forum) {
-                res.send(forum);
+                res.send(forum.posts);
             }
         })
         .catch((err) => console.error(err));
