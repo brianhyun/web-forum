@@ -24,6 +24,7 @@ import Forum from '../main/forum/Forum';
 import Join from '../forum-auth/Join';
 import Create from '../forum-auth/Create';
 import GetStarted from '../main/GetStarted';
+import UserProfile from '../main/user/UserProfile';
 
 // Utilities
 import setAuthToken from '../../utils/setAuthToken';
@@ -76,6 +77,11 @@ function App() {
                             exact
                             path="/forum/:id"
                             component={Forum}
+                        />
+                        <PrivateRoute
+                            exact
+                            path="/user/:id"
+                            component={UserProfile}
                         />
                         <Route path="*" component={PageNotFound} />
                     </Switch>

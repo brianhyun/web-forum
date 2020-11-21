@@ -49,10 +49,7 @@ function Forum(props) {
 
                 <Grid container spacing={3}>
                     <Grid item container xs={12} sm={8}>
-                        <CreateNewPost
-                            reactRouterProps={props}
-                            forumId={forumId}
-                        />
+                        <CreateNewPost forumId={forumId} />
 
                         <PostsList forumId={forumId} />
                     </Grid>

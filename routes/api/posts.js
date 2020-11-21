@@ -36,7 +36,7 @@ router.post('/api/posts/create', (req, res, next) => {
         .then((forum) => {
             // Save Post ID to Forum Document
             if (forum) {
-                forum.posts.push(newPost._id);
+                forum.posts.unshift(newPost._id);
 
                 forum.save();
             }

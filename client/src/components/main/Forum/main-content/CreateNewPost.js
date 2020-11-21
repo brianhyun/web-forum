@@ -16,6 +16,9 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 // Custom Styles
 import './CreateNewPost.css';
@@ -26,6 +29,11 @@ const useStyles = makeStyles((theme) => ({
     },
     marginBottom: {
         marginBottom: theme.spacing(3),
+    },
+    buttonContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
     },
 }));
 
@@ -39,6 +47,7 @@ function CreateNewPost(props) {
     // Handle New Post Input
     const [postContent, setPostContent] = useState('');
     const [postTitle, setPostTitle] = useState('');
+    const [showCreatePost, setShowCreatePost] = useState(false);
 
     function handleTitleChange(event) {
         setPostTitle(event.target.value);
@@ -62,34 +71,61 @@ function CreateNewPost(props) {
         setPostTitle('');
     }
 
+    function toggleShowCreatePost() {
+        setShowCreatePost(!showCreatePost);
+    }
+
     return (
         <Grid item xs={12}>
             <Paper className={classes.paper}>
-                <Typography variant="h6" className={classes.marginBottom}>
-                    Create New Post
-                </Typography>
-                <form noValidate onSubmit={handleFormSubmit}>
+                {showCreatePost ? (
+                    <Box>
+                        <Typography
+                            variant="h6"
+                            className={classes.marginBottom}
+                        >
+                            Create New Post
+                        </Typography>
+                        <form noValidate onSubmit={handleFormSubmit}>
+                            <TextField
+                                className={classes.marginBottom}
+                                id="outlined-basic"
+                                label="Title"
+                                variant="outlined"
+                                fullWidth
+                                value={postTitle}
+                                onChange={handleTitleChange}
+                                required
+                            />
+                            <ReactQuill
+                                className={classes.marginBottom}
+                                theme="snow"
+                                value={postContent}
+                                onChange={setPostContent}
+                                placeholder="Create a post..."
+                            />
+                            <Box className={classes.buttonContainer}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Post
+                                </Button>
+                                <IconButton onClick={toggleShowCreatePost}>
+                                    <ExpandLessIcon />
+                                </IconButton>
+                            </Box>
+                        </form>
+                    </Box>
+                ) : (
                     <TextField
-                        className={classes.marginBottom}
-                        id="outlined-basic"
-                        label="Title"
-                        variant="outlined"
+                        label="Create new post"
                         fullWidth
-                        value={postTitle}
-                        onChange={handleTitleChange}
-                        required
+                        onClick={toggleShowCreatePost}
+                        variant="outlined"
                     />
-                    <ReactQuill
-                        className={classes.marginBottom}
-                        theme="snow"
-                        value={postContent}
-                        onChange={setPostContent}
-                        placeholder="Create a post..."
-                    />
-                    <Button type="submit" variant="contained" color="primary">
-                        Post
-                    </Button>
-                </form>
+                )}
             </Paper>
         </Grid>
     );

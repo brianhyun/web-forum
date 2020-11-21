@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 // Redux
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { logoutUser } from '../../../redux/slices/authSlice';
+import { selectUserId } from '../../../redux/slices/authSlice';
 
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -46,6 +46,12 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
+    appBarNav: {
+        width: '100%',
+        alignItems: 'center',
+        display: 'flex',
+        justifyContent: 'flex-end',
+    },
     menuButton: {
         marginRight: 36,
     },
@@ -70,10 +76,7 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-            width: theme.spacing(9) + 1,
-        },
+        width: theme.spacing(9) + 1,
     },
     toolbar: {
         display: 'flex',
@@ -84,6 +87,10 @@ const useStyles = makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(3),
     },
+    profileIcon: {
+        position: 'relative',
+        right: '0',
+    },
 }));
 
 function AppBarAndDrawer(props) {
@@ -92,7 +99,8 @@ function AppBarAndDrawer(props) {
     const theme = useTheme();
 
     // Redux Handles
-    const dispatch = useDispatch();
+    const userId = useSelector(selectUserId);
+    const userProfileLink = `/user/${userId}`;
 
     // React Handles
     const [open, setOpen] = useState(false);
@@ -104,10 +112,6 @@ function AppBarAndDrawer(props) {
     const handleDrawerClose = () => {
         setOpen(false);
     };
-
-    function handleLogout() {
-        dispatch(logoutUser());
-    }
 
     const [forumName, setForumName] = useState('');
 
@@ -150,19 +154,23 @@ function AppBarAndDrawer(props) {
                     </IconButton>
 
                     {/* Forum Name */}
-                    <Typography variant="h6" noWrap>
+                    <Typography variant="h6">
                         {forumName && forumName}
                     </Typography>
 
                     {/* Profile Icon */}
-                    <IconButton
-                        disableRipple
-                        disableFocusRipple
-                        size="small"
-                        onClick={handleLogout}
-                    >
-                        <Avatar alt="forum profile picture" src="" />
-                    </IconButton>
+                    <Box className={classes.appBarNav}>
+                        <Link to={userProfileLink}>
+                            <IconButton
+                                disableRipple
+                                disableFocusRipple
+                                size="small"
+                                className={classes.profileIcon}
+                            >
+                                <Avatar alt="forum profile picture" src="" />
+                            </IconButton>
+                        </Link>
+                    </Box>
                 </Toolbar>
             </AppBar>
 
