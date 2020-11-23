@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Forum(props) {
+function Forum() {
     // Use Material UI Styles
     const classes = useStyles();
 
@@ -52,7 +52,7 @@ function Forum(props) {
                 setForumPosts(forumPosts);
             })
             .catch((err) => console.error(err));
-    }, [props.forumId]);
+    }, [forumId]);
 
     function updateForumPosts() {
         axios
