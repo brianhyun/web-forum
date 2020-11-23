@@ -64,11 +64,18 @@ function CreateNewPost(props) {
                 authorId: userId,
                 forumId: props.forumId,
             })
+            .then(() => {
+                // Update PostsList
+                props.updateForumPosts();
+            })
             .catch((err) => console.error(err));
 
         // Reset Form Fields
         setPostContent('');
         setPostTitle('');
+
+        // Hide Create Post Form
+        setShowCreatePost(false);
     }
 
     function toggleShowCreatePost() {

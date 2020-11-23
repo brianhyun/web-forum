@@ -1,5 +1,6 @@
 // Dependencies
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 // Custom React Components
 import CreateNewPost from './main-content/CreateNewPost';
@@ -39,6 +40,33 @@ function Forum(props) {
     // Redux Handles
     const forumId = useForumId();
 
+    // React Handles
+    const [forumPosts, setForumPosts] = useState([]);
+
+    useEffect(() => {
+        axios
+            .post('/api/forums/getForumPosts', { forumId })
+            .then((response) => {
+                const forumPosts = response.data;
+
+                setForumPosts(forumPosts);
+            })
+            .catch((err) => console.error(err));
+    }, [props.forumId]);
+
+    function updateForumPosts() {
+        axios
+            .post('/api/forums/getForumPosts', { forumId })
+            .then((response) => {
+                const forumPosts = response.data;
+
+                setForumPosts(forumPosts);
+            })
+            .catch((err) => console.error(err));
+
+        return;
+    }
+
     return (
         <Box className={classes.root}>
             <CssBaseline />
@@ -49,9 +77,12 @@ function Forum(props) {
 
                 <Grid container spacing={3}>
                     <Grid item container xs={12} sm={8}>
-                        <CreateNewPost forumId={forumId} />
+                        <CreateNewPost
+                            forumId={forumId}
+                            updateForumPosts={updateForumPosts}
+                        />
 
-                        <PostsList forumId={forumId} />
+                        <PostsList forumPosts={forumPosts} />
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
