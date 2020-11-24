@@ -63,8 +63,6 @@ function Forum() {
                 setForumPosts(forumPosts);
             })
             .catch((err) => console.error(err));
-
-        return;
     }
 
     return (

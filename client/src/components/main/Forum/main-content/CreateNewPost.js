@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
@@ -53,9 +53,15 @@ function CreateNewPost(props) {
         setPostTitle(event.target.value);
     }
 
+    // Handle Ref to Quill Editor
+    const reactQuillRef = useRef();
+
     // Handle Form Submit
     function handleFormSubmit(event) {
         event.preventDefault();
+
+        const quillContents = reactQuillRef.getEditor.getContents();
+        console.log('quill contents:', quillContents);
 
         axios
             .post('/api/posts/create', {
@@ -110,6 +116,7 @@ function CreateNewPost(props) {
                                 value={postContent}
                                 onChange={setPostContent}
                                 placeholder="Create a post..."
+                                ref={reactQuillRef}
                             />
                             <Box className={classes.buttonContainer}>
                                 <Button
