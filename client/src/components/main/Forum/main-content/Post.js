@@ -21,14 +21,21 @@ function Post(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
+    const contentMarkup = {
+        __html: props.content,
+    };
+
     return (
         <Paper className={classes.post}>
             <Typography variant="h5" className={classes.title}>
                 {props.title}
             </Typography>
-            <Typography variant="body1" className={classes.content}>
-                {props.content}
-            </Typography>
+            <Typography
+                variant="body1"
+                component="div"
+                dangerouslySetInnerHTML={contentMarkup}
+                className={classes.content}
+            ></Typography>
             <Typography variant="body1" className={classes.content}>
                 Written by {props.author}, {props.authorId}
             </Typography>

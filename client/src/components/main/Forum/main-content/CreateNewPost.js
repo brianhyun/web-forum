@@ -1,8 +1,9 @@
 // Dependencies
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
+import DOMPurify from 'dompurify';
 
 // Redux
 import { useSelector } from 'react-redux';
@@ -53,20 +54,16 @@ function CreateNewPost(props) {
         setPostTitle(event.target.value);
     }
 
-    // Handle Ref to Quill Editor
-    const reactQuillRef = useRef();
-
     // Handle Form Submit
     function handleFormSubmit(event) {
         event.preventDefault();
 
-        const quillContents = reactQuillRef.getEditor.getContents();
-        console.log('quill contents:', quillContents);
+        const purifiedPostContent = DOMPurify.sanitize(postContent);
 
         axios
             .post('/api/posts/create', {
                 title: postTitle,
-                content: postContent,
+                content: purifiedPostContent,
                 authorId: userId,
                 forumId: props.forumId,
             })
@@ -116,7 +113,6 @@ function CreateNewPost(props) {
                                 value={postContent}
                                 onChange={setPostContent}
                                 placeholder="Create a post..."
-                                ref={reactQuillRef}
                             />
                             <Box className={classes.buttonContainer}>
                                 <Button
