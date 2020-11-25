@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
+        height: theme.spacing(10),
     },
     appBarShift: {
         marginLeft: drawerWidth,
@@ -52,6 +53,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         display: 'flex',
         justifyContent: 'flex-end',
+    },
+    appBarToolbar: {
+        height: '100%',
     },
     menuButton: {
         marginRight: 36,
@@ -77,13 +81,13 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         overflowX: 'hidden',
-        width: theme.spacing(9) + 1,
+        width: theme.spacing(9),
     },
     toolbar: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
+        height: theme.spacing(10),
     },
     paper: {
         padding: theme.spacing(3),
@@ -91,6 +95,13 @@ const useStyles = makeStyles((theme) => ({
     profileIcon: {
         position: 'relative',
         right: '0',
+    },
+    link: {
+        color: 'black',
+        textDecoration: 'none',
+    },
+    listItem: {
+        padding: theme.spacing(2),
     },
 }));
 
@@ -140,8 +151,7 @@ function AppBarAndDrawer(props) {
                     [classes.appBarShift]: open,
                 })}
             >
-                <Toolbar>
-                    {/* Drawer Icon */}
+                <Toolbar className={classes.appBarToolbar}>
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -154,12 +164,10 @@ function AppBarAndDrawer(props) {
                         <MenuIcon />
                     </IconButton>
 
-                    {/* Forum Name */}
                     <Typography variant="h6">
                         {forumName && forumName}
                     </Typography>
 
-                    {/* Profile Icon */}
                     <Box className={classes.appBarNav}>
                         <Link to={userProfileLink}>
                             <IconButton
@@ -188,7 +196,6 @@ function AppBarAndDrawer(props) {
                     }),
                 }}
             >
-                {/* Toolbar Close Button */}
                 <div className={classes.toolbar}>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? (
@@ -202,14 +209,17 @@ function AppBarAndDrawer(props) {
                 <Divider />
 
                 <List>
-                    {/* All Forums */}
                     {usersForums.map((forum) => {
                         const forumLink = `/forum/${forum._id}`;
                         const forumName = forum.name;
 
                         return (
-                            <Link to={forumLink} key={forum._id}>
-                                <ListItem button>
+                            <Link
+                                to={forumLink}
+                                key={forum._id}
+                                className={classes.link}
+                            >
+                                <ListItem button className={classes.listItem}>
                                     <ListItemAvatar>
                                         <Avatar alt={forumName} src="">
                                             <GroupIcon />
@@ -221,10 +231,7 @@ function AppBarAndDrawer(props) {
                         );
                     })}
 
-                    <Divider />
-
-                    {/* Add Forum */}
-                    <Link to="/join">
+                    <Link to="/join" className={classes.link}>
                         <ListItem button className={classes.listItem}>
                             <ListItemAvatar>
                                 <Avatar>

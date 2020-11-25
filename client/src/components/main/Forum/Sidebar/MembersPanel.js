@@ -40,7 +40,7 @@ function MembersPanel(props) {
                 forumMembers.map((member) => {
                     return (
                         <Typography variant="body1" key={member._id}>
-                            {member.name}, {member._id}
+                            {member.name}
                         </Typography>
                     );
                 })}

@@ -43,14 +43,14 @@ const theme = createMuiTheme({
         },
         h5: {
             fontFamily: 'Poppins',
-            fontSize: 23,
-            fontWeight: 400,
+            fontSize: 26,
+            fontWeight: 600,
             letterSpacing: 0,
         },
         h6: {
             fontFamily: 'Poppins',
             fontSize: 19,
-            fontWeight: 500,
+            fontWeight: 600,
             letterSpacing: 0.15,
         },
         subtitle1: {

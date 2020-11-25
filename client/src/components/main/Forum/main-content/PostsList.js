@@ -38,6 +38,7 @@ function PostsList(props) {
                             content={post.content}
                             author={post.author.name}
                             authorId={post.author._id}
+                            publishDate={post.date}
                             key={post._id}
                         />
                     );
