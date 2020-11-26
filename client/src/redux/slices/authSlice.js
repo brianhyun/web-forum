@@ -126,4 +126,8 @@ export function selectUserId(state) {
     return state.auth.user.userId;
 }
 
+export function selectUsername(state) {
+    return state.auth.user.username;
+}
+
 export default slice.reducer;

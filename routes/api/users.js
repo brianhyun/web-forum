@@ -116,4 +116,16 @@ router.post('/api/users/login', (req, res, next) => {
         .catch((err) => console.error(err));
 });
 
+router.post('/api/users/getUserFullName', (req, res, next) => {
+    const userId = req.body.userId;
+
+    User.findById(userId)
+        .then((user) => {
+            if (user) {
+                res.send(user.name);
+            }
+        })
+        .catch((err) => console.error(err));
+});
+
 module.exports = router;

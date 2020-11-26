@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+// React Components
+import ProfilePopup from './ProfilePopup';
+
 // Redux
 import { useSelector } from 'react-redux';
 
@@ -94,7 +97,6 @@ const useStyles = makeStyles((theme) => ({
     },
     profileIcon: {
         position: 'relative',
-        right: '0',
     },
     link: {
         color: 'black',
@@ -112,7 +114,6 @@ function AppBarAndDrawer(props) {
 
     // Redux Handles
     const userId = useSelector(selectUserId);
-    const userProfileLink = `/user/${userId}`;
 
     // React Handles
     const [open, setOpen] = useState(false);
@@ -125,9 +126,9 @@ function AppBarAndDrawer(props) {
         setOpen(false);
     };
 
+    // Backend Call for Current Forum Name
     const [forumName, setForumName] = useState('');
 
-    // Backend Call for Current Forum Name
     useEffect(() => {
         const forumId = props.forumId;
 
@@ -142,6 +143,13 @@ function AppBarAndDrawer(props) {
 
     // Grab User's Forums from Local Storage
     const usersForums = JSON.parse(localStorage.getItem('usersForums'));
+
+    // Profile Popup
+    const [profilePopupOpen, setProfilePopupOpen] = useState(false);
+
+    function showProfilePopup() {
+        setProfilePopupOpen(!profilePopupOpen);
+    }
 
     return (
         <Box>
@@ -169,16 +177,18 @@ function AppBarAndDrawer(props) {
                     </Typography>
 
                     <Box className={classes.appBarNav}>
-                        <Link to={userProfileLink}>
+                        <Box>
                             <IconButton
                                 disableRipple
                                 disableFocusRipple
                                 size="small"
                                 className={classes.profileIcon}
+                                onClick={showProfilePopup}
                             >
                                 <Avatar alt="forum profile picture" src="" />
                             </IconButton>
-                        </Link>
+                            {profilePopupOpen && <ProfilePopup />}
+                        </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
