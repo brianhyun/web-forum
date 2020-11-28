@@ -34,6 +34,7 @@ function PostsList(props) {
                 props.forumPosts.map((post) => {
                     return (
                         <Post
+                            postId={post._id}
                             title={post.title}
                             content={post.content}
                             author={post.author.name}

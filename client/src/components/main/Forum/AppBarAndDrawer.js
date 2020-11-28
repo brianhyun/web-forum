@@ -6,11 +6,6 @@ import axios from 'axios';
 // React Components
 import ProfilePopup from './ProfilePopup';
 
-// Redux
-import { useSelector } from 'react-redux';
-
-import { selectUserId } from '../../../redux/slices/authSlice';
-
 // Material UI Styles
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -111,9 +106,6 @@ function AppBarAndDrawer(props) {
     // Use Material UI Styles
     const classes = useStyles();
     const theme = useTheme();
-
-    // Redux Handles
-    const userId = useSelector(selectUserId);
 
     // React Handles
     const [open, setOpen] = useState(false);

@@ -25,6 +25,7 @@ import Join from '../forum-auth/Join';
 import Create from '../forum-auth/Create';
 import GetStarted from '../main/GetStarted';
 import UserProfile from '../main/user/UserProfile';
+import PostPage from '../main/post/PostPage';
 
 // Utilities
 import setAuthToken from '../../utils/setAuthToken';
@@ -82,6 +83,11 @@ function App() {
                             exact
                             path="/user/:id"
                             component={UserProfile}
+                        />
+                        <PrivateRoute
+                            exact
+                            path="/post/:id"
+                            component={PostPage}
                         />
                         <Route path="*" component={PageNotFound} />
                     </Switch>
