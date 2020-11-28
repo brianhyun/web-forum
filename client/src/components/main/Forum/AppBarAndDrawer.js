@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
     profileIcon: {
         position: 'relative',
     },
-    link: {
+    linkStyles: {
         color: 'black',
         textDecoration: 'none',
     },
@@ -219,7 +219,7 @@ function AppBarAndDrawer(props) {
                             <Link
                                 to={forumLink}
                                 key={forum._id}
-                                className={classes.link}
+                                className={classes.linkStyles}
                             >
                                 <ListItem button className={classes.listItem}>
                                     <ListItemAvatar>
@@ -233,7 +233,7 @@ function AppBarAndDrawer(props) {
                         );
                     })}
 
-                    <Link to="/join" className={classes.link}>
+                    <Link to="/join" className={classes.linkStyles}>
                         <ListItem button className={classes.listItem}>
                             <ListItemAvatar>
                                 <Avatar>

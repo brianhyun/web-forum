@@ -1,10 +1,9 @@
 # Todo
 
 -   [ ] If a user joins a public forum, then I have to add that forum id to the user's forum array.
--   [ ] Remove usersForum array in localStorage on logout.
--   [ ] If the user is on the dashboard page but they aren't any forums, then use React state to hide the create post and sidebar informational panel and show "add new post" jumbotron.
--   [ ] On forum page load, grab all the posts for the forum and save them to redux store, select it from store and use it in the forum page. Change file names appropriately.
--   [ ] In 'slices/authSlice' file, the 'loginUser' function has a catch statement with an error method that only needs to be dispatched when there are errors in the form.
+-   [ ] 'slices/authSlice': the 'loginUser' function has a catch statement with an error method that only needs to be dispatched when there are errors in the form.
+-   [ ] 'forum component': grab all the posts for the forum and save them to redux store, select it from store and use it in the forum page. Change file names appropriately.
+-   [ ] 'forum' component: when screen is small, add divider component between post list and members panel.
 
 # Issues History
 
@@ -18,6 +17,7 @@
 -   [x] If user isn't a part of any forums, then redirect them to the 'Get Started' page, prompting them to join or create a forum.
 -   [x] Recheck 'Get Started' page functionality.
 -   [x] In 'utils/storeUsersForumsInLocalStorage' file, have 'setUsersForumsInLocalStorage' function be responsible for only one action.
+-   [x] Clear localStorage on logout.
 
 # Stuff I Learned
 

@@ -7,3 +7,11 @@ export function useForumId() {
 
     return forumId;
 }
+
+export function usePostId() {
+    const location = useLocation();
+
+    const postId = location.pathname.split('/')[2];
+
+    return postId;
+}

@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Custom React Components
+import Post from '../forum/main-content/Post';
 import AppBarAndDrawer from '../forum/AppBarAndDrawer';
 import MembersPanel from '../forum/sidebar/MembersPanel';
 
 import { useForumId } from '../../../utils/customHooks';
+import { usePostId } from '../../../utils/customHooks';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,20 +39,21 @@ function PostPage() {
 
     // Redux Handles
     const forumId = useForumId();
+    const postId = usePostId();
 
     // React Handles
-    const [forumPosts, setForumPosts] = useState([]);
+    const [post, setPost] = useState();
 
     useEffect(() => {
         axios
-            .post('/api/forums/getForumPosts', { forumId })
+            .post('/api/posts/getPostInfo', { postId })
             .then((response) => {
-                const forumPosts = response.data;
+                const postData = response.data;
 
-                setForumPosts(forumPosts);
+                setPost(postData);
             })
             .catch((err) => console.error(err));
-    }, [forumId]);
+    }, [postId]);
 
     return (
         <Box className={classes.root}>
@@ -61,7 +64,18 @@ function PostPage() {
                 <div className={classes.toolbar} />
 
                 <Grid container spacing={3}>
-                    <Grid item container xs={12} sm={8}></Grid>
+                    <Grid item container xs={12} sm={8}>
+                        {post && (
+                            <Post
+                                postId={post._id}
+                                title={post.title}
+                                content={post.content}
+                                author={post.author.name}
+                                authorId={post.author._id}
+                                publishDate={post.date}
+                            />
+                        )}
+                    </Grid>
 
                     <Grid item xs={12} sm={4}>
                         <MembersPanel forumId={forumId} />

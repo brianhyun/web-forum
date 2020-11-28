@@ -1,12 +1,13 @@
+// Dependencies
 const mongoose = require('mongoose');
 const express = require('express');
 const rootPath = require('app-root-path');
 
-// Only if I decide to tie each post to the user.
-// const { User } = require(rootPath + '/models/User');
+// Models
 const Forum = require(rootPath + '/models/Forum');
 const Post = require(rootPath + '/models/Post');
 
+// Utilities
 const validatePostInput = require(rootPath + '/utils/post-validation/create');
 
 const router = express.Router();
@@ -46,6 +47,23 @@ router.post('/api/posts/create', (req, res, next) => {
                 .save()
                 .then((post) => res.send(post))
                 .catch((err) => console.error(err));
+        })
+        .catch((err) => console.error(err));
+});
+
+// Get Info for a Single Post
+router.post('/api/posts/getPostInfo', (req, res, next) => {
+    const postId = req.body.postId;
+
+    Post.findById(postId)
+        .populate({
+            path: 'author',
+            select: 'name _id',
+        })
+        .then((post) => {
+            if (post) {
+                res.send(post);
+            }
         })
         .catch((err) => console.error(err));
 });

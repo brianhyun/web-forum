@@ -26,10 +26,8 @@ import './CreateNewPost.css';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        padding: theme.spacing(3),
-    },
-    marginBottom: {
         marginBottom: theme.spacing(3),
+        padding: theme.spacing(3),
     },
     buttonContainer: {
         display: 'flex',

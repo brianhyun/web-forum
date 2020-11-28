@@ -1,5 +1,6 @@
 // Dependencies
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // Components
 import Post from './Post';
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: '500',
         color: 'gray',
     },
+    linkStyle: {
+        textDecoration: 'none',
+    },
 }));
 
 function PostsList(props) {
@@ -32,16 +36,23 @@ function PostsList(props) {
         <Grid item xs={12}>
             {props.forumPosts && props.forumPosts.length ? (
                 props.forumPosts.map((post) => {
+                    const postLink = `/post/${post._id}`;
+
                     return (
-                        <Post
-                            postId={post._id}
-                            title={post.title}
-                            content={post.content}
-                            author={post.author.name}
-                            authorId={post.author._id}
-                            publishDate={post.date}
+                        <Link
+                            to={postLink}
+                            className={classes.linkStyle}
                             key={post._id}
-                        />
+                        >
+                            <Post
+                                postId={post._id}
+                                title={post.title}
+                                content={post.content}
+                                author={post.author.name}
+                                authorId={post.author._id}
+                                publishDate={post.date}
+                            />
+                        </Link>
                     );
                 })
             ) : (
