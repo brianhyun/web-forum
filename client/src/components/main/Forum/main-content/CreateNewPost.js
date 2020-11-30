@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
@@ -49,7 +49,6 @@ function CreateNewPost(props) {
     // Handle New Post Input
     const [postContent, setPostContent] = useState('');
     const [postTitle, setPostTitle] = useState('');
-    const [showCreatePost, setShowCreatePost] = useState(false);
 
     function handleTitleChange(event) {
         setPostTitle(event.target.value);
@@ -82,29 +81,55 @@ function CreateNewPost(props) {
         setShowCreatePost(false);
     }
 
+    // Handle Form View Toggle
+    const [showCreatePost, setShowCreatePost] = useState(false);
+    const [textFieldLabel, setTextFieldLabel] = useState('Create new post');
+    const [
+        disableToggleShowCreatePost,
+        setDisableToggleShowCreatePost,
+    ] = useState(false);
+
+    useEffect(() => {
+        if (showCreatePost) {
+            setTextFieldLabel('Title');
+        } else {
+            setTextFieldLabel('Create new post');
+        }
+    }, [showCreatePost]);
+
     function toggleShowCreatePost() {
         setShowCreatePost(!showCreatePost);
+        setDisableToggleShowCreatePost(!disableToggleShowCreatePost);
     }
 
     return (
         <Grid item xs={12}>
             <Paper className={clsx(classes.paper, classes.margin)}>
-                {showCreatePost ? (
-                    <Box>
+                <Box>
+                    {showCreatePost && (
                         <Typography variant="h6" className={classes.margin}>
                             Create New Post
                         </Typography>
-                        <form noValidate onSubmit={handleFormSubmit}>
-                            <TextField
-                                className={classes.margin}
-                                id="outlined-basic"
-                                label="Title"
-                                variant="outlined"
-                                fullWidth
-                                value={postTitle}
-                                onChange={handleTitleChange}
-                                required
-                            />
+                    )}
+                    <form noValidate onSubmit={handleFormSubmit}>
+                        <TextField
+                            className={clsx({
+                                [classes.margin]: showCreatePost,
+                            })}
+                            id="outlined-basic"
+                            label={textFieldLabel}
+                            variant="outlined"
+                            fullWidth
+                            value={postTitle}
+                            onChange={handleTitleChange}
+                            onClick={
+                                !disableToggleShowCreatePost
+                                    ? toggleShowCreatePost
+                                    : null
+                            }
+                            required
+                        />
+                        {showCreatePost && (
                             <ReactQuill
                                 className={classes.margin}
                                 theme="snow"
@@ -112,6 +137,8 @@ function CreateNewPost(props) {
                                 onChange={setPostContent}
                                 placeholder="Create a post..."
                             />
+                        )}
+                        {showCreatePost && (
                             <Box className={classes.buttonContainer}>
                                 <Button
                                     type="submit"
@@ -124,16 +151,9 @@ function CreateNewPost(props) {
                                     <ExpandLessIcon />
                                 </IconButton>
                             </Box>
-                        </form>
-                    </Box>
-                ) : (
-                    <TextField
-                        label="Create new post"
-                        fullWidth
-                        onClick={toggleShowCreatePost}
-                        variant="outlined"
-                    />
-                )}
+                        )}
+                    </form>
+                </Box>
             </Paper>
         </Grid>
     );
