@@ -127,7 +127,7 @@ function CreateNewPost(props) {
                                     ? toggleShowCreatePost
                                     : null
                             }
-                            required
+                            required={showCreatePost}
                         />
                         {showCreatePost && (
                             <ReactQuill
