@@ -49,7 +49,7 @@ function Post(props) {
                             variant="body1"
                             className={classes.postInfoText}
                         >
-                            {props.parentForum} • Posted by {props.author}{' '}
+                            {props.parentForumName} • Posted by {props.author}{' '}
                             {dateDifference}
                         </Typography>
                     </Box>

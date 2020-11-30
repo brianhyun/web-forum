@@ -46,7 +46,8 @@ function PostsList(props) {
                             key={post._id}
                         >
                             <Post
-                                parentForum={post.parentForum.name}
+                                parentForumId={post.parentForum._id}
+                                parentForumName={post.parentForum.name}
                                 postId={post._id}
                                 title={post.title}
                                 content={post.content}

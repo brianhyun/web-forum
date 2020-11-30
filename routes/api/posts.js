@@ -58,10 +58,16 @@ router.post('/api/posts/getPostInfo', (req, res, next) => {
     const postId = req.body.postId;
 
     Post.findById(postId)
-        .populate({
-            path: 'author',
-            select: 'name _id',
-        })
+        .populate([
+            {
+                path: 'author',
+                select: 'name _id',
+            },
+            {
+                path: 'parentForum',
+                select: 'name _id',
+            },
+        ])
         .then((post) => {
             if (post) {
                 res.send(post);

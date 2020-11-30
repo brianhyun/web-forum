@@ -7,7 +7,6 @@ import Post from '../forum/main-content/Post';
 import AppBarAndDrawer from '../forum/AppBarAndDrawer';
 import MembersPanel from '../forum/sidebar/MembersPanel';
 
-import { useForumId } from '../../../utils/customHooks';
 import { usePostId } from '../../../utils/customHooks';
 
 // Material UI Components
@@ -38,22 +37,20 @@ function PostPage() {
     const classes = useStyles();
 
     // Redux Handles
-
-    // The reason why forumId doesn't work is because the useForumId()
-    // hook uses the url as a source of truth.
-    // But, PostPage forum is only loaded on a '/post/:id' url.
-    const forumId = useForumId();
     const postId = usePostId();
 
     // React Handles
     const [post, setPost] = useState();
+    const [parentForumId, setParentForumId] = useState();
 
     useEffect(() => {
         axios
             .post('/api/posts/getPostInfo', { postId })
             .then((response) => {
                 const postData = response.data;
+                const postParentForumId = postData.parentForum._id;
 
+                setParentForumId(postParentForumId);
                 setPost(postData);
             })
             .catch((err) => console.error(err));
@@ -62,7 +59,7 @@ function PostPage() {
     return (
         <Box className={classes.root}>
             <CssBaseline />
-            <AppBarAndDrawer forumId={forumId} />
+            <AppBarAndDrawer forumId={parentForumId} />
 
             <Box component="main" className={classes.content}>
                 <div className={classes.toolbar} />
@@ -82,7 +79,7 @@ function PostPage() {
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
-                        <MembersPanel forumId={forumId} />
+                        <MembersPanel forumId={parentForumId} />
                     </Grid>
                 </Grid>
             </Box>
