@@ -15,7 +15,7 @@ const postSchema = new Schema({
     comments: {
         type: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
     },
-    parentForum: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    parentForum: { type: Schema.Types.ObjectId, ref: 'Forum', required: true },
     date: {
         type: Date,
         default: Date.now,

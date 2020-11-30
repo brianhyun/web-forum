@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: theme.spacing(3),
         padding: theme.spacing(3),
     },
     noPostsContent: {
@@ -36,14 +35,9 @@ function PostsList(props) {
         <Grid item xs={12}>
             {props.forumPosts && props.forumPosts.length ? (
                 props.forumPosts.map((post) => {
-                    const postLink = `/post/${post._id}`;
+                    console.log(post);
 
-                    if (!post.parentForum) {
-                        post.parentForum = {
-                            name: '',
-                            _id: '',
-                        };
-                    }
+                    const postLink = `/post/${post._id}`;
 
                     return (
                         <Link

@@ -205,14 +205,16 @@ router.post('/api/forums/getForumPosts', (req, res, next) => {
     Forum.findById(forumId)
         .populate({
             path: 'posts',
-            populate: {
-                path: 'author',
-                select: '_id name',
-            },
-            populate: {
-                path: 'parentForum',
-                select: '_id name',
-            },
+            populate: [
+                {
+                    path: 'author',
+                    select: '_id name',
+                },
+                {
+                    path: 'parentForum',
+                    select: '_id name',
+                },
+            ],
         })
         .then((forum) => {
             if (forum) {

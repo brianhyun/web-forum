@@ -23,16 +23,17 @@ router.post('/api/posts/create', (req, res, next) => {
     }
 
     const authorObjectId = mongoose.Types.ObjectId(input.authorId);
+    const forumObjectId = mongoose.Types.ObjectId(input.forumId);
 
     // Valid Input
-    const forumId = input.forumId;
-
     const newPost = new Post({
         title: input.title,
         content: input.content,
         author: authorObjectId,
-        parentForum: forumId,
+        parentForum: forumObjectId,
     });
+
+    const forumId = input.forumId;
 
     Forum.findById(forumId)
         .then((forum) => {
