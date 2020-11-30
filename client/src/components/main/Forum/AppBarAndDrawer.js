@@ -128,6 +128,7 @@ function AppBarAndDrawer(props) {
             .post('/api/forums/getForumName', { forumId })
             .then((response) => {
                 const forumName = response.data;
+
                 setForumName(forumName);
             })
             .catch((err) => console.error(err));
@@ -164,9 +165,7 @@ function AppBarAndDrawer(props) {
                         <MenuIcon />
                     </IconButton>
 
-                    <Typography variant="h6">
-                        {forumName && forumName}
-                    </Typography>
+                    <Typography variant="h6">{forumName}</Typography>
 
                     <Box className={classes.appBarNav}>
                         <Box>

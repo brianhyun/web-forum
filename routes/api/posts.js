@@ -12,7 +12,7 @@ const validatePostInput = require(rootPath + '/utils/post-validation/create');
 
 const router = express.Router();
 
-// Create Forum
+// Create New Post
 router.post('/api/posts/create', (req, res, next) => {
     const input = req.body;
     const { errors, isValid } = validatePostInput(input);
@@ -25,13 +25,14 @@ router.post('/api/posts/create', (req, res, next) => {
     const authorObjectId = mongoose.Types.ObjectId(input.authorId);
 
     // Valid Input
+    const forumId = input.forumId;
+
     const newPost = new Post({
         title: input.title,
         content: input.content,
         author: authorObjectId,
+        parentForum: forumId,
     });
-
-    const forumId = input.forumId;
 
     Forum.findById(forumId)
         .then((forum) => {

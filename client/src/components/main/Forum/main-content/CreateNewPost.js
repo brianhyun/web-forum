@@ -12,6 +12,7 @@ import { selectUserId } from '../../../../redux/slices/authSlice';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -26,8 +27,10 @@ import './CreateNewPost.css';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
-        marginBottom: theme.spacing(3),
         padding: theme.spacing(3),
+    },
+    margin: {
+        marginBottom: theme.spacing(3),
     },
     buttonContainer: {
         display: 'flex',
@@ -85,18 +88,15 @@ function CreateNewPost(props) {
 
     return (
         <Grid item xs={12}>
-            <Paper className={classes.paper}>
+            <Paper className={clsx(classes.paper, classes.margin)}>
                 {showCreatePost ? (
                     <Box>
-                        <Typography
-                            variant="h6"
-                            className={classes.marginBottom}
-                        >
+                        <Typography variant="h6" className={classes.margin}>
                             Create New Post
                         </Typography>
                         <form noValidate onSubmit={handleFormSubmit}>
                             <TextField
-                                className={classes.marginBottom}
+                                className={classes.margin}
                                 id="outlined-basic"
                                 label="Title"
                                 variant="outlined"
@@ -106,7 +106,7 @@ function CreateNewPost(props) {
                                 required
                             />
                             <ReactQuill
-                                className={classes.marginBottom}
+                                className={classes.margin}
                                 theme="snow"
                                 value={postContent}
                                 onChange={setPostContent}

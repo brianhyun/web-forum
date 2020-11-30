@@ -209,6 +209,10 @@ router.post('/api/forums/getForumPosts', (req, res, next) => {
                 path: 'author',
                 select: '_id name',
             },
+            populate: {
+                path: 'parentForum',
+                select: '_id name',
+            },
         })
         .then((forum) => {
             if (forum) {

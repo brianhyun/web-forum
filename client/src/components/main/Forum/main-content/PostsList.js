@@ -38,6 +38,13 @@ function PostsList(props) {
                 props.forumPosts.map((post) => {
                     const postLink = `/post/${post._id}`;
 
+                    if (!post.parentForum) {
+                        post.parentForum = {
+                            name: '',
+                            _id: '',
+                        };
+                    }
+
                     return (
                         <Link
                             to={postLink}
@@ -45,6 +52,7 @@ function PostsList(props) {
                             key={post._id}
                         >
                             <Post
+                                parentForum={post.parentForum.name}
                                 postId={post._id}
                                 title={post.title}
                                 content={post.content}

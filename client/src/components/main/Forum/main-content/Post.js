@@ -49,7 +49,8 @@ function Post(props) {
                             variant="body1"
                             className={classes.postInfoText}
                         >
-                            Posted by {props.author} {dateDifference}
+                            {props.parentForum} • Posted by {props.author}{' '}
+                            {dateDifference}
                         </Typography>
                     </Box>
                     <Box>

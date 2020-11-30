@@ -38,6 +38,11 @@ function PostPage() {
     const classes = useStyles();
 
     // Redux Handles
+
+    // The reason why forumId doesn't work is because the useForumId()
+    // hook uses the url as a source of truth.
+    // But, PostPage forum is only loaded on a '/post/:id' url.
+
     const forumId = useForumId();
     const postId = usePostId();
 
