@@ -54,6 +54,7 @@ function PostsList(props) {
                                 author={post.author.name}
                                 authorId={post.author._id}
                                 publishDate={post.date}
+                                comments={post.comments}
                             />
                         </Link>
                     );

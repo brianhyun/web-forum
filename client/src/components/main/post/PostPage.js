@@ -68,12 +68,15 @@ function PostPage() {
                     <Grid item container xs={12} sm={8}>
                         {post && (
                             <Post
+                                parentForumId={post.parentForum._id}
+                                parentForumName={post.parentForum.name}
                                 postId={post._id}
                                 title={post.title}
                                 content={post.content}
                                 author={post.author.name}
                                 authorId={post.author._id}
                                 publishDate={post.date}
+                                comments={post.comments}
                             />
                         )}
                     </Grid>

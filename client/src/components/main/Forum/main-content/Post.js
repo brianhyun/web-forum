@@ -1,5 +1,6 @@
 // Dependencies
 import React from 'react';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 // Material UI Components
@@ -8,6 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CommentIcon from '@material-ui/icons/Comment';
 
 const useStyles = makeStyles((theme) => ({
     post: {
@@ -40,6 +43,8 @@ function Post(props) {
 
     const dateDifference = moment(props.publishDate).fromNow();
 
+    const postLink = `/post/${props.postId}`;
+
     return (
         <Paper className={classes.post}>
             <Grid container>
@@ -62,6 +67,13 @@ function Post(props) {
                             component="div"
                             dangerouslySetInnerHTML={contentMarkup}
                         ></Typography>
+                    </Box>
+                    <Box>
+                        <Link to={postLink} className={classes.linkStyle}>
+                            <Button>
+                                <CommentIcon /> {props.comments.length} comments
+                            </Button>
+                        </Link>
                     </Box>
                 </Grid>
             </Grid>
