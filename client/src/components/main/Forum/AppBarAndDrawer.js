@@ -119,11 +119,10 @@ function AppBarAndDrawer(props) {
     };
 
     // Backend Call for Current Forum Name
-    const [forumName, setForumName] = useState('');
+    const forumId = props.forumId;
+    const [forumName, setForumName] = useState(null);
 
     useEffect(() => {
-        const forumId = props.forumId;
-
         axios
             .post('/api/forums/getForumName', { forumId })
             .then((response) => {
@@ -132,7 +131,7 @@ function AppBarAndDrawer(props) {
                 setForumName(forumName);
             })
             .catch((err) => console.error(err));
-    }, [props.forumId]);
+    }, [forumId]);
 
     // Grab User's Forums from Local Storage
     const usersForums = JSON.parse(localStorage.getItem('usersForums'));
@@ -165,7 +164,9 @@ function AppBarAndDrawer(props) {
                         <MenuIcon />
                     </IconButton>
 
-                    <Typography variant="h6">{forumName}</Typography>
+                    {forumName && (
+                        <Typography variant="h6">{forumName}</Typography>
+                    )}
 
                     <Box className={classes.appBarNav}>
                         <Box>
@@ -220,7 +221,7 @@ function AppBarAndDrawer(props) {
                                 key={forum._id}
                                 className={classes.linkStyles}
                             >
-                                <ListItem button className={classes.listItem}>
+                                <ListItem className={classes.listItem}>
                                     <ListItemAvatar>
                                         <Avatar alt={forumName} src="">
                                             <GroupIcon />
@@ -233,7 +234,7 @@ function AppBarAndDrawer(props) {
                     })}
 
                     <Link to="/join" className={classes.linkStyles}>
-                        <ListItem button className={classes.listItem}>
+                        <ListItem className={classes.listItem}>
                             <ListItemAvatar>
                                 <Avatar>
                                     <AddIcon />

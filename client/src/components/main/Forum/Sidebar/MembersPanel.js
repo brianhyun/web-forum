@@ -18,20 +18,19 @@ function MembersPanel(props) {
     const classes = useStyles();
 
     // React Handles
-    const [forumMembers, setForumMembers] = useState([]);
+    const forumId = props.forumId;
+    const [forumMembers, setForumMembers] = useState(null);
 
     useEffect(() => {
-        const forumId = props.forumId;
-
         axios
             .post('/api/forums/getForumMembers', { forumId })
             .then((response) => {
                 const forumMembers = response.data;
 
-                setForumMembers(forumMembers);
+                setForumMembers([...forumMembers]);
             })
             .catch((err) => console.error(err));
-    }, [props.forumId]);
+    }, [forumId]);
 
     return (
         <Paper className={classes.paper}>

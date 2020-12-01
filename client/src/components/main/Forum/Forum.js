@@ -37,11 +37,9 @@ function Forum() {
     // Use Material UI Styles
     const classes = useStyles();
 
-    // Redux Handles
-    const forumId = useForumId();
-
     // React Handles
-    const [forumPosts, setForumPosts] = useState([]);
+    const forumId = useForumId();
+    const [forumPosts, setForumPosts] = useState(null);
 
     useEffect(() => {
         axios
@@ -68,7 +66,7 @@ function Forum() {
     return (
         <Box className={classes.root}>
             <CssBaseline />
-            <AppBarAndDrawer forumId={forumId} />
+            {forumId && <AppBarAndDrawer forumId={forumId} />}
 
             <Box component="main" className={classes.content}>
                 <div className={classes.toolbar} />
@@ -80,11 +78,11 @@ function Forum() {
                             updateForumPosts={updateForumPosts}
                         />
 
-                        <PostsList forumPosts={forumPosts} />
+                        {forumPosts && <PostsList forumPosts={forumPosts} />}
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
-                        <MembersPanel forumId={forumId} />
+                        {forumId && <MembersPanel forumId={forumId} />}
                     </Grid>
                 </Grid>
             </Box>

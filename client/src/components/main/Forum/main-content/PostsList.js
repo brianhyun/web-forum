@@ -35,8 +35,6 @@ function PostsList(props) {
         <Grid item xs={12}>
             {props.forumPosts && props.forumPosts.length ? (
                 props.forumPosts.map((post) => {
-                    console.log(post);
-
                     const postLink = `/post/${post._id}`;
 
                     return (

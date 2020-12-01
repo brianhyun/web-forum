@@ -36,22 +36,19 @@ function PostPage() {
     // Use Material UI Styles
     const classes = useStyles();
 
-    // Redux Handles
-    const postId = usePostId();
-
     // React Handles
-    const [post, setPost] = useState();
-    const [parentForumId, setParentForumId] = useState();
+    const postId = usePostId();
+    const [post, setPost] = useState(null);
+    const [parentForumId, setParentForumId] = useState(null);
 
     useEffect(() => {
         axios
             .post('/api/posts/getPostInfo', { postId })
             .then((response) => {
-                const postData = response.data;
-                const postParentForumId = postData.parentForum._id;
+                const post = response.data;
 
-                setParentForumId(postParentForumId);
-                setPost(postData);
+                setPost(post);
+                setParentForumId(post.parentForum._id);
             })
             .catch((err) => console.error(err));
     }, [postId]);
@@ -59,7 +56,7 @@ function PostPage() {
     return (
         <Box className={classes.root}>
             <CssBaseline />
-            <AppBarAndDrawer forumId={parentForumId} />
+            {parentForumId && <AppBarAndDrawer forumId={parentForumId} />}
 
             <Box component="main" className={classes.content}>
                 <div className={classes.toolbar} />
@@ -82,7 +79,9 @@ function PostPage() {
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
-                        <MembersPanel forumId={parentForumId} />
+                        {parentForumId && (
+                            <MembersPanel forumId={parentForumId} />
+                        )}
                     </Grid>
                 </Grid>
             </Box>

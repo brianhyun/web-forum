@@ -1,6 +1,5 @@
 // Dependencies
 import React from 'react';
-import { Link } from 'react-router-dom';
 import moment from 'moment';
 
 // Material UI Components
@@ -9,16 +8,12 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import CommentIcon from '@material-ui/icons/Comment';
+import AddCommentIcon from '@material-ui/icons/AddComment';
 
 const useStyles = makeStyles((theme) => ({
     post: {
         padding: theme.spacing(3),
         marginBottom: theme.spacing(3),
-    },
-    linkStyle: {
-        textDecoration: 'none',
     },
     postInfoBox: {
         marginBottom: theme.spacing(2),
@@ -29,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
     },
     title: {
         marginBottom: theme.spacing(1),
+    },
+    iconStyle: {
+        fontSize: 20,
+        marginRight: theme.spacing(1),
+        color: 'gray',
     },
 }));
 
@@ -42,8 +42,6 @@ function Post(props) {
     };
 
     const dateDifference = moment(props.publishDate).fromNow();
-
-    const postLink = `/post/${props.postId}`;
 
     return (
         <Paper className={classes.post}>
@@ -69,11 +67,10 @@ function Post(props) {
                         ></Typography>
                     </Box>
                     <Box>
-                        <Link to={postLink} className={classes.linkStyle}>
-                            <Button>
-                                <CommentIcon /> {props.comments.length} comments
-                            </Button>
-                        </Link>
+                        <Box>
+                            <AddCommentIcon className={classes.iconStyle} />{' '}
+                            {props.comments.length} comments
+                        </Box>
                     </Box>
                 </Grid>
             </Grid>

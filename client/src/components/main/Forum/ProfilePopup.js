@@ -54,7 +54,7 @@ function ProfilePopup() {
     const classes = useStyles();
 
     // React Handles
-    const [userFullName, setUserFullName] = useState('');
+    const [userFullName, setUserFullName] = useState(null);
 
     // Redux Handles
     const userId = useSelector(selectUserId);
@@ -92,8 +92,10 @@ function ProfilePopup() {
                         </IconButton>
                     </Grid>
                     <Grid item>
-                        <Typography>{userFullName}</Typography>
-                        <Typography>@{username}</Typography>
+                        {userFullName && (
+                            <Typography>{userFullName}</Typography>
+                        )}
+                        {username && <Typography>@{username}</Typography>}
                     </Grid>
                 </Grid>
             </Box>
