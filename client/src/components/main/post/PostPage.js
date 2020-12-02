@@ -6,6 +6,7 @@ import axios from 'axios';
 import Post from '../forum/main-content/Post';
 import AppBarAndDrawer from '../forum/AppBarAndDrawer';
 import MembersPanel from '../forum/sidebar/MembersPanel';
+import CreateComment from './CreateComment';
 
 import { usePostId } from '../../../utils/customHooks';
 
@@ -76,6 +77,8 @@ function PostPage() {
                                 comments={post.comments}
                             />
                         )}
+
+                        <CreateComment />
                     </Grid>
 
                     <Grid item xs={12} sm={4}>

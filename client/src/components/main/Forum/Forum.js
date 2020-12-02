@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Custom React Components
-import CreateNewPost from './main-content/CreateNewPost';
+import CreatePost from './main-content/CreatePost';
 import AppBarAndDrawer from './AppBarAndDrawer';
 import PostsList from './main-content/PostsList';
 import MembersPanel from './sidebar/MembersPanel';
@@ -73,7 +73,7 @@ function Forum() {
 
                 <Grid container spacing={3}>
                     <Grid item container xs={12} sm={8}>
-                        <CreateNewPost
+                        <CreatePost
                             forumId={forumId}
                             updateForumPosts={updateForumPosts}
                         />

@@ -23,7 +23,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 // Custom Styles
-import './CreateNewPost.css';
+import './CreatePost.css';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function CreateNewPost(props) {
+function CreatePost(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
@@ -68,8 +68,6 @@ function CreateNewPost(props) {
                 forumId: props.forumId,
             })
             .then((response) => {
-                console.log('new post:', response.data);
-
                 // Update PostsList
                 props.updateForumPosts();
             })
@@ -160,4 +158,4 @@ function CreateNewPost(props) {
     );
 }
 
-export default CreateNewPost;
+export default CreatePost;
