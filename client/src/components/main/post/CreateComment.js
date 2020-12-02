@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
@@ -15,7 +15,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
@@ -32,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     buttonContainer: {
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
     },
 }));
 
@@ -56,7 +55,7 @@ function CreateComment(props) {
             .post('/api/posts/addComment', {
                 content: purifiedCommentContent,
                 authorId: userId,
-                forumId: props.forumId,
+                postId: props.postId,
             })
             .then((response) => {
                 // Update Comments List
@@ -72,16 +71,13 @@ function CreateComment(props) {
         <Grid item xs={12}>
             <Paper className={clsx(classes.paper, classes.margin)}>
                 <Box>
-                    <Typography variant="h6" className={classes.margin}>
-                        Comment
-                    </Typography>
                     <form noValidate onSubmit={handleFormSubmit}>
                         <ReactQuill
                             className={classes.margin}
                             theme="snow"
                             value={commentContent}
                             onChange={setCommentContent}
-                            placeholder="Create a post..."
+                            placeholder="Leave a comment..."
                         />
                         <Box className={classes.buttonContainer}>
                             <Button

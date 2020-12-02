@@ -78,7 +78,7 @@ function PostPage() {
                             />
                         )}
 
-                        <CreateComment />
+                        <CreateComment postId={postId} />
                     </Grid>
 
                     <Grid item xs={12} sm={4}>
