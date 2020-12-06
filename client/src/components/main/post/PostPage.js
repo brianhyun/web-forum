@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Custom React Components
+// React Components
 import Post from '../forum/main-content/Post';
 import AppBarAndDrawer from '../forum/AppBarAndDrawer';
 import MembersPanel from '../forum/sidebar/MembersPanel';
 import CreateComment from './CreateComment';
+import CommentsList from './CommentsList';
 
 import { usePostId } from '../../../utils/customHooks';
 
@@ -41,6 +42,7 @@ function PostPage() {
     const postId = usePostId();
     const [post, setPost] = useState(null);
     const [parentForumId, setParentForumId] = useState(null);
+    const [postComments, setPostComments] = useState(null);
 
     useEffect(() => {
         axios
@@ -48,11 +50,25 @@ function PostPage() {
             .then((response) => {
                 const post = response.data;
 
+                console.log(post);
+
                 setPost(post);
                 setParentForumId(post.parentForum._id);
+                setPostComments(post.comments);
             })
             .catch((err) => console.error(err));
     }, [postId]);
+
+    function updatePostComments() {
+        axios
+            .get('/api/posts/getPostComments', { postId })
+            .then((response) => {
+                const postComments = response.data;
+
+                setPostComments(postComments);
+            })
+            .catch((err) => console.error(err));
+    }
 
     return (
         <Box className={classes.root}>
@@ -74,11 +90,20 @@ function PostPage() {
                                 author={post.author.name}
                                 authorId={post.author._id}
                                 publishDate={post.date}
-                                comments={post.comments}
+                                numOfComments={post.comments.length}
                             />
                         )}
 
-                        <CreateComment postId={postId} />
+                        {postId && (
+                            <CreateComment
+                                postId={postId}
+                                updatePostComments={updatePostComments}
+                            />
+                        )}
+
+                        {postComments && (
+                            <CommentsList postComments={postComments} />
+                        )}
                     </Grid>
 
                     <Grid item xs={12} sm={4}>

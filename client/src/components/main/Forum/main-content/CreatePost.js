@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 import { selectUserId } from '../../../../redux/slices/authSlice';
 
-// Material UI Styles
+// Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Paper from '@material-ui/core/Paper';

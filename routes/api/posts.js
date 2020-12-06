@@ -68,6 +68,13 @@ router.post('/api/posts/getPostInfo', (req, res, next) => {
                 path: 'parentForum',
                 select: 'name _id',
             },
+            {
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    select: 'name _id',
+                },
+            },
         ])
         .then((post) => {
             if (post) {
@@ -78,11 +85,17 @@ router.post('/api/posts/getPostInfo', (req, res, next) => {
 });
 
 // Get Comments for a Single Post
-router.get('/api/posts/getComments', (req, res, next) => {
+router.get('/api/posts/getPostComments', (req, res, next) => {
     const input = req.body;
 
     Post.findById(input.postId)
-        .populate('comments')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'author',
+                select: 'name _id',
+            },
+        })
         .then((post) => {
             if (post) {
                 res.send(post.comments);
@@ -107,11 +120,16 @@ router.post('/api/posts/addComment', (req, res, next) => {
         author: input.authorId,
     });
 
-    Post.findById(input.postId)
-        .then((post) => {
-            if (post) {
-                post.comments.unshift(newComment._id);
-            }
+    newComment
+        .save()
+        .then(() => {
+            Post.findById(input.postId).then((post) => {
+                if (post) {
+                    post.comments.unshift(newComment._id);
+
+                    post.save();
+                }
+            });
         })
         .catch((err) => console.error(err));
 });

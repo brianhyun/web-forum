@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Custom React Components
+// React Components
 import CreatePost from './main-content/CreatePost';
 import AppBarAndDrawer from './AppBarAndDrawer';
 import PostsList from './main-content/PostsList';
@@ -73,10 +73,12 @@ function Forum() {
 
                 <Grid container spacing={3}>
                     <Grid item container xs={12} sm={8}>
-                        <CreatePost
-                            forumId={forumId}
-                            updateForumPosts={updateForumPosts}
-                        />
+                        {forumId && (
+                            <CreatePost
+                                forumId={forumId}
+                                updateForumPosts={updateForumPosts}
+                            />
+                        )}
 
                         {forumPosts && <PostsList forumPosts={forumPosts} />}
                     </Grid>

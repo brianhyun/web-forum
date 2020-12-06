@@ -57,9 +57,9 @@ function CreateComment(props) {
                 authorId: userId,
                 postId: props.postId,
             })
-            .then((response) => {
+            .then(() => {
                 // Update Comments List
-                // props.updatePostsComments();
+                props.updatePostComments();
             })
             .catch((err) => console.error(err));
 
@@ -70,26 +70,24 @@ function CreateComment(props) {
     return (
         <Grid item xs={12}>
             <Paper className={clsx(classes.paper, classes.margin)}>
-                <Box>
-                    <form noValidate onSubmit={handleFormSubmit}>
-                        <ReactQuill
-                            className={classes.margin}
-                            theme="snow"
-                            value={commentContent}
-                            onChange={setCommentContent}
-                            placeholder="Leave a comment..."
-                        />
-                        <Box className={classes.buttonContainer}>
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                            >
-                                Comment
-                            </Button>
-                        </Box>
-                    </form>
-                </Box>
+                <form noValidate onSubmit={handleFormSubmit}>
+                    <ReactQuill
+                        className={classes.margin}
+                        theme="snow"
+                        value={commentContent}
+                        onChange={setCommentContent}
+                        placeholder="Leave a comment..."
+                    />
+                    <Box className={classes.buttonContainer}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                        >
+                            Comment
+                        </Button>
+                    </Box>
+                </form>
             </Paper>
         </Grid>
     );

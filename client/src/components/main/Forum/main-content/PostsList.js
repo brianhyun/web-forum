@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-// Components
+// React Components
 import Post from './Post';
 
 // Material UI Components
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'center',
         padding: theme.spacing(3),
     },
-    noPostsContent: {
+    noPostsText: {
         fontWeight: '500',
         color: 'gray',
     },
@@ -59,10 +59,7 @@ function PostsList(props) {
                 })
             ) : (
                 <Paper className={classes.noPosts}>
-                    <Typography
-                        variant="body1"
-                        className={classes.noPostsContent}
-                    >
+                    <Typography variant="body1" className={classes.noPostsText}>
                         *tumbleweeds passing through the digital horizon*
                     </Typography>
                 </Paper>
