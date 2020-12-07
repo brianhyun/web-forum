@@ -81,7 +81,7 @@ function PostPage() {
 
                 <Grid container spacing={3}>
                     <Grid item container xs={12} sm={8}>
-                        {post && numOfComments && (
+                        {post && numOfComments !== null && (
                             <Post
                                 parentForumId={post.parentForum._id}
                                 parentForumName={post.parentForum.name}
