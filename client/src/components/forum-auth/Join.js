@@ -122,9 +122,11 @@ function Join(props) {
                                 autoFocus
                                 onChange={handleChange}
                                 value={forum.name}
-                                error={formErrors.name ? true : false}
+                                error={formErrors.forumName ? true : false}
                                 helperText={
-                                    formErrors.name ? formErrors.name : null
+                                    formErrors.forumName
+                                        ? formErrors.forumName
+                                        : null
                                 }
                             />
                             {passwordExists && (

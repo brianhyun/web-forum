@@ -27,7 +27,7 @@ router.post('/api/forums/join', (req, res, next) => {
         .then((forumExists) => {
             if (!forumExists) {
                 return res.status(400).json({
-                    forum: 'A forum with this name cannot be found.',
+                    forumName: 'A forum with this name cannot be found.',
                 });
             } else {
                 // forumExists is actually just the forum object, which is returned by the .findById mongoose method in the forumExists() function.

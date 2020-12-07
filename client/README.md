@@ -18,6 +18,7 @@
 -   [x] Recheck 'Get Started' page functionality.
 -   [x] In 'utils/storeUsersForumsInLocalStorage' file, have 'setUsersForumsInLocalStorage' function be responsible for only one action.
 -   [x] Clear localStorage on logout.
+-   [x] Fix issue where numOfComments variable was preventing the display of the single post. numOfComments is false when a post doesn't have any comments, thus preventing display of post.
 
 # Stuff I Learned
 
