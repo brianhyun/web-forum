@@ -125,6 +125,11 @@ function Create(props) {
         dispatch(resetFormErrors());
     }, []);
 
+    // On 'Back to Forums' Click
+    const usersForums = JSON.parse(localStorage.getItem('usersForums'));
+    const firstForumId = usersForums[0]._id;
+    const firstForumLink = `/forum/${firstForumId}`;
+
     return (
         <Box component="main" className={classes.root}>
             <Container maxWidth="xs">
@@ -228,7 +233,7 @@ function Create(props) {
                             >
                                 Create
                             </Button>
-                            <Grid container justify="center">
+                            <Grid container justify="space-between">
                                 <Grid item>
                                     <Link to="/join" style={linkStyle}>
                                         <Typography
@@ -236,6 +241,16 @@ function Create(props) {
                                             color="primary"
                                         >
                                             Join a Forum
+                                        </Typography>
+                                    </Link>
+                                </Grid>
+                                <Grid item>
+                                    <Link to={firstForumLink} style={linkStyle}>
+                                        <Typography
+                                            variant="body2"
+                                            color="primary"
+                                        >
+                                            Back to Forums
                                         </Typography>
                                     </Link>
                                 </Grid>

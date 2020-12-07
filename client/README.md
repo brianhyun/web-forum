@@ -1,24 +1,15 @@
 # Todo
 
--   [ ] If a user joins a public forum, then I have to add that forum id to the user's forum array.
 -   [ ] 'slices/authSlice': the 'loginUser' function has a catch statement with an error method that only needs to be dispatched when there are errors in the form.
--   [ ] 'forum component': grab all the posts for the forum and save them to redux store, select it from store and use it in the forum page. Change file names appropriately.
 -   [ ] 'forum' component: when screen is small, add divider component between post list and members panel.
+-   [ ] Refresh tokens when expired.
 
 # Issues History
 
--   [x] Error Messages for Invalid Inputs
--   [x] Reset Error Messages After Form Submit and on Component Mount
--   [x] Encrypt Private Password Before Saving to DB
--   [x] The User model has to have an array that stores the ids of all the forums of which the user is a member.
--   [x] Access the User's ID from User's document when creating a new forum. Add the forum id to the user via the user's id.
 -   [x] After every refresh, the Redux store is wiped of its data. I'll have to save the data (I wish to persist) to localStorage and retrieve it on every reload and redux store update. Or, I can use a third-party library; however, most of the available packages (e.g. redux-persist) are not frequently maintained.
--   [x] 'forumAuthSlice.js' in createForum() function: dispatch is causing error. (Resolution: I was sending data to my backend in the wrong format.)
--   [x] If user isn't a part of any forums, then redirect them to the 'Get Started' page, prompting them to join or create a forum.
--   [x] Recheck 'Get Started' page functionality.
--   [x] In 'utils/storeUsersForumsInLocalStorage' file, have 'setUsersForumsInLocalStorage' function be responsible for only one action.
--   [x] Clear localStorage on logout.
--   [x] Fix issue where numOfComments variable was preventing the display of the single post. numOfComments is false when a post doesn't have any comments, thus preventing display of post.
+-   [x] 'forumAuthSlice.js' in createForum() function: dispatch is causing error. Solution: I was sending data to my backend in the wrong format.
+-   [x] Comments aren't being saved to the parent post. Solution: save the comment to the database first.
+-   [x] Posts with zero comments aren't showing. Solution: numOfComments variable was preventing display of posts with zero comments. numOfComments is zero (equal to false) when a post has no comments and the conditional was stopping there.
 
 # Stuff I Learned
 
@@ -34,6 +25,10 @@ In regards to thunk functions in Redux: thunk functions allow us to invoke async
 
 In regards to syntax: you can shorten object definitions if the key and value are the same name (e.g. { userId } has userId as a key and the value inserted into userId will be the value stored in the variable userId).
 
+In regards to writing functions: have it so that your functions are only responsible for one thing. Makes writing functions and debugging code easier. Also, easier to read.
+
+In regards to Mongoose: make sure to save new documents to update the database.
+
 ## Non-Technical
 
 ### Tracking Progress
@@ -48,8 +43,8 @@ And, there are certain problems or features that aren't important at the moment,
 
 If at all possible, try to end each session with a feature finished or a bug resolved.
 
-Recognize when you've been sitting on a bug for too long. If no progress towards a solution is being made, then consider taking a break. Often times, I'll sit on a bug thinking that I'm only minutes away from finding a good solution. This extends the amount of time I sit on the problem, further extending and fomenting my frustrations. The time you spend working on a problem cannot be considered a sunk cost. Remember this!
+Recognize when you've been sitting on a bug for too long. If no progress towards a solution is being made, then consider taking a break. Often times, I'll sit on a bug thinking that I'm only minutes away from finding a good solution. This extends the amount of time I sit on the problem, further extending and fomenting my frustrations. The time you spend working on a problem should not be considered a sunk cost. Remember this!
 
 Don't sacrifice quality for speed. Write code you can be proud of.
 
-Learn to pace yourself. Slow things down. Speed is definitely important, but if it's at the cost of code quality and personal interest in the project, then I'd recommend to slow things down. Longevity and sustainability is key.
+Learn to pace yourself. Slow things down. Speed is important, but if it's at the cost of code quality and personal interest in the project, then I'd recommend to slow things down. Longevity and sustainability is key.
