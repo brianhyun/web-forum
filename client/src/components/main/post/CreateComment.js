@@ -59,7 +59,7 @@ function CreateComment(props) {
             })
             .then(() => {
                 // Update Comments List
-                props.updatePostComments();
+                props.updatePostCommentsAndNumOfComments();
             })
             .catch((err) => console.error(err));
 

@@ -43,6 +43,7 @@ function PostPage() {
     const [post, setPost] = useState(null);
     const [parentForumId, setParentForumId] = useState(null);
     const [postComments, setPostComments] = useState(null);
+    const [numOfComments, setNumOfComments] = useState(null);
 
     useEffect(() => {
         axios
@@ -51,19 +52,21 @@ function PostPage() {
                 const post = response.data;
 
                 setPost(post);
+                setNumOfComments(post.comments.length);
                 setParentForumId(post.parentForum._id);
                 setPostComments(post.comments);
             })
             .catch((err) => console.error(err));
     }, [postId]);
 
-    function updatePostComments() {
+    function updatePostCommentsAndNumOfComments() {
         axios
             .post('/api/posts/getPostComments', { postId })
             .then((response) => {
                 const post = response.data;
 
                 setPostComments(post.comments);
+                setNumOfComments(post.comments.length);
             })
             .catch((err) => console.error(err));
     }
@@ -78,7 +81,7 @@ function PostPage() {
 
                 <Grid container spacing={3}>
                     <Grid item container xs={12} sm={8}>
-                        {post && (
+                        {post && numOfComments && (
                             <Post
                                 parentForumId={post.parentForum._id}
                                 parentForumName={post.parentForum.name}
@@ -88,14 +91,16 @@ function PostPage() {
                                 author={post.author.name}
                                 authorId={post.author._id}
                                 publishDate={post.date}
-                                numOfComments={post.comments.length}
+                                numOfComments={numOfComments}
                             />
                         )}
 
                         {postId && (
                             <CreateComment
                                 postId={postId}
-                                updatePostComments={updatePostComments}
+                                updatePostCommentsAndNumOfComments={
+                                    updatePostCommentsAndNumOfComments
+                                }
                             />
                         )}
 
