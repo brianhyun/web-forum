@@ -85,7 +85,7 @@ router.post('/api/posts/getPostInfo', (req, res, next) => {
 });
 
 // Get Comments for a Single Post
-router.get('/api/posts/getPostComments', (req, res, next) => {
+router.post('/api/posts/getPostComments', (req, res, next) => {
     const input = req.body;
 
     Post.findById(input.postId)
@@ -98,7 +98,7 @@ router.get('/api/posts/getPostComments', (req, res, next) => {
         })
         .then((post) => {
             if (post) {
-                res.send(post.comments);
+                res.send(post);
             }
         })
         .catch((err) => console.error(err));
@@ -127,7 +127,9 @@ router.post('/api/posts/addComment', (req, res, next) => {
                 if (post) {
                     post.comments.unshift(newComment._id);
 
-                    post.save();
+                    post.save().then((post) => {
+                        res.send(post);
+                    });
                 }
             });
         })

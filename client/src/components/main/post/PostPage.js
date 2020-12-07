@@ -50,8 +50,6 @@ function PostPage() {
             .then((response) => {
                 const post = response.data;
 
-                console.log(post);
-
                 setPost(post);
                 setParentForumId(post.parentForum._id);
                 setPostComments(post.comments);
@@ -61,11 +59,11 @@ function PostPage() {
 
     function updatePostComments() {
         axios
-            .get('/api/posts/getPostComments', { postId })
+            .post('/api/posts/getPostComments', { postId })
             .then((response) => {
-                const postComments = response.data;
+                const post = response.data;
 
-                setPostComments(postComments);
+                setPostComments(post.comments);
             })
             .catch((err) => console.error(err));
     }

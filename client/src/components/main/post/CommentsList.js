@@ -17,6 +17,7 @@ function CommentsList(props) {
                         author={comment.author.name}
                         authorId={comment.author._id}
                         publishDate={comment.date}
+                        key={comment._id}
                     />
                 );
             })}
