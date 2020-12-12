@@ -74,6 +74,7 @@ router.post('/api/forums/create', (req, res, next) => {
 
     // Valid Input - Check Database for Forum
     const forumName = input.name;
+    const userId = input.userId;
 
     forumExists(forumName)
         .then((forumExists) => {
@@ -82,7 +83,17 @@ router.post('/api/forums/create', (req, res, next) => {
                     name: 'This name is already taken.',
                 });
             } else {
+                return;
+            }
+        })
+        .then(() => {
+            if (underForumLimit(userId)) {
                 createNewForum(input, res);
+            } else {
+                console.log('limit exceeded');
+                res.status(400).json({
+                    limit: 'Limit exceeded for numbers of forums created.',
+                });
             }
         })
         .catch((err) => console.error(err));
@@ -98,6 +109,16 @@ async function forumExists(forumName) {
     }
 }
 
+async function underForumLimit(userId) {
+    try {
+        const user = await User.findById(userId);
+
+        return user.forumsCreated <= 4;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 async function createNewForum(input, res) {
     try {
         const newForum = new Forum({
@@ -107,7 +128,7 @@ async function createNewForum(input, res) {
 
         newForum.members.push(input.userId);
 
-        const userId = await saveNewForumIdInUserDocument(
+        const userId = await saveForumIdAndIncrementForumsCreatedInUserDocument(
             input.userId,
             newForum._id
         );
@@ -123,11 +144,17 @@ async function createNewForum(input, res) {
     }
 }
 
-async function saveNewForumIdInUserDocument(userId, newForumId) {
+async function saveForumIdAndIncrementForumsCreatedInUserDocument(
+    userId,
+    newForumId
+) {
     try {
         // Find User and Save New Forum's ID to User's Document
         const user = await User.findById(userId);
         user.forums.push(newForumId);
+
+        // Increment Number of Forum's Created Counter
+        user.forumsCreated++;
 
         // Save to Finalize Changes
         await user.save();

@@ -19,6 +19,10 @@ const userSchema = new Schema({
         required: true,
     },
     forums: [{ type: Schema.Types.ObjectId, ref: 'Forum' }],
+    forumsCreated: {
+        type: Number,
+        default: 0,
+    },
     date: {
         type: Date,
         default: Date.now,

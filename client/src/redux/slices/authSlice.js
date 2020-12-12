@@ -41,7 +41,7 @@ export function loginUser(userData, history) {
             .then((usersForums) => {
                 return redirectUserBasedOnForumCount(usersForums, history);
             })
-            .catch((err) => dispatch(setFormErrors(err.response.data)));
+            .catch((err) => console.error('@loginUser\n', err));
     };
 }
 
@@ -59,35 +59,39 @@ async function signInUser(userData, dispatch) {
 
         return decodedToken;
     } catch (err) {
-        console.error(err);
+        dispatch(setFormErrors(err.response.data));
+
+        throw new Error('@signInUser');
     }
 }
 
 async function grabAndSetUsersForumsInLocalStorage(decodedToken) {
     // The decoded token contains the userId, which is needed to query the user's document (in database), which contains the user's forums.
     try {
-        const userData = {
+        const usersForums = await storeUsersForumsInLocalStorage({
             userId: decodedToken.userId,
-        };
-
-        const usersForums = await storeUsersForumsInLocalStorage(userData);
+        });
 
         return usersForums;
     } catch (err) {
-        console.error(err);
+        console.error('@grabAndSetUsersForumsInLocalStorage\n', err);
     }
 }
 
 function redirectUserBasedOnForumCount(usersForums, history) {
-    const numberOfForums = usersForums.length;
+    try {
+        const forumsExist = usersForums.length;
 
-    if (numberOfForums) {
-        // Grab the first forum in the list and redirect to that page.
-        const firstForumId = usersForums[0]._id;
+        if (forumsExist) {
+            // Grab the first forum in the list and redirect to that page.
+            const firstForumId = usersForums[0]._id;
 
-        history.push(`/forum/${firstForumId}`);
-    } else {
-        history.push('/getStarted');
+            history.push(`/forum/${firstForumId}`);
+        } else {
+            history.push('/getStarted');
+        }
+    } catch (err) {
+        console.error('@redirectUserBasedOnForumCount\n', err);
     }
 }
 

@@ -21,7 +21,6 @@ import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -83,13 +82,7 @@ function ProfilePopup() {
             <Box className={classes.padding}>
                 <Grid container spacing={2}>
                     <Grid item>
-                        <IconButton
-                            disableRipple
-                            disableFocusRipple
-                            size="small"
-                        >
-                            <Avatar />
-                        </IconButton>
+                        <Avatar />
                     </Grid>
                     <Grid item>
                         {userFullName && (

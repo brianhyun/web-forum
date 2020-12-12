@@ -3,6 +3,7 @@
 -   [ ] 'slices/authSlice': the 'loginUser' function has a catch statement with an error method that only needs to be dispatched when there are errors in the form.
 -   [ ] 'forum' component: when screen is small, add divider component between post list and members panel.
 -   [ ] Refresh tokens when expired.
+-   [ ] If a new user tries to login, the app crashes. Most likely due to error handling system in backend login route or redux async flow.
 
 # Issues History
 

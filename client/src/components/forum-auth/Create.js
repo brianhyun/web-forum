@@ -20,6 +20,8 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,6 +60,10 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: 0,
     },
 }));
+
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 // Custom React Styles
 const linkStyle = {
@@ -132,6 +138,12 @@ function Create(props) {
 
     return (
         <Box component="main" className={classes.root}>
+            {formErrors.limit && (
+                <Snackbar autoHideDuration={6000}>
+                    <Alert severity="error">formErrors.limit</Alert>
+                </Snackbar>
+            )}
+
             <Container maxWidth="xs">
                 <CssBaseline />
                 <Box className={classes.box}>
