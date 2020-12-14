@@ -3,13 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { selectFormErrors } from '../../redux/slices/errorsSlice';
-import { resetFormErrors } from '../../redux/slices/errorsSlice';
-import { joinForum } from '../../redux/slices/forumAuthSlice';
-import { resetPrivacyStatus } from '../../redux/slices/forumAuthSlice';
-import { selectPasswordExists } from '../../redux/slices/forumAuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectFormErrors,
+    resetFormErrors,
+} from '../../redux/slices/errorsSlice';
+import { selectUserId } from '../../redux/slices/authSlice';
+import {
+    joinForum,
+    resetPrivacyStatus,
+    selectPasswordExists,
+} from '../../redux/slices/forumAuthSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -61,6 +65,7 @@ function Join(props) {
     const dispatch = useDispatch();
     const passwordExists = useSelector(selectPasswordExists);
     const formErrors = useSelector(selectFormErrors);
+    const userId = useSelector(selectUserId);
 
     // React Handles
     const [forum, setForum] = useState({
@@ -81,6 +86,7 @@ function Join(props) {
 
         const forumData = {
             name: forum.name,
+            userId: userId,
         };
 
         // Check Store for Forum's Privacy Status - If Private, Pass Password into Payload
@@ -96,11 +102,6 @@ function Join(props) {
         dispatch(resetFormErrors());
         dispatch(resetPrivacyStatus());
     }, []);
-
-    // On 'Back to Forums' Click
-    const usersForums = JSON.parse(localStorage.getItem('usersForums'));
-    const firstForumId = usersForums[0]._id;
-    const firstForumLink = `/forum/${firstForumId}`;
 
     return (
         <Box component="main" className={classes.root}>
@@ -163,7 +164,7 @@ function Join(props) {
                             >
                                 Join
                             </Button>
-                            <Grid container justify="space-between">
+                            <Grid container justify="center">
                                 <Grid item>
                                     <Link to="/create" style={linkStyle}>
                                         <Typography
@@ -171,16 +172,6 @@ function Join(props) {
                                             color="primary"
                                         >
                                             Create a Forum
-                                        </Typography>
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link to={firstForumLink} style={linkStyle}>
-                                        <Typography
-                                            variant="body2"
-                                            color="primary"
-                                        >
-                                            Back to Forums
                                         </Typography>
                                     </Link>
                                 </Grid>

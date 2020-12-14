@@ -148,17 +148,7 @@ function Login(props) {
                             >
                                 Sign In
                             </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link to="#" style={linkStyle}>
-                                        <Typography
-                                            variant="body2"
-                                            color="primary"
-                                        >
-                                            Forgot password?
-                                        </Typography>
-                                    </Link>
-                                </Grid>
+                            <Grid container justify="center">
                                 <Grid item>
                                     <Link to="/signup" style={linkStyle}>
                                         <Typography

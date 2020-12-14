@@ -30,35 +30,70 @@ router.post('/api/forums/join', (req, res, next) => {
                     forumName: 'A forum with this name cannot be found.',
                 });
             } else {
-                // forumExists is actually just the forum object, which is returned by the .findById mongoose method in the forumExists() function.
+                // forumExists is just the forum object, which is returned by the .findById() mongoose method in the forumExists() function.
                 joinForum(forumExists, input, res);
             }
         })
         .catch((err) => console.error(err));
 });
 
-async function joinForum(forum, input, res) {
-    const data = {
-        forumId: forum._id,
-    };
+async function forumExists(forumName) {
+    try {
+        const forumExists = await Forum.findOne({ name: forumName });
 
+        return forumExists;
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+async function joinForum(forum, input, res) {
     if (input.password) {
         const isMatch = await bcrypt.compare(input.password, forum.password);
 
         if (isMatch) {
-            data.userIsAuthenticated = true;
-            data.isPublic = forum.public;
+            addIdsToDocument(forum, input);
 
-            return res.send(data);
+            return res.send({
+                forumId: forum._id,
+                isPublic: forum.public,
+                userIsAuthenticated: true,
+                userId: input.userId,
+            });
         } else {
             return res.status(400).json({
                 password: 'Incorrect password',
             });
         }
     } else {
-        data.isPublic = forum.public;
+        addIdsToDocument(forum, input);
 
-        return res.send(data);
+        return res.send({
+            forumId: forum._id,
+            isPublic: forum.public,
+            userId: input.userId,
+        });
+    }
+}
+
+async function addIdsToDocument(forumData, input) {
+    try {
+        const forumId = forumData._id;
+        const userId = input.userId;
+
+        const user = await User.findById(userId);
+        if (!user.forums.includes(forumId)) {
+            user.forums.push(forumId);
+            await user.save();
+        }
+
+        const forum = await Forum.findById(forumId);
+        if (!forum.members.includes(userId)) {
+            forum.members.push(userId);
+            await forum.save();
+        }
+    } catch (err) {
+        console.error(err);
     }
 }
 
@@ -83,31 +118,18 @@ router.post('/api/forums/create', (req, res, next) => {
                     name: 'This name is already taken.',
                 });
             } else {
-                return;
-            }
-        })
-        .then(() => {
-            if (underForumLimit(userId)) {
-                createNewForum(input, res);
-            } else {
-                console.log('limit exceeded');
-                res.status(400).json({
-                    limit: 'Limit exceeded for numbers of forums created.',
-                });
+                if (underForumLimit(userId)) {
+                    createNewForum(input, res);
+                } else {
+                    console.log('limit exceeded');
+                    res.status(400).json({
+                        limit: 'Limit exceeded for numbers of forums created.',
+                    });
+                }
             }
         })
         .catch((err) => console.error(err));
 });
-
-async function forumExists(forumName) {
-    try {
-        const forumExists = await Forum.findOne({ name: forumName });
-
-        return forumExists;
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 async function underForumLimit(userId) {
     try {
@@ -138,7 +160,11 @@ async function createNewForum(input, res) {
         }
 
         await newForum.save();
-        res.json({ userId });
+
+        res.json({
+            userId: userId,
+            forumId: newForum._id,
+        });
     } catch (err) {
         console.error(err);
     }

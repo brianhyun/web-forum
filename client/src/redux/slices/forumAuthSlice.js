@@ -36,12 +36,11 @@ export function createForum(forumData, history) {
         axios
             .post('/api/forums/create', forumData)
             .then((response) => {
-                // The response data is an object with a userId field.
-                const userData = response.data;
+                const newForumLink = `/forum/${response.data.forumId}`;
 
                 // After creating the forum, save user's new forums list to local storage.
-                storeUsersForumsInLocalStorage(userData)
-                    .then(() => history.push('/join'))
+                storeUsersForumsInLocalStorage({ userId: response.data.userId })
+                    .then(() => history.push(newForumLink))
                     .catch((err) => console.error(err));
             })
             .catch((err) => {
@@ -56,21 +55,30 @@ export function joinForum(forumData, history) {
         axios
             .post('/api/forums/join', forumData)
             .then((response) => {
-                const isPublic = response.data.isPublic;
-                const forumId = response.data.forumId;
-                const userIsAuthenticated = response.data.userIsAuthenticated;
+                // After joining the forum, save user's new forums list to local storage.
+                storeUsersForumsInLocalStorage({
+                    userId: response.data.userId,
+                })
+                    .then(() => {
+                        const isPublic = response.data.isPublic;
+                        const forumId = response.data.forumId;
 
-                if (isPublic) {
-                    dispatch(setPublic());
+                        if (isPublic) {
+                            dispatch(setPublic());
 
-                    history.push(`/forum/${forumId}`);
-                } else {
-                    if (userIsAuthenticated) {
-                        history.push(`/forum/${forumId}`);
-                    } else {
-                        dispatch(setPrivate());
-                    }
-                }
+                            history.push(`/forum/${forumId}`);
+                        } else {
+                            const userIsAuthenticated =
+                                response.data.userIsAuthenticated;
+
+                            if (userIsAuthenticated) {
+                                history.push(`/forum/${forumId}`);
+                            } else {
+                                dispatch(setPrivate());
+                            }
+                        }
+                    })
+                    .catch((err) => console.error(err));
             })
             .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
