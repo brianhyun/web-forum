@@ -118,14 +118,18 @@ router.post('/api/forums/create', (req, res, next) => {
                     name: 'This name is already taken.',
                 });
             } else {
-                if (underForumLimit(userId)) {
-                    createNewForum(input, res);
-                } else {
-                    console.log('limit exceeded');
-                    res.status(400).json({
-                        limit: 'Limit exceeded for numbers of forums created.',
-                    });
-                }
+                underForumLimit(userId)
+                    .then((underLimit) => {
+                        if (underLimit) {
+                            createNewForum(input, res);
+                        } else {
+                            res.status(400).json({
+                                limit:
+                                    'Limit exceeded for numbers of forums created.',
+                            });
+                        }
+                    })
+                    .catch((err) => console.error(err));
             }
         })
         .catch((err) => console.error(err));

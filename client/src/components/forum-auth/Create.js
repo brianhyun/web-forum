@@ -20,8 +20,9 @@ import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Snackbar from '@material-ui/core/Snackbar';
-import MuiAlert from '@material-ui/lab/Alert';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         padding: theme.spacing(4, 3),
+        width: '80%',
     },
     form: {
         width: '100%',
@@ -59,11 +61,28 @@ const useStyles = makeStyles((theme) => ({
     gridItem: {
         paddingBottom: 0,
     },
+    warningMessageContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: theme.spacing(5),
+        width: '100%',
+    },
+    warningMessage: {
+        backgroundColor: 'rgb(255, 0, 19)',
+        borderRadius: theme.spacing(0.5),
+        color: 'white',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        padding: theme.spacing(2),
+    },
+    warningIcon: {
+        color: 'white',
+        marginRight: theme.spacing(2),
+    },
 }));
-
-function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
 
 // Custom React Styles
 const linkStyle = {
@@ -134,16 +153,23 @@ function Create(props) {
     return (
         <Box component="main" className={classes.root}>
             {formErrors.limit && (
-                <Snackbar autoHideDuration={6000}>
-                    <Alert severity="error">formErrors.limit</Alert>
-                </Snackbar>
+                <Box className={classes.warningMessageContainer}>
+                    <Box className={classes.warningMessage}>
+                        <ErrorOutlineIcon className={classes.warningIcon} />
+                        <Typography>{formErrors.limit}</Typography>
+                    </Box>
+                </Box>
             )}
 
             <Container maxWidth="xs">
                 <CssBaseline />
                 <Box className={classes.box}>
                     <Paper elevation={3} className={classes.paper}>
-                        <Typography component="h1" variant="h5">
+                        <Typography
+                            component="h1"
+                            variant="h5"
+                            className={classes.margin}
+                        >
                             Create a Forum
                         </Typography>
                         <form
