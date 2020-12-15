@@ -78,9 +78,11 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-around',
         padding: theme.spacing(2),
     },
-    warningIcon: {
+    warningText: {
+        margin: theme.spacing(0, 2),
+    },
+    iconStyles: {
         color: 'white',
-        marginRight: theme.spacing(2),
     },
 }));
 
@@ -150,13 +152,26 @@ function Create(props) {
         dispatch(resetFormErrors());
     }, []);
 
+    function closeWarningMessage() {
+        dispatch(resetFormErrors());
+    }
+
     return (
         <Box component="main" className={classes.root}>
             {formErrors.limit && (
                 <Box className={classes.warningMessageContainer}>
                     <Box className={classes.warningMessage}>
-                        <ErrorOutlineIcon className={classes.warningIcon} />
-                        <Typography>{formErrors.limit}</Typography>
+                        <ErrorOutlineIcon className={classes.iconStyles} />
+                        <Typography className={classes.warningText}>
+                            {formErrors.limit}
+                        </Typography>
+                        <IconButton size="small">
+                            <CloseIcon
+                                onClick={closeWarningMessage}
+                                fontSize="small"
+                                className={classes.iconStyles}
+                            />
+                        </IconButton>
                     </Box>
                 </Box>
             )}

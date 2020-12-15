@@ -6,10 +6,14 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         padding: theme.spacing(3),
+    },
+    margin: {
+        marginTop: theme.spacing(2),
     },
 }));
 
@@ -35,10 +39,15 @@ function MembersPanel(props) {
     return (
         <Paper className={classes.paper}>
             <Typography variant="h6">Members</Typography>
+            <Divider className={classes.margin} />
             {forumMembers &&
                 forumMembers.map((member) => {
                     return (
-                        <Typography variant="body1" key={member._id}>
+                        <Typography
+                            variant="body1"
+                            key={member._id}
+                            className={classes.margin}
+                        >
                             {member.name}
                         </Typography>
                     );
