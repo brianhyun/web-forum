@@ -1,5 +1,6 @@
 const express = require('express');
 const rootPath = require('app-root-path');
+const passport = require('passport');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -116,16 +117,20 @@ router.post('/api/users/login', (req, res, next) => {
         .catch((err) => console.error(err));
 });
 
-router.post('/api/users/getUserFullName', (req, res, next) => {
-    const userId = req.body.userId;
+router.post(
+    '/api/users/getUserFullName',
+    passport.authenticate('jwt', { session: false }),
+    (req, res, next) => {
+        const userId = req.body.userId;
 
-    User.findById(userId)
-        .then((user) => {
-            if (user) {
-                res.send(user.name);
-            }
-        })
-        .catch((err) => console.error(err));
-});
+        User.findById(userId)
+            .then((user) => {
+                if (user) {
+                    res.send(user.name);
+                }
+            })
+            .catch((err) => console.error(err));
+    }
+);
 
 module.exports = router;
