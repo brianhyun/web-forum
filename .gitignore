@@ -123,3 +123,6 @@ dist
 
 # Test code 
 /routes/api/edit.js
+
+# Test requests
+requests.rest
