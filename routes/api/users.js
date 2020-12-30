@@ -1,10 +1,14 @@
+// Dependencies
 const express = require('express');
 const rootPath = require('app-root-path');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+// Models
 const User = require(rootPath + '/models/User');
+
+// Utilities
 const validateLoginInput = require(rootPath + '/utils/auth-validation/login');
 const validateSignupInput = require(rootPath + '/utils/auth-validation/signup');
 const emailOrUsernameExists = require(rootPath +
@@ -66,71 +70,70 @@ router.post('/api/users/login', (req, res, next) => {
     }
 
     // Valid Input - Check If User Exists
-    const username = input.username;
-    const password = input.password;
+    const options = {
+        session: false,
+    };
 
-    User.findOne({ username })
-        .then((user) => {
-            // Username Exists
-            if (user) {
-                bcrypt.compare(password, user.password).then((isMatch) => {
-                    // Correct Password Submitted
-                    if (isMatch) {
-                        // Create Payload
-                        const payload = {
-                            userId: user.id,
-                            username: username,
-                        };
+    passport.authenticate('local', options, (err, user, info) => {
+        if (err) {
+            console.error(err);
+            // return next(err);
+        }
 
-                        // Sign JWT
-                        jwt.sign(
-                            payload,
-                            process.env.JWT_PRIVATE_KEY,
-                            { expiresIn: '1h' },
-                            (err, token) => {
-                                if (err) {
-                                    console.error(err);
-                                }
+        if (!user) {
+            // info is an object containing either the username or password error
+            return res.status(400).json(info);
+        }
 
-                                // Send JWT to Client
-                                const data = {
-                                    token: token,
-                                };
+        req.login(user, options, function (err) {
+            if (err) {
+                console.error(err);
+                // return next(err);
+            }
 
-                                res.send(data);
-                            }
-                        );
-                    } else {
-                        // Wrong Password Submitted
-                        return res.status(400).json({
-                            password: 'Password entered is incorrect.',
-                        });
+            const payload = {
+                userId: user._id,
+                username: user.username,
+            };
+
+            const jwtOptions = {
+                expiresIn: '30min',
+            };
+
+            jwt.sign(
+                payload,
+                process.env.JWT_PRIVATE_KEY,
+                jwtOptions,
+                (err, token) => {
+                    if (err) {
+                        console.error(err);
                     }
-                });
-            } else {
-                // Username Doesn't Exist
-                return res.status(400).json({
-                    username: 'An account with that username cannot be found.',
-                });
+
+                    // Send JWT to Client via Cookie
+                    const cookieOptions = {
+                        maxAge: 1800000,
+                        httpOnly: true,
+                        // secure: true,
+                    };
+
+                    res.cookie('jwt', token, cookieOptions);
+                    res.send({ token });
+                }
+            );
+        });
+    })(req, res);
+});
+
+router.post('/api/users/getUserFullName', (req, res, next) => {
+    const userId = req.body.userId;
+
+    User.findById(userId)
+        .then((user) => {
+            if (user) {
+                res.send(user.name);
             }
         })
         .catch((err) => console.error(err));
 });
-
-router.post(
-    '/api/users/getUserFullName',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
-        const userId = req.body.userId;
-
-        User.findById(userId)
-            .then((user) => {
-                if (user) {
-                    res.send(user.name);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
-);
 
 module.exports = router;

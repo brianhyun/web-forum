@@ -218,25 +218,21 @@ async function hashAndSavePassword(input, newForum) {
 }
 
 // Get Forums of a Single User
-router.post(
-    '/api/forums/getUsersForums',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        const userId = req.body.userId;
+router.post('/api/forums/getUsersForums', (req, res) => {
+    const userId = req.body.userId;
 
-        User.findById(userId)
-            .populate({
-                path: 'forums',
-                select: '_id name',
-            })
-            .then((user) => {
-                if (user) {
-                    res.send(user.forums);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
-);
+    User.findById(userId)
+        .populate({
+            path: 'forums',
+            select: '_id name',
+        })
+        .then((user) => {
+            if (user) {
+                res.send(user.forums);
+            }
+        })
+        .catch((err) => console.error(err));
+});
 
 // Get Forum's Name
 router.post(
@@ -256,54 +252,46 @@ router.post(
 );
 
 // Get Forum's Member
-router.post(
-    '/api/forums/getForumMembers',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        const forumId = req.body.forumId;
+router.post('/api/forums/getForumMembers', (req, res) => {
+    const forumId = req.body.forumId;
 
-        Forum.findById(forumId)
-            .populate({
-                path: 'members',
-                select: '_id name',
-            })
-            .then((forum) => {
-                if (forum) {
-                    res.send(forum.members);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
-);
+    Forum.findById(forumId)
+        .populate({
+            path: 'members',
+            select: '_id name',
+        })
+        .then((forum) => {
+            if (forum) {
+                res.send(forum.members);
+            }
+        })
+        .catch((err) => console.error(err));
+});
 
 // Get Forum's Member
-router.post(
-    '/api/forums/getForumPosts',
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        const forumId = req.body.forumId;
+router.post('/api/forums/getForumPosts', (req, res) => {
+    const forumId = req.body.forumId;
 
-        Forum.findById(forumId)
-            .populate({
-                path: 'posts',
-                populate: [
-                    {
-                        path: 'author',
-                        select: '_id name',
-                    },
-                    {
-                        path: 'parentForum',
-                        select: '_id name',
-                    },
-                ],
-            })
-            .then((forum) => {
-                if (forum) {
-                    res.send(forum.posts);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
-);
+    Forum.findById(forumId)
+        .populate({
+            path: 'posts',
+            populate: [
+                {
+                    path: 'author',
+                    select: '_id name',
+                },
+                {
+                    path: 'parentForum',
+                    select: '_id name',
+                },
+            ],
+        })
+        .then((forum) => {
+            if (forum) {
+                res.send(forum.posts);
+            }
+        })
+        .catch((err) => console.error(err));
+});
 
 module.exports = router;

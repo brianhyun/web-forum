@@ -6,27 +6,28 @@ require(rootPath + '/config/env/loadEnv')();
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
+const cookieParser = require('cookie-parser');
 
 // Custom Modules
-const connectToMongoDb = require(rootPath + '/config/db/connectDb');
+const connectToDb = require(rootPath + '/config/db/connectToDb');
 const usersAPIRouter = require(rootPath + '/routes/api/users');
 const postsAPIRouter = require(rootPath + '/routes/api/posts');
 const forumsAPIRouter = require(rootPath + '/routes/api/forums');
-const passportConfig = require(rootPath + '/config/passport/passport');
 
 // App Instantiation
 const app = express();
 
+// Database Connection
+connectToDb();
+
 // Parsing Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
-// MongoDB Connection
-connectToMongoDb();
-
-// Client Request Authentication with Passport Middleware
+// Passport Middleware
+require(rootPath + '/config/passport/passport');
 app.use(passport.initialize());
-passportConfig(passport);
 
 // API
 app.use(usersAPIRouter);

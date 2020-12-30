@@ -47,13 +47,13 @@ export function loginUser(userData, history) {
 
 async function signInUser(userData, dispatch) {
     try {
-        // 'response' is a JSON Object with JWT Token and User ID.
         const response = await axios.post('/api/users/login', userData);
 
+        // Set Default Headers for Every Axios Request
         const token = response.data.token;
-        localStorage.setItem('jwtToken', token);
         setAuthToken(token);
 
+        // Set Current User in Redux
         const decodedToken = jwt_decode(token);
         dispatch(setCurrentUser(decodedToken));
 
@@ -110,7 +110,7 @@ export function signupUser(userData, history) {
 // Log User Out
 export function logoutUser() {
     return function thunk(dispatch, getState) {
-        // Remove all items (i.e. jwtToken and usersForums) from Local Storage
+        // Clear Local Storage (i.e. usersForums) and Cookies (i.e. JWT)
         localStorage.clear();
 
         // Remove Auth Header for Future Requests

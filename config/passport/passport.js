@@ -1,32 +1,66 @@
+// Dependencies
 const rootPath = require('app-root-path');
+const bcrypt = require('bcrypt');
+const passport = require('passport');
+const passportLocal = require('passport-local');
+const passportJWT = require('passport-jwt');
+
+// Models
 const User = require(rootPath + '/models/User');
 
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
+const LocalStrategy = passportLocal.Strategy;
+const JwtStrategy = passportJWT.Strategy;
+
+const cookieExtractor = function (req) {
+    let token = null;
+
+    if (req && req.cookies) {
+        token = req.cookies['jwt'];
+    }
+
+    return token;
+};
 
 const options = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.JWT_PRIVATE_KEY,
 };
 
-function verify(jwt_payload, done) {
-    User.findById(jwt_payload.id)
-        .then((user) => {
-            if (err) {
-                return done(err, false);
-            }
+passport.use(
+    new JwtStrategy(options, function (jwt_payload, done) {
+        User.findById(jwt_payload.userId)
+            .then((user) => {
+                if (user) {
+                    return done(null, user);
+                } else {
+                    return done(null, false);
+                }
+            })
+            .catch((err) => done(err, false));
+    })
+);
 
-            if (user) {
-                return done(null, user);
-            } else {
-                return done(null, false);
-            }
-        })
-        .catch((err) => console.error(err));
-}
+passport.use(
+    new LocalStrategy(function (username, password, done) {
+        User.findOne({ username })
+            .then((user) => {
+                if (!user) {
+                    return done(null, false, {
+                        username:
+                            'An account with that username cannot be found.',
+                    });
+                }
 
-function passportConfig(passport) {
-    passport.use(new JwtStrategy(options, verify));
-}
-
-module.exports = passportConfig;
+                bcrypt.compare(password, user.password).then((isMatch) => {
+                    if (isMatch) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false, {
+                            password: 'Password entered is incorrect.',
+                        });
+                    }
+                });
+            })
+            .catch((err) => done(err));
+    })
+);

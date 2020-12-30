@@ -126,3 +126,6 @@ dist
 
 # Test requests
 requests.rest
+
+# ignore
+ignore

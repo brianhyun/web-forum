@@ -60,62 +60,54 @@ router.post(
 );
 
 // Get Info for a Single Post
-router.post(
-    '/api/posts/getPostInfo',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
-        const input = req.body;
+router.post('/api/posts/getPostInfo', (req, res, next) => {
+    const input = req.body;
 
-        Post.findById(input.postId)
-            .populate([
-                {
-                    path: 'author',
-                    select: 'name _id',
-                },
-                {
-                    path: 'parentForum',
-                    select: 'name _id',
-                },
-                {
-                    path: 'comments',
-                    populate: {
-                        path: 'author',
-                        select: 'name _id',
-                    },
-                },
-            ])
-            .then((post) => {
-                if (post) {
-                    res.send(post);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
-);
-
-// Get Comments for a Single Post
-router.post(
-    '/api/posts/getPostComments',
-    passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
-        const input = req.body;
-
-        Post.findById(input.postId)
-            .populate({
+    Post.findById(input.postId)
+        .populate([
+            {
+                path: 'author',
+                select: 'name _id',
+            },
+            {
+                path: 'parentForum',
+                select: 'name _id',
+            },
+            {
                 path: 'comments',
                 populate: {
                     path: 'author',
                     select: 'name _id',
                 },
-            })
-            .then((post) => {
-                if (post) {
-                    res.send(post);
-                }
-            })
-            .catch((err) => console.error(err));
-    }
-);
+            },
+        ])
+        .then((post) => {
+            if (post) {
+                res.send(post);
+            }
+        })
+        .catch((err) => console.error(err));
+});
+
+// Get Comments for a Single Post
+router.post('/api/posts/getPostComments', (req, res, next) => {
+    const input = req.body;
+
+    Post.findById(input.postId)
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'author',
+                select: 'name _id',
+            },
+        })
+        .then((post) => {
+            if (post) {
+                res.send(post);
+            }
+        })
+        .catch((err) => console.error(err));
+});
 
 // Add Comment to a Single Post
 router.post(
