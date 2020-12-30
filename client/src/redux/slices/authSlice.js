@@ -50,6 +50,7 @@ async function signInUser(userData, dispatch) {
 
         // Decode and Return Token to Next Async Operation
         const decodedToken = jwt_decode(response.data.token);
+
         return decodedToken;
     } catch (err) {
         dispatch(setFormErrors(err.response.data));
@@ -59,7 +60,6 @@ async function signInUser(userData, dispatch) {
 }
 
 async function grabAndSetUsersForumsInLocalStorage(decodedToken) {
-    // The decoded token contains the userId, which is needed to query the user's document (in database), which contains the user's forums.
     try {
         const usersForums = await storeUsersForumsInLocalStorage({
             userId: decodedToken.userId,
@@ -96,21 +96,7 @@ export function signupUser(userData, history) {
             .then(() => {
                 history.push('/login');
             })
-            .catch((error) => dispatch(setFormErrors(error.response.data)));
-    };
-}
-
-// Verify User Authentication
-export function verifyUserAuth() {
-    return function thunk(dispatch) {
-        axios
-            .get('/api/user/verifyUserAuth')
-            .then((isAuth) => {
-                if (isAuth) {
-                    dispatch(setAuthStatus());
-                }
-            })
-            .catch((err) => console.error(err));
+            .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
 }
 

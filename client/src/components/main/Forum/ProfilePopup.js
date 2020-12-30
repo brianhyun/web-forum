@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ProfilePopup() {
+function ProfilePopup(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
@@ -68,16 +68,28 @@ function ProfilePopup() {
             .catch((err) => console.error(err));
     }, []);
 
+    // Handle Logout
+    function handleLogout() {
+        dispatch(logoutUser());
+    }
+
     return (
-        <Paper className={classes.paper}>
+        <Paper
+            className={classes.paper}
+            style={{ visibility: props.showPopup ? 'visible' : 'hidden' }}
+        >
             <Box className={classes.padding}>
                 <Grid container spacing={2}>
                     <Grid item>
                         <Avatar />
                     </Grid>
                     <Grid item>
-                        <Typography>{userInfo.fullName}</Typography>
-                        <Typography>@{userInfo.username}</Typography>
+                        {userInfo.fullName && (
+                            <Typography>{userInfo.fullName}</Typography>
+                        )}
+                        {userInfo.username && (
+                            <Typography>@{userInfo.username}</Typography>
+                        )}
                     </Grid>
                 </Grid>
             </Box>
@@ -85,7 +97,7 @@ function ProfilePopup() {
             <Divider />
 
             <Box className={classes.padding}>
-                <Button fullWidth onClick={dispatch(logoutUser())}>
+                <Button fullWidth onClick={handleLogout}>
                     Log out
                 </Button>
             </Box>

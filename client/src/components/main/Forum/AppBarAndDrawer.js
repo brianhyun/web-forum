@@ -137,10 +137,10 @@ function AppBarAndDrawer(props) {
     const usersForums = JSON.parse(localStorage.getItem('usersForums'));
 
     // Profile Popup
-    const [profilePopupOpen, setProfilePopupOpen] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
 
     function showProfilePopup() {
-        setProfilePopupOpen(!profilePopupOpen);
+        setShowPopup(!showPopup);
     }
 
     return (
@@ -179,7 +179,7 @@ function AppBarAndDrawer(props) {
                             >
                                 <Avatar alt="forum profile picture" src="" />
                             </IconButton>
-                            {profilePopupOpen && <ProfilePopup />}
+                            <ProfilePopup showPopup={showPopup} />
                         </Box>
                     </Box>
                 </Toolbar>

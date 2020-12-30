@@ -43,9 +43,7 @@ export function createForum(forumData, history) {
                     .then(() => history.push(newForumLink))
                     .catch((err) => console.error(err));
             })
-            .catch((err) => {
-                dispatch(setFormErrors(err.response.data));
-            });
+            .catch((err) => dispatch(setFormErrors(err.response.data)));
     };
 }
 

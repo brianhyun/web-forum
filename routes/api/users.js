@@ -125,23 +125,6 @@ router.post('/api/users/login', (req, res, next) => {
 });
 
 router.get(
-    '/api/user/verifyUserAuth',
-    (req, res, next) => {
-        if (!req.cookies['jwt']) {
-            return res.send(false);
-        }
-
-        next();
-    },
-    passport.authenticate('jwt', { session: false }),
-    (req, res) => {
-        if (req.user) {
-            res.send(true);
-        }
-    }
-);
-
-router.get(
     '/api/users/getUsernameInfo',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
