@@ -32,7 +32,7 @@ export const { setPublic, setPrivate, resetPrivacyStatus } = slice.actions;
 
 // Create Forum
 export function createForum(forumData, history) {
-    return function thunk(dispatch, getState) {
+    return function thunk(dispatch) {
         axios
             .post('/api/forums/create', forumData)
             .then((response) => {
@@ -51,7 +51,7 @@ export function createForum(forumData, history) {
 
 // Join Forum
 export function joinForum(forumData, history) {
-    return function thunk(dispatch, getState) {
+    return function thunk(dispatch) {
         axios
             .post('/api/forums/join', forumData)
             .then((response) => {

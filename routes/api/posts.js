@@ -1,5 +1,4 @@
 // Dependencies
-const mongoose = require('mongoose');
 const passport = require('passport');
 const express = require('express');
 const rootPath = require('app-root-path');
@@ -20,7 +19,7 @@ const router = express.Router();
 router.post(
     '/api/posts/create',
     passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
+    (req, res) => {
         const input = req.body;
         const { errors, isValid } = validatePostInput(input);
 
@@ -30,14 +29,13 @@ router.post(
         }
 
         // Valid Input
-        const forumObjectId = mongoose.Types.ObjectId(input.forumId);
-        const authorObjectId = mongoose.Types.ObjectId(input.authorId);
+        const authorId = req.user._id;
 
         const newPost = new Post({
             title: input.title,
             content: input.content,
-            author: authorObjectId,
-            parentForum: forumObjectId,
+            author: authorId,
+            parentForum: input.forumId,
         });
 
         Forum.findById(input.forumId)
@@ -113,7 +111,7 @@ router.post('/api/posts/getPostComments', (req, res, next) => {
 router.post(
     '/api/posts/addComment',
     passport.authenticate('jwt', { session: false }),
-    (req, res, next) => {
+    (req, res) => {
         const input = req.body;
         const { errors, isValid } = validateCommentInput(input);
 
@@ -123,9 +121,11 @@ router.post(
         }
 
         // Valid Input
+        const authorId = req.user._id;
+
         const newComment = new Comment({
             content: input.content,
-            author: input.authorId,
+            author: authorId,
         });
 
         newComment

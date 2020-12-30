@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { selectFormErrors } from '../../redux/slices/errorsSlice';
-import { resetFormErrors } from '../../redux/slices/errorsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    selectFormErrors,
+    resetFormErrors,
+} from '../../redux/slices/errorsSlice';
 import { createForum } from '../../redux/slices/forumAuthSlice';
-import { selectUserId } from '../../redux/slices/authSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -98,7 +98,6 @@ function Create(props) {
     // Redux Handles
     const dispatch = useDispatch();
     const formErrors = useSelector(selectFormErrors);
-    const userId = useSelector(selectUserId);
 
     // React Handles
     const [forum, setForum] = useState({
@@ -121,7 +120,6 @@ function Create(props) {
         const forumData = {
             name: forum.name,
             isPublic: forum.isPublic,
-            userId: userId,
         };
 
         // If Forum is Private, Pass Password into Payload

@@ -2,6 +2,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+// Redux
+import { useDispatch } from 'react-redux';
+import { verifyUserAuth } from '../../redux/slices/authSlice';
+
 // Styles
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -23,6 +27,11 @@ import UserProfile from '../main/user/UserProfile';
 import PostPage from '../main/post/PostPage';
 
 function App() {
+    // // Redux Handles
+    // const dispatch = useDispatch();
+
+    // dispatch(verifyUserAuth());
+
     return (
         <Router>
             <ThemeProvider theme={theme}>

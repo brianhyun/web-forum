@@ -1,7 +1,6 @@
 // Dependencies
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
-import setAuthToken from '../../utils/setAuthToken';
 
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
@@ -13,27 +12,24 @@ import storeUsersForumsInLocalStorage from '../../utils/storeUsersForumsInLocalS
 export const slice = createSlice({
     name: 'auth',
     initialState: {
-        user: {},
         isAuthenticated: false,
     },
     reducers: {
-        setCurrentUser: (state, action) => {
-            state.user = action.payload;
+        setAuthStatus: (state) => {
             state.isAuthenticated = true;
         },
-        resetCurrentUser: (state) => {
-            state.user = {};
+        resetAuthStatus: (state) => {
             state.isAuthenticated = false;
         },
     },
 });
 
 // Export Actions
-export const { setCurrentUser, resetCurrentUser } = slice.actions;
+export const { setAuthStatus, resetAuthStatus } = slice.actions;
 
 // Login User
 export function loginUser(userData, history) {
-    return function thunk(dispatch, getState) {
+    return function thunk(dispatch) {
         signInUser(userData, dispatch)
             .then((decodedToken) => {
                 return grabAndSetUsersForumsInLocalStorage(decodedToken);
@@ -49,14 +45,11 @@ async function signInUser(userData, dispatch) {
     try {
         const response = await axios.post('/api/users/login', userData);
 
-        // Set Default Headers for Every Axios Request
-        const token = response.data.token;
-        setAuthToken(token);
+        // Set Authentication Status
+        dispatch(setAuthStatus());
 
-        // Set Current User in Redux
-        const decodedToken = jwt_decode(token);
-        dispatch(setCurrentUser(decodedToken));
-
+        // Decode and Return Token to Next Async Operation
+        const decodedToken = jwt_decode(response.data.token);
         return decodedToken;
     } catch (err) {
         dispatch(setFormErrors(err.response.data));
@@ -97,7 +90,7 @@ function redirectUserBasedOnForumCount(usersForums, history) {
 
 // Register User
 export function signupUser(userData, history) {
-    return function thunk(dispatch, getState) {
+    return function thunk(dispatch) {
         axios
             .post('/api/users/signup', userData)
             .then(() => {
@@ -107,31 +100,34 @@ export function signupUser(userData, history) {
     };
 }
 
+// Verify User Authentication
+export function verifyUserAuth() {
+    return function thunk(dispatch) {
+        axios
+            .get('/api/user/verifyUserAuth')
+            .then((isAuth) => {
+                if (isAuth) {
+                    dispatch(setAuthStatus());
+                }
+            })
+            .catch((err) => console.error(err));
+    };
+}
+
 // Log User Out
 export function logoutUser() {
-    return function thunk(dispatch, getState) {
+    return function thunk(dispatch) {
         // Clear Local Storage (i.e. usersForums) and Cookies (i.e. JWT)
         localStorage.clear();
 
-        // Remove Auth Header for Future Requests
-        setAuthToken(false);
-
         // Set current user to empty object {} which will set isAuthenticated to false
-        dispatch(resetCurrentUser());
+        dispatch(resetAuthStatus());
     };
 }
 
 // Selectors
 export function selectAuthStatus(state) {
     return state.auth.isAuthenticated;
-}
-
-export function selectUserId(state) {
-    return state.auth.user.userId;
-}
-
-export function selectUsername(state) {
-    return state.auth.user.username;
 }
 
 export default slice.reducer;

@@ -124,16 +124,32 @@ router.post('/api/users/login', (req, res, next) => {
     })(req, res);
 });
 
-router.post('/api/users/getUserFullName', (req, res, next) => {
-    const userId = req.body.userId;
+router.get(
+    '/api/user/verifyUserAuth',
+    (req, res, next) => {
+        if (!req.cookies['jwt']) {
+            return res.send(false);
+        }
 
-    User.findById(userId)
-        .then((user) => {
-            if (user) {
-                res.send(user.name);
-            }
-        })
-        .catch((err) => console.error(err));
-});
+        next();
+    },
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        if (req.user) {
+            res.send(true);
+        }
+    }
+);
+
+router.get(
+    '/api/users/getUsernameInfo',
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        res.send({
+            fullName: req.user.name,
+            username: req.user.username,
+        });
+    }
+);
 
 module.exports = router;

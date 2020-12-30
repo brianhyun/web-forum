@@ -5,11 +5,6 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import DOMPurify from 'dompurify';
 
-// Redux
-import { useSelector } from 'react-redux';
-
-import { selectUserId } from '../../../redux/slices/authSlice';
-
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -39,9 +34,6 @@ function CreateComment(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
-    // Redux Handles
-    const userId = useSelector(selectUserId);
-
     // Handle New Post Input
     const [commentContent, setCommentContent] = useState('');
 
@@ -54,7 +46,6 @@ function CreateComment(props) {
         axios
             .post('/api/posts/addComment', {
                 content: purifiedCommentContent,
-                authorId: userId,
                 postId: props.postId,
             })
             .then(() => {

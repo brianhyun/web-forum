@@ -5,11 +5,6 @@ import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
 import DOMPurify from 'dompurify';
 
-// Redux
-import { useSelector } from 'react-redux';
-
-import { selectUserId } from '../../../../redux/slices/authSlice';
-
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -43,9 +38,6 @@ function CreatePost(props) {
     // Use Material UI Styles
     const classes = useStyles();
 
-    // Redux Handles
-    const userId = useSelector(selectUserId);
-
     // Handle New Post Input
     const [postContent, setPostContent] = useState('');
     const [postTitle, setPostTitle] = useState('');
@@ -64,10 +56,9 @@ function CreatePost(props) {
             .post('/api/posts/create', {
                 title: postTitle,
                 content: purifiedPostContent,
-                authorId: userId,
                 forumId: props.forumId,
             })
-            .then((response) => {
+            .then(() => {
                 // Update PostsList
                 props.updateForumPosts();
             })

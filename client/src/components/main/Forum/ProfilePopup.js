@@ -3,14 +3,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Redux
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 
-import {
-    logoutUser,
-    selectUserId,
-    selectUsername,
-} from '../../../redux/slices/authSlice';
+import { logoutUser } from '../../../redux/slices/authSlice';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -53,29 +48,25 @@ function ProfilePopup() {
     const classes = useStyles();
 
     // React Handles
-    const [userFullName, setUserFullName] = useState(null);
+    const [userInfo, setUserInfo] = useState({
+        fullName: '',
+        username: '',
+    });
 
     // Redux Handles
-    const userId = useSelector(selectUserId);
-    const username = useSelector(selectUsername);
     const dispatch = useDispatch();
 
-    // Grab User's Full Name
+    // Grab User Info
     useEffect(() => {
         axios
-            .post('/api/users/getUserFullName', { userId })
+            .get('/api/users/getUsernameInfo')
             .then((response) => {
-                const fullName = response.data;
-
-                setUserFullName(fullName);
+                setUserInfo({
+                    ...response.data,
+                });
             })
             .catch((err) => console.error(err));
-    }, [userId]);
-
-    // Handle Logout
-    function handleLogout() {
-        dispatch(logoutUser());
-    }
+    }, []);
 
     return (
         <Paper className={classes.paper}>
@@ -85,10 +76,8 @@ function ProfilePopup() {
                         <Avatar />
                     </Grid>
                     <Grid item>
-                        {userFullName && (
-                            <Typography>{userFullName}</Typography>
-                        )}
-                        {username && <Typography>@{username}</Typography>}
+                        <Typography>{userInfo.fullName}</Typography>
+                        <Typography>@{userInfo.username}</Typography>
                     </Grid>
                 </Grid>
             </Box>
@@ -96,8 +85,8 @@ function ProfilePopup() {
             <Divider />
 
             <Box className={classes.padding}>
-                <Button fullWidth onClick={handleLogout}>
-                    Sign out
+                <Button fullWidth onClick={dispatch(logoutUser())}>
+                    Log out
                 </Button>
             </Box>
         </Paper>

@@ -8,7 +8,6 @@ import {
     selectFormErrors,
     resetFormErrors,
 } from '../../redux/slices/errorsSlice';
-import { selectUserId } from '../../redux/slices/authSlice';
 import {
     joinForum,
     resetPrivacyStatus,
@@ -65,7 +64,6 @@ function Join(props) {
     const dispatch = useDispatch();
     const passwordExists = useSelector(selectPasswordExists);
     const formErrors = useSelector(selectFormErrors);
-    const userId = useSelector(selectUserId);
 
     // React Handles
     const [forum, setForum] = useState({
@@ -86,7 +84,6 @@ function Join(props) {
 
         const forumData = {
             name: forum.name,
-            userId: userId,
         };
 
         // Check Store for Forum's Privacy Status - If Private, Pass Password into Payload

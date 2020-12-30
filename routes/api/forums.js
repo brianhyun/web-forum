@@ -26,6 +26,7 @@ router.post(
 
         // Valid Input - Check DB for Forum Privacy Status
         const forumName = input.name;
+        input.userId = req.user._id;
 
         forumExists(forumName)
             .then((forumExists) => {
@@ -117,7 +118,7 @@ router.post(
 
         // Valid Input - Check Database for Forum
         const forumName = input.name;
-        const userId = input.userId;
+        input.userId = req.user._id;
 
         forumExists(forumName)
             .then((forumExists) => {
@@ -126,33 +127,19 @@ router.post(
                         name: 'This name is already taken.',
                     });
                 } else {
-                    underForumLimit(userId)
-                        .then((underLimit) => {
-                            if (underLimit) {
-                                createNewForum(input, res);
-                            } else {
-                                res.status(400).json({
-                                    limit:
-                                        'Limit exceeded for numbers of forums created.',
-                                });
-                            }
-                        })
-                        .catch((err) => console.error(err));
+                    if (req.user.forumsCreated <= 4) {
+                        createNewForum(input, res);
+                    } else {
+                        res.status(400).json({
+                            limit:
+                                'Limit exceeded for numbers of forums created.',
+                        });
+                    }
                 }
             })
             .catch((err) => console.error(err));
     }
 );
-
-async function underForumLimit(userId) {
-    try {
-        const user = await User.findById(userId);
-
-        return user.forumsCreated <= 4;
-    } catch (err) {
-        console.error(err);
-    }
-}
 
 async function createNewForum(input, res) {
     try {
@@ -269,29 +256,33 @@ router.post('/api/forums/getForumMembers', (req, res) => {
 });
 
 // Get Forum's Member
-router.post('/api/forums/getForumPosts', (req, res) => {
-    const forumId = req.body.forumId;
+router.post(
+    '/api/forums/getForumPosts',
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+        const forumId = req.body.forumId;
 
-    Forum.findById(forumId)
-        .populate({
-            path: 'posts',
-            populate: [
-                {
-                    path: 'author',
-                    select: '_id name',
-                },
-                {
-                    path: 'parentForum',
-                    select: '_id name',
-                },
-            ],
-        })
-        .then((forum) => {
-            if (forum) {
-                res.send(forum.posts);
-            }
-        })
-        .catch((err) => console.error(err));
-});
+        Forum.findById(forumId)
+            .populate({
+                path: 'posts',
+                populate: [
+                    {
+                        path: 'author',
+                        select: '_id name',
+                    },
+                    {
+                        path: 'parentForum',
+                        select: '_id name',
+                    },
+                ],
+            })
+            .then((forum) => {
+                if (forum) {
+                    res.send(forum.posts);
+                }
+            })
+            .catch((err) => console.error(err));
+    }
+);
 
 module.exports = router;
