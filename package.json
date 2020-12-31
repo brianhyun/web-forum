@@ -6,10 +6,9 @@
     "scripts": {
         "client": "npm start --prefix client",
         "client-install": "npm install --prefix client",
-        "dev": "concurrently \"npm run devServer\" \"npm run client\"",
-        "devServer": "nodemon server.js",
-        "server": "node server.js",
-        "start": "concurrently \"npm run server\" \"npm run client\""
+        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "server": "nodemon server.js",
+        "start": "node server.js"
     },
     "author": "Brian Hyun",
     "license": "ISC",

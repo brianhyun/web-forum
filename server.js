@@ -25,6 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+app.use(express.static(path.join(__dirname, 'build')));
+
 // Passport Middleware
 require(rootPath + '/config/passport/passport');
 app.use(passport.initialize());
@@ -33,6 +35,11 @@ app.use(passport.initialize());
 app.use(usersAPIRouter);
 app.use(forumsAPIRouter);
 app.use(postsAPIRouter);
+
+// Frontend
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Server Port Line
 app.listen(process.env.PORT, () =>
