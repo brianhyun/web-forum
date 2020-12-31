@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -94,12 +94,6 @@ function Join(props) {
         dispatch(joinForum(forumData, props.history));
     }
 
-    // Reset Form Errors and 'passwordExists' State on Component Mount to Prevent Error Message Bleeding
-    useEffect(() => {
-        dispatch(resetFormErrors());
-        dispatch(resetPrivacyStatus());
-    }, []);
-
     return (
         <Box component="main" className={classes.root}>
             <Container maxWidth="xs">
@@ -163,7 +157,14 @@ function Join(props) {
                             </Button>
                             <Grid container justify="center">
                                 <Grid item>
-                                    <Link to="/create" style={linkStyle}>
+                                    <Link
+                                        to="/create"
+                                        onClick={() => {
+                                            dispatch(resetFormErrors());
+                                            dispatch(resetPrivacyStatus());
+                                        }}
+                                        style={linkStyle}
+                                    >
                                         <Typography
                                             variant="body2"
                                             color="primary"

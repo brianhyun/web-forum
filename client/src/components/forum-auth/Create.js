@@ -1,5 +1,5 @@
 // Dependencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
@@ -145,15 +145,6 @@ function Create(props) {
         });
     }
 
-    // Reset Form Errors on Component Mount to Prevent Error Message Bleeding
-    useEffect(() => {
-        dispatch(resetFormErrors());
-    }, []);
-
-    function closeWarningMessage() {
-        dispatch(resetFormErrors());
-    }
-
     return (
         <Box component="main" className={classes.root}>
             {formErrors.limit && (
@@ -165,7 +156,7 @@ function Create(props) {
                         </Typography>
                         <IconButton size="small">
                             <CloseIcon
-                                onClick={closeWarningMessage}
+                                onClick={() => dispatch(resetFormErrors())}
                                 fontSize="small"
                                 className={classes.iconStyles}
                             />
@@ -281,7 +272,13 @@ function Create(props) {
                             </Button>
                             <Grid container justify="center">
                                 <Grid item>
-                                    <Link to="/join" style={linkStyle}>
+                                    <Link
+                                        to="/join"
+                                        onClick={() =>
+                                            dispatch(resetFormErrors())
+                                        }
+                                        style={linkStyle}
+                                    >
                                         <Typography
                                             variant="body2"
                                             color="primary"

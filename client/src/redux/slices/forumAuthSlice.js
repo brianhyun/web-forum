@@ -4,7 +4,7 @@ import axios from 'axios';
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
 
-import { setFormErrors } from './errorsSlice';
+import { setFormErrors, resetFormErrors } from './errorsSlice';
 
 // Utilities
 import storeUsersForumsInLocalStorage from '../../utils/storeUsersForumsInLocalStorage';
@@ -36,9 +36,12 @@ export function createForum(forumData, history) {
         axios
             .post('/api/forums/create', forumData)
             .then((response) => {
+                // On Successful Forum Creation, Reset Form Errors
+                dispatch(resetFormErrors());
+
                 const newForumLink = `/forum/${response.data.forumId}`;
 
-                // After creating the forum, save user's new forums list to local storage.
+                // Save user's new forums list to local storage.
                 storeUsersForumsInLocalStorage({ userId: response.data.userId })
                     .then(() => history.push(newForumLink))
                     .catch((err) => console.error(err));
@@ -53,7 +56,10 @@ export function joinForum(forumData, history) {
         axios
             .post('/api/forums/join', forumData)
             .then((response) => {
-                // After joining the forum, save user's new forums list to local storage.
+                // On Successful Forum Join, Reset Forum Errors
+                dispatch(resetFormErrors());
+
+                // Save user's new forums list to local storage.
                 storeUsersForumsInLocalStorage({
                     userId: response.data.userId,
                 })

@@ -4,7 +4,7 @@ import jwt_decode from 'jwt-decode';
 
 // Redux
 import { createSlice } from '@reduxjs/toolkit';
-import { setFormErrors } from './errorsSlice';
+import { setFormErrors, resetFormErrors } from './errorsSlice';
 
 // Utilities
 import storeUsersForumsInLocalStorage from '../../utils/storeUsersForumsInLocalStorage';
@@ -45,12 +45,11 @@ async function signInUser(userData, dispatch) {
     try {
         const response = await axios.post('/api/users/login', userData);
 
-        // Set Authentication Status
+        // On Successful Login, Reset Form Errors and Set Authentication Status for Persistent Login
+        dispatch(resetFormErrors());
         dispatch(setAuthStatus());
 
-        // Decode and Return Token to Next Async Operation
         const decodedToken = jwt_decode(response.data.token);
-
         return decodedToken;
     } catch (err) {
         dispatch(setFormErrors(err.response.data));
@@ -76,7 +75,6 @@ function redirectUserBasedOnForumCount(usersForums, history) {
         const forumsExist = usersForums.length;
 
         if (forumsExist) {
-            // Grab the first forum in the list and redirect to that page.
             const firstForumId = usersForums[0]._id;
 
             history.push(`/forum/${firstForumId}`);
@@ -94,6 +92,9 @@ export function signupUser(userData, history) {
         axios
             .post('/api/users/signup', userData)
             .then(() => {
+                // On Successful Registration, Reset Form Errors
+                dispatch(resetFormErrors());
+
                 history.push('/login');
             })
             .catch((err) => dispatch(setFormErrors(err.response.data)));

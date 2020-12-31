@@ -1,13 +1,15 @@
 // Dependencies
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 // Redux
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { signupUser } from '../../redux/slices/authSlice';
-import { selectFormErrors } from '../../redux/slices/errorsSlice';
-import { resetFormErrors } from '../../redux/slices/errorsSlice';
+import {
+    selectFormErrors,
+    resetFormErrors,
+} from '../../redux/slices/errorsSlice';
 
 // Material UI Styles
 import Button from '@material-ui/core/Button';
@@ -88,11 +90,6 @@ function Signup(props) {
 
         dispatch(signupUser(newUser, props.history));
     }
-
-    // Reset Form Errors on Component Mount to Prevent Error Message Bleeding
-    useEffect(() => {
-        dispatch(resetFormErrors());
-    }, []);
 
     return (
         <Box component="main" className={classes.root}>
@@ -185,7 +182,13 @@ function Signup(props) {
                             </Button>
                             <Grid container justify="center">
                                 <Grid item>
-                                    <Link to="/login" style={linkStyle}>
+                                    <Link
+                                        to="/login"
+                                        onClick={() =>
+                                            dispatch(resetFormErrors())
+                                        }
+                                        style={linkStyle}
+                                    >
                                         <Typography
                                             variant="body2"
                                             color="primary"
