@@ -37,7 +37,7 @@ app.use(forumsAPIRouter);
 app.use(postsAPIRouter);
 
 // Frontend
-app.get('/*', function (req, res) {
+app.get('/*', (req, res) => {
     res.sendFile(rootPath + '/build/index.html');
 });
 
