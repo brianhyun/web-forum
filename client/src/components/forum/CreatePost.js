@@ -18,7 +18,7 @@ import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
 // Custom Styles and Modules
 import './CreatePost.css';
-import DOMPurify from '../../../../utils/domPurifyConfig';
+import DOMPurify from '../../utils/domPurifyConfig';
 
 const useStyles = makeStyles((theme) => ({
     paper: {

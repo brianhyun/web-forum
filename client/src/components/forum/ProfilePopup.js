@@ -5,7 +5,7 @@ import axios from 'axios';
 // Redux
 import { useDispatch } from 'react-redux';
 
-import { logoutUser } from '../../../redux/slices/authSlice';
+import { logoutUser } from '../../redux/slices/authSlice';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';

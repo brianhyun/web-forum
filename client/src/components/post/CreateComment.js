@@ -14,7 +14,7 @@ import Box from '@material-ui/core/Box';
 
 // Custom Styles and Modules
 import './CreateComment.css';
-import DOMPurify from '../../../utils/domPurifyConfig';
+import DOMPurify from '../../utils/domPurifyConfig';
 
 const useStyles = makeStyles((theme) => ({
     paper: {

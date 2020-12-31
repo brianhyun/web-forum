@@ -3,12 +3,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 // React Components
-import CreatePost from './main-content/CreatePost';
+import CreatePost from './CreatePost';
 import AppBarAndDrawer from './AppBarAndDrawer';
-import PostsList from './main-content/PostsList';
-import MembersPanel from './sidebar/MembersPanel';
+import PostsList from './PostsList';
+import MembersPanel from './MembersPanel';
 
-import { useForumId } from '../../../utils/customHooks';
+import { useForumId } from '../../utils/customHooks';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';

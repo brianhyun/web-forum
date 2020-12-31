@@ -13,22 +13,21 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../ui/theme';
 
 // Components
-import Landing from '../main/Landing';
+import Landing from '../onboard/Landing';
 import Login from '../auth/Login';
 import Signup from '../auth/Signup';
-import PageNotFound from '../main/PageNotFound';
+import PageNotFound from '../error/PageNotFound';
 
 // Protected Components
 import PrivateRoute from '../private/PrivateRoute';
-import Forum from '../main/forum/Forum';
+import Forum from '../forum/Forum';
 import Join from '../forum-auth/Join';
 import Create from '../forum-auth/Create';
-import GetStarted from '../main/GetStarted';
-import UserProfile from '../main/user/UserProfile';
-import PostPage from '../main/post/PostPage';
+import GetStarted from '../onboard/GetStarted';
+import PostPage from '../post/PostPage';
 
 function App() {
-    // Validate JWT as Component Effect
+    // Validate JWT as a Component Effect
     const dispatch = useDispatch();
 
     async function validateJWT() {
@@ -64,11 +63,6 @@ function App() {
                             exact
                             path="/forum/:id"
                             component={Forum}
-                        />
-                        <PrivateRoute
-                            exact
-                            path="/user/:id"
-                            component={UserProfile}
                         />
                         <PrivateRoute
                             exact
