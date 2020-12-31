@@ -1,6 +1,11 @@
 // Dependencies
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
+
+// Redux
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../redux/slices/authSlice';
 
 // Styles
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -23,6 +28,22 @@ import UserProfile from '../main/user/UserProfile';
 import PostPage from '../main/post/PostPage';
 
 function App() {
+    // Validate JWT as Component Effect
+    const dispatch = useDispatch();
+
+    async function validateJWT() {
+        const response = await axios.get('/api/users/validateJWT');
+        const jwtExpired = response.data;
+
+        if (jwtExpired) {
+            dispatch(logoutUser());
+        }
+    }
+
+    useEffect(() => {
+        validateJWT();
+    });
+
     return (
         <Router>
             <ThemeProvider theme={theme}>

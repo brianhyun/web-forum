@@ -135,4 +135,24 @@ router.get(
     }
 );
 
+router.get('/api/users/validateJWT', (req, res) => {
+    // Custom Callback Function
+    passport.authenticate('jwt', { session: false }, (err, user, info) => {
+        if (err) {
+            return console.error(err);
+        }
+
+        return res.send(user ? false : true);
+    })(req, res);
+});
+
+router.get('/api/users/deleteJWTCookie', (req, res) => {
+    const options = {
+        expires: new Date(0),
+    };
+
+    res.cookie('jwt', '', options);
+    res.end();
+});
+
 module.exports = router;

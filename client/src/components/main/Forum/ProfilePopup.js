@@ -84,12 +84,8 @@ function ProfilePopup(props) {
                         <Avatar />
                     </Grid>
                     <Grid item>
-                        {userInfo.fullName && (
-                            <Typography>{userInfo.fullName}</Typography>
-                        )}
-                        {userInfo.username && (
-                            <Typography>@{userInfo.username}</Typography>
-                        )}
+                        <Typography>{userInfo.fullName}</Typography>
+                        <Typography>@{userInfo.username}</Typography>
                     </Grid>
                 </Grid>
             </Box>

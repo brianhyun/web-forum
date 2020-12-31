@@ -103,11 +103,17 @@ export function signupUser(userData, history) {
 // Log User Out
 export function logoutUser() {
     return function thunk(dispatch) {
-        // Clear Local Storage (i.e. usersForums) and Cookies (i.e. JWT)
-        localStorage.clear();
+        // Invalidate Cookies (i.e. JWT)
+        axios
+            .get('/api/users/deleteJWTCookie')
+            .then(() => {
+                // Clear Local Storage (i.e. usersForums)
+                localStorage.clear();
 
-        // Set current user to empty object {} which will set isAuthenticated to false
-        dispatch(resetAuthStatus());
+                // Reset Authentication Status
+                dispatch(resetAuthStatus());
+            })
+            .catch((err) => console.error(err));
     };
 }
 
