@@ -38,7 +38,7 @@ app.use(postsAPIRouter);
 
 // Frontend
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile(rootPath + '/build/index.html');
 });
 
 // Server Port Line
