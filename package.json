@@ -8,7 +8,7 @@
         "client-install": "npm install --prefix client",
         "dev": "concurrently \"npm run server\" \"npm run client\"",
         "server": "nodemon server.js",
-        "start": "node server.js"
+        "start": "concurrently \"npm run server\" \"npm run client\""
     },
     "author": "Brian Hyun",
     "license": "ISC",
