@@ -3,7 +3,6 @@ const rootPath = require('app-root-path');
 require(rootPath + '/config/env/loadEnv')();
 
 // Dependencies
-const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const passport = require('passport');
@@ -26,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, 'build', 'static')));
+app.use(express.static('./build'));
 
 // Passport Middleware
 require(rootPath + '/config/passport/passport');
@@ -39,7 +38,7 @@ app.use(postsAPIRouter);
 
 // Frontend
 app.get('/*', function (req, res) {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.sendFile('./build/index.html');
 });
 
 // Server Port Line
