@@ -139,10 +139,15 @@ router.get('/api/users/validateJWT', (req, res) => {
     // Custom Callback Function
     passport.authenticate('jwt', { session: false }, (err, user, info) => {
         if (err) {
-            return console.error(err);
+            console.error(err);
+            return res.send(true);
         }
 
-        return res.send(user ? false : true);
+        if (!user) {
+            return res.send(true);
+        }
+
+        return res.send(false);
     })(req, res);
 });
 
