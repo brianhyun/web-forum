@@ -1,9 +1,8 @@
 // Dependencies
 import React, { useState } from 'react';
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
-import DOMPurify from 'dompurify';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,8 +12,9 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-// Custom Styles
+// Custom Styles and Modules
 import './CreateComment.css';
+import DOMPurify from '../../../utils/domPurifyConfig';
 
 const useStyles = makeStyles((theme) => ({
     paper: {

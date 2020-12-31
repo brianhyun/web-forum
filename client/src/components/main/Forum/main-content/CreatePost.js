@@ -1,9 +1,8 @@
 // Dependencies
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import axios from 'axios';
-import DOMPurify from 'dompurify';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,8 +16,9 @@ import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 
-// Custom Styles
+// Custom Styles and Modules
 import './CreatePost.css';
+import DOMPurify from '../../../../utils/domPurifyConfig';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -50,12 +50,13 @@ function CreatePost(props) {
     function handleFormSubmit(event) {
         event.preventDefault();
 
-        const purifiedPostContent = DOMPurify.sanitize(postContent);
+        const sanitizedPostContent = DOMPurify.sanitize(postContent);
+        const sanitizedPostTitle = DOMPurify.sanitize(postTitle);
 
         axios
             .post('/api/posts/create', {
-                title: postTitle,
-                content: purifiedPostContent,
+                title: sanitizedPostTitle,
+                content: sanitizedPostContent,
                 forumId: props.forumId,
             })
             .then(() => {
