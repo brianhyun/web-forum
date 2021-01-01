@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import xss from 'xss';
 
 // Material UI Components
 import { makeStyles } from '@material-ui/core/styles';
@@ -50,8 +51,8 @@ function CreatePost(props) {
     function handleFormSubmit(event) {
         event.preventDefault();
 
-        const sanitizedPostContent = DOMPurify.sanitize(postContent);
-        const sanitizedPostTitle = DOMPurify.sanitize(postTitle);
+        const sanitizedPostContent = xss(postContent);
+        const sanitizedPostTitle = xss(postTitle);
 
         axios
             .post('/api/posts/create', {

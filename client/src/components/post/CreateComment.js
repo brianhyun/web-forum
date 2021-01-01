@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import xss from 'xss';
 
 // Material UI Styles
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,7 +15,6 @@ import Box from '@material-ui/core/Box';
 
 // Custom Styles and Modules
 import './CreateComment.css';
-import DOMPurify from '../../utils/domPurifyConfig';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -41,11 +41,11 @@ function CreateComment(props) {
     function handleFormSubmit(event) {
         event.preventDefault();
 
-        const purifiedCommentContent = DOMPurify.sanitize(commentContent);
+        const sanitizedCommentContent = xss(commentContent);
 
         axios
             .post('/api/posts/addComment', {
-                content: purifiedCommentContent,
+                content: sanitizedCommentContent,
                 postId: props.postId,
             })
             .then(() => {
