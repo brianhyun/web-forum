@@ -21,7 +21,6 @@
         "redux-persist": "^6.0.0",
         "source-map-explorer": "^2.5.1"
     },
-    "homepage": "https://web-forum-web-app.herokuapp.com/",
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",
         "start": "react-scripts start",
