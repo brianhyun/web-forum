@@ -1,7 +1,3 @@
-# Issues
-
--   [ ]
-
 # Stuff I Learned
 
 ## Technical

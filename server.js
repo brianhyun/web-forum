@@ -44,5 +44,12 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
+// Catch Bad Requests
+app.get('*', (req, res) => {
+    res.status(200).json({
+        msg: 'Catch All',
+    });
+});
+
 // Server Port Line
 app.listen(process.env.PORT);
