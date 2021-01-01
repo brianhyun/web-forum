@@ -21,12 +21,10 @@ const app = express();
 // Database Connection
 connectToDb();
 
-// Parsing Middleware
+// Parsing and Static-Serving Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-
-app.use(express.static(path.join(__dirname, 'build')));
 
 // Passport Middleware
 require(rootPath + '/config/passport/passport');
@@ -38,9 +36,16 @@ app.use(forumsAPIRouter);
 app.use(postsAPIRouter);
 
 // Frontend
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+if (
+    process.env.NODE_ENV === 'production' ||
+    process.env.NODE_ENV === 'staging'
+) {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+
+    app.get('*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+    });
+}
 
 // Server Port Line
 app.listen(process.env.PORT);

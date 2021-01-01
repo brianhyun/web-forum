@@ -4,11 +4,10 @@
     "description": "",
     "main": "server.js",
     "scripts": {
-        "client": "npm start --prefix client",
-        "client-install": "npm install --prefix client",
-        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "client": "cd client && npm start",
+        "client:build": "cd client && npm run build",
         "server": "nodemon server.js",
-        "start": "node server.js"
+        "dev": "concurrently --kill-others-on-fail \"npm run client\" \"npm run server\""
     },
     "author": "Brian Hyun",
     "license": "ISC",
