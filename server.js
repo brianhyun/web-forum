@@ -40,7 +40,7 @@ if (
     process.env.NODE_ENV === 'production' ||
     process.env.NODE_ENV === 'staging'
 ) {
-    app.use(express.static('build'));
+    app.use(express.static('./build/static'));
 
     app.get('*', function (req, res) {
         res.sendFile(path.join(__dirname, 'build', 'index.html'));
